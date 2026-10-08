@@ -21,7 +21,7 @@
 - [ ] **Push** para `github.com/atararossatti/Maison-du-Pain` (requer login do usuário).
 - [x] GIF da experiência (`docs/demo.gif`).
 - [x] Demo publicada na Vercel: https://maison-du-pain-two.vercel.app (projeto `maison-du-pain`, integrado ao GitHub: cada push em `main` publica de novo).
-- [ ] Medição em dispositivo real e Lighthouse.
+- [x] Lighthouse na demo (mobile 51 · desktop 65 em performance; 96/100/100 nas demais). Causa principal: hidratação do HTML/SVG das 6 cenas. Pendente: medir em dispositivo real.
 
 ## Direção artística
 **Conceito:** "um livro ilustrado que ganha profundidade". Camadas de papel recortado (SVG, ilustração própria) com luz volumétrica; o 3D (croissant) surge como o único objeto "real" do mundo, o que dá peso à transformação da Cena 03.
