@@ -19,16 +19,27 @@ export function Header() {
     });
     // A cena final é escura: o cabeçalho troca para a versão clara enquanto ela ocupa o topo.
     const header = headerRef.current;
-    const finale = document.querySelector("[data-scene='return']");
     const tone = new IntersectionObserver(
       ([entry]) => header?.setAttribute("data-tone", entry?.isIntersecting ? "light" : "dark"),
       // Faixa fina no topo da tela, onde o cabeçalho fica: independe de pin ou espaçadores do ScrollTrigger.
       { rootMargin: "-4% 0px -95% 0px" },
     );
-    if (finale) tone.observe(finale);
+    // A cena final é montada sob demanda (LazyScene): observa assim que ela aparecer no DOM.
+    let observed: Element | null = null;
+    const attach = () => {
+      const finale = document.querySelector("[data-scene='return']");
+      if (finale && finale !== observed) {
+        observed = finale;
+        tone.observe(finale);
+      }
+    };
+    attach();
+    const mounts = new MutationObserver(attach);
+    mounts.observe(document.getElementById("conteudo") ?? document.body, { childList: true, subtree: true });
     return () => {
       trigger.kill();
       tone.disconnect();
+      mounts.disconnect();
     };
   }, []);
 

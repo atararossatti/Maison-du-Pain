@@ -2,6 +2,12 @@ import { expect, test, type Page } from "@playwright/test";
 
 const SHOTS = "test-results/shots";
 
+/** Cenas abaixo da dobra são montadas sob demanda: rola até o placeholder e espera a cena existir. */
+async function reveal(page: Page, name: string) {
+  await page.evaluate((scene) => document.querySelector(`[data-lazy="${scene}"]`)?.scrollIntoView(), name);
+  await page.waitForSelector(`[data-scene="${name}"]`, { timeout: 15_000 });
+}
+
 async function skipLoader(page: Page) {
   await page.goto("/");
   await page.getByRole("button", { name: "Pular introdução" }).click();
@@ -60,6 +66,7 @@ test("cena 02: sova sincronizada ao scroll e mergulho na massa", async ({ page }
   page.on("console", (msg) => msg.type() === "error" && errors.push(msg.text()));
 
   await skipLoader(page);
+  await reveal(page, "bakery");
   const arm = () => page.locator('[data-el="armL"]').getAttribute("transform");
   const frames: Record<string, string | null> = {};
 
@@ -88,6 +95,7 @@ test("cena 03: croissant 3D acompanha o scroll e reverte", async ({ page }) => {
   page.on("console", (msg) => msg.type() === "error" && errors.push(msg.text()));
 
   await skipLoader(page);
+  await reveal(page, "croissant");
   const goTo = async (progress: number) => {
     // Cada cena ocupa 1 tela + as telas de pin: Cena 03 começa em 6 + 7 = 13.
     await page.evaluate((p) => window.scrollTo(0, (13 + p * 6) * window.innerHeight), progress);
@@ -116,6 +124,7 @@ test.describe("cena 04: universo dos sabores", () => {
     page.on("console", (msg) => msg.type() === "error" && errors.push(msg.text()));
 
     await skipLoader(page);
+    await reveal(page, "flavors");
     const section = page.locator("[data-scene='flavors']");
     await section.scrollIntoViewIfNeeded();
     await page.evaluate(() => document.querySelector("[data-scene='flavors']")?.scrollIntoView());
@@ -166,6 +175,7 @@ test.describe("cena 04: universo dos sabores", () => {
     const context = await browser.newContext({ viewport: { width: 390, height: 844 }, reducedMotion: "no-preference", hasTouch: true });
     const page = await context.newPage();
     await skipLoader(page);
+    await reveal(page, "flavors");
     await page.evaluate(() => document.querySelector("[data-scene='flavors']")?.scrollIntoView());
     await page.waitForTimeout(800);
     await page.screenshot({ path: `${SHOTS}/flavors-mobile.png` });
@@ -182,6 +192,7 @@ test("cena 05: do trigo ao pão, reversível e sem erros", async ({ page }) => {
   page.on("console", (msg) => msg.type() === "error" && errors.push(msg.text()));
 
   await skipLoader(page);
+  await reveal(page, "process");
   const goTo = async (progress: number) => {
     await page.evaluate((p) => {
       const section = document.querySelector("[data-scene='process']");
@@ -218,6 +229,7 @@ test("cena 06: recuo ao entardecer e botões com ações reais", async ({ page }
   page.on("console", (msg) => msg.type() === "error" && errors.push(msg.text()));
 
   await skipLoader(page);
+  await reveal(page, "return");
   const goTo = async (progress: number) => {
     await page.evaluate((p) => {
       const section = document.querySelector("[data-scene='return']");
@@ -270,6 +282,7 @@ test.describe("acessibilidade e preferências", () => {
     await expect(page.getByRole("status")).toHaveCount(0, { timeout: 10_000 });
     expect(await page.locator(".pin-spacer").count()).toBe(0);
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+    await reveal(page, "return");
     await page.evaluate(() => document.querySelector("[data-scene='return']")?.scrollIntoView());
     await expect(page.getByRole("button", { name: "Faça seu pedido" })).toBeVisible();
     await expect(page.getByRole("banner")).toHaveAttribute("data-tone", "light");
@@ -304,6 +317,7 @@ test("cena 01 e 06 em retrato mostram a fachada inteira", async ({ browser }) =>
   await skipLoader(page);
   await page.waitForTimeout(2_000);
   await page.screenshot({ path: `${SHOTS}/mobile-abertura.png` });
+  await reveal(page, "return");
   await page.evaluate(() => {
     const section = document.querySelector("[data-scene='return']");
     const spacer = section?.closest(".pin-spacer") ?? section;
@@ -316,4 +330,16 @@ test("cena 01 e 06 em retrato mostram a fachada inteira", async ({ browser }) =>
   await expect(page.getByRole("banner")).toHaveAttribute("data-tone", "light");
   expect(await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)).toBeLessThanOrEqual(0);
   await context.close();
+});
+
+test("cenas sob demanda preservam a altura total do scroll", async ({ page }) => {
+  await skipLoader(page);
+  const height = () => page.evaluate(() => document.documentElement.scrollHeight);
+  const before = await height();
+  for (const name of ["bakery", "croissant", "flavors", "process", "return"]) await reveal(page, name);
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await page.waitForTimeout(1_500);
+  const after = await height();
+  // A Cena 04 usa uma altura natural estimada; as demais são exatas. Tolerância de 3%.
+  expect(Math.abs(after - before) / before).toBeLessThan(0.03);
 });

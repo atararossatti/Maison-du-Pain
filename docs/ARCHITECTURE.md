@@ -43,6 +43,10 @@ Cada cena ocupa 1 tela mais as telas de pin. Para posicionar testes ou âncoras:
 
 Os testes localizam a cena por `.pin-spacer` em vez de assumir offsets.
 
+## Carregamento sob demanda
+
+A Cena 01 é renderizada no servidor. As Cenas 02–06 ficam atrás de `ui/LazyScene.tsx`: um placeholder com a **mesma altura** (1 tela + telas de pin; `motion-reduce:min-h-svh` com movimento reduzido) é trocado pela cena, carregada via `next/dynamic`, quando entra a 250% da viewport. Ao criar ou alterar uma cena, mantenha a altura reservada em `Experience.tsx` coerente (o teste "cenas sob demanda preservam a altura total do scroll" cobre isso). Testes precisam chamar `reveal(page, nome)` antes de consultar uma cena abaixo da dobra.
+
 ## Componentes transversais
 
 - **ScrollProvider**: uma instância do Lenis dirigida por `gsap.ticker`; `locked` bloqueia o scroll durante o loader. Não é criada com movimento reduzido.

@@ -16,6 +16,8 @@
   --color-ink: #2e1d16;
   --color-skin: #e8be9b;
   --color-dusk: #5b3a45;
+  /* Variante mais escura do caramelo para texto pequeno sobre creme (contraste ≥ 4,5:1). */
+  --color-crust-text: #7d4a22;
 
   --font-display: var(--font-fraunces), "Times New Roman", serif;
   --font-sans: var(--font-instrument), system-ui, sans-serif;
@@ -178,3 +180,6 @@ html.lenis body {
 
 /* Cenas fora da tela não animam: ver useScrubbedScene. */
 [data-offscreen="true"] [class*="amb-"] { animation-play-state: paused; }
+
+/* Sob o loader a cena de abertura ainda não é vista: suas animações ambientais só gastam pintura. */
+[data-scene="awakening"]:not([data-ready="true"]) [class*="amb-"] { animation-play-state: paused; }

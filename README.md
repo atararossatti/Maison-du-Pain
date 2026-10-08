@@ -141,31 +141,29 @@ Medições reais (`npm run build && npm start`, depois `npm run measure`), em um
 | Erros de console | nenhum |
 | `npm audit --omit=dev` | 0 vulnerabilidades |
 
-Otimizações aplicadas: o grão de papel deixou de ser um filtro SVG recalculado a cada quadro e virou uma textura estática (`public/textures/grain.png`, 25 KB), e as animações ambientais pausam nas cenas fora da tela. Leitura honesta: ainda restam quadros de ~33 ms nas cenas 2D (provável custo: muitos nós SVG rasterizados em escalas altas). Os 200 ms/2,4 s da Cena 03 vêm de WebGL emulado em CPU e do primeiro compilar de shaders, **não representam uma GPU real**. **Lighthouse** 13.5.0 contra a demo publicada (`https://maison-du-pain-two.vercel.app`, Chromium headless, uma execução por perfil, padrões do Lighthouse: no mobile, CPU 4× mais lenta e rede 4G simulada):
+Otimizações aplicadas: o grão de papel deixou de ser um filtro SVG recalculado a cada quadro e virou uma textura estática (`public/textures/grain.png`, 25 KB), e as animações ambientais pausam nas cenas fora da tela. Leitura honesta: ainda restam quadros de ~33 ms nas cenas 2D (provável custo: muitos nós SVG rasterizados em escalas altas). Os 200 ms/2,4 s da Cena 03 vêm de WebGL emulado em CPU e do primeiro compilar de shaders, **não representam uma GPU real**. **Lighthouse** 13.5.0 (Chromium headless, padrões do Lighthouse: no mobile, CPU 4× mais lenta e rede 4G simulada). "Antes" é a demo publicada na primeira medição; "depois" é o build de produção local, mesma máquina, após as otimizações abaixo (2 execuções idênticas por perfil):
 
-| Categoria | Mobile | Desktop |
-| --- | --- | --- |
-| Performance | **51** | **65** |
-| Acessibilidade | 96 | 96 |
-| Boas práticas | 100 | 100 |
-| SEO | 100 | 100 |
+| | Mobile antes | Mobile depois | Desktop antes | Desktop depois |
+| --- | --- | --- | --- | --- |
+| **Performance** | 51 | **57** | 65 | **74** |
+| Acessibilidade | 96 | **100** | 96 | **100** |
+| Boas práticas / SEO | 100 / 100 | 100 / 100 | 100 / 100 | 100 / 100 |
+| FCP | 1,1 s | 0,8 s | 0,3 s | 0,2 s |
+| LCP | 3,8 s | 3,8 s | 0,8 s | 0,8 s |
+| Total Blocking Time | 3.570 ms | 2.550 ms | 750 ms | 560 ms |
+| CLS | 0,049 | 0 | 0,048 | 0,003 |
+| Speed Index | 8,0 s | 4,4 s | 3,2 s | 1,7 s |
 
-| Métrica | Mobile | Desktop |
-| --- | --- | --- |
-| First Contentful Paint | 1,1 s | 0,3 s |
-| Largest Contentful Paint | 3,8 s | 0,8 s |
-| Total Blocking Time | 3.570 ms | 750 ms |
-| Cumulative Layout Shift | 0,049 | 0,048 |
-| Speed Index | 8,0 s | 3,2 s |
+O que foi feito: as cenas 2 a 6 passaram a ser montadas sob demanda (`LazyScene` + `next/dynamic`), o que cortou o HTML inicial de 214 KB para 62 KB e a hidratação, com placeholders de mesma altura para o scroll não mudar (há teste); o contraste dos rótulos pequenos foi corrigido; e as animações ambientais da abertura ficam pausadas sob o loader.
 
-Diagnóstico do que puxa a nota para baixo: o tempo de bloqueio vem da **hidratação** (≈ 4,3 s de script no chunk do React sob CPU lenta): a página renderiza no servidor ~214 KB de HTML, com as seis cenas e milhares de nós SVG, e o React hidrata tudo de uma vez. O Lighthouse também aponta contraste insuficiente (4,24:1) nos rótulos pequenos em `text-crust` sobre fundo creme, JavaScript não usado e ausência de source maps. A simulação de 4× CPU é pessimista para celulares atuais, mas o problema é real e é a próxima otimização a atacar. FPS em celular e memória em dispositivos reais continuam **sem medição**.
+O que ainda pesa: o TBT mobile continua alto (≈ 2,5 s sob CPU 4× mais lenta). O perfil de CPU mostra que o custo restante é majoritariamente **pintura nativa** da ilustração SVG da abertura (poucos ms de JavaScript próprio), e o LCP de 3,8 s é a duração do próprio loader cinematográfico. Esconder a abertura sob o loader reduziu o TBT, mas piorou o LCP e a nota, então foi descartado. FPS em celular e memória em dispositivos reais continuam **sem medição**.
 
 ## Roadmap / pendências
 
 - Testes em celulares reais (a Cena 01 e a 06 já têm enquadramento próprio em retrato; as cenas 02 e 05 ainda cortam as laterais em telas verticais).
 - Transições cinematográficas contínuas entre algumas cenas (hoje usam uma troca de cor).
 - Mais refinamento de arte: o croissant 2D da Cena 04 ainda é estilizado e simples.
-- Reduzir o custo de hidratação (carregar as cenas abaixo da dobra sob demanda), corrigir o contraste dos rótulos `text-crust` e medir em GPU/celular reais.
+- Reduzir o custo de pintura da ilustração de abertura (menos nós SVG/camadas), encurtar o loader no mobile para melhorar o LCP e medir em GPU/celular reais.
 - Domínio próprio para a demonstração (hoje em `*.vercel.app`).
 
 ## Créditos e licenças

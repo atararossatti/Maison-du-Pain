@@ -139,7 +139,7 @@ export function Loader({ onReveal, onDone }: LoaderProps) {
           <p className="font-display text-3xl italic text-chocolate sm:text-4xl" lang="fr">
             « La magie est prête. »
           </p>
-          <p className="mt-1 font-hand text-xl text-crust">A magia está pronta.</p>
+          <p className="mt-1 font-hand text-xl text-crust-text">A magia está pronta.</p>
         </div>
       </div>
 

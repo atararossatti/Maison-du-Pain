@@ -50,7 +50,7 @@ function ProductCard({ product, index, onOpen }: { product: Product; index: numb
         </ProductStage>
       </div>
       <div className="relative mt-3 max-w-[34ch]">
-        <p className="font-hand text-xl text-crust" lang="fr">{product.french}</p>
+        <p className="font-hand text-xl text-crust-text" lang="fr">{product.french}</p>
         <h3 id={`produto-${product.id}`} className="font-display text-2xl text-chocolate sm:text-3xl">{product.name}</h3>
         <p className="mt-2 text-sm text-chocolate/75">{product.description}</p>
         <MagneticButton
@@ -80,7 +80,7 @@ export function Scene04Flavors() {
       <div aria-hidden className="pointer-events-none absolute -left-40 bottom-24 size-[28rem] rounded-full bg-caramel/10" />
 
       <header className="relative max-w-3xl">
-        <p className="font-hand text-3xl text-crust" lang="fr">L&apos;art de vivre, l&apos;art du pain.</p>
+        <p className="font-hand text-3xl text-crust-text" lang="fr">L&apos;art de vivre, l&apos;art du pain.</p>
         <h2 id="sabores" data-ui="flavorsTitle" className="mt-3 font-display text-[clamp(2.6rem,7vw,6rem)] font-light leading-[0.98]" style={{ fontVariationSettings: '"SOFT" 100, "opsz" 144' }}>
           <SplitWords text="O universo dos sabores" />
         </h2>
