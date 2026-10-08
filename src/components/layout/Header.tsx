@@ -1,11 +1,13 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useSound } from "@/components/animations/SoundProvider";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 
 export function Header() {
   const barRef = useRef<HTMLSpanElement>(null);
   const headerRef = useRef<HTMLElement>(null);
+  const { enabled, toggle } = useSound();
 
   useEffect(() => {
     const bar = barRef.current;
@@ -39,9 +41,19 @@ export function Header() {
         >
           Maison <span className="italic text-crust">du</span> Pain
         </a>
-        <p className="font-hand text-xl text-chocolate/80 transition-colors group-data-[tone=light]:text-cream/80 max-sm:hidden" lang="fr">
-          Le bonheur se savoure
-        </p>
+        <div className="pointer-events-auto flex items-center gap-4">
+          <p className="font-hand text-xl text-chocolate/80 transition-colors group-data-[tone=light]:text-cream/80 max-sm:hidden" lang="fr">
+            Le bonheur se savoure
+          </p>
+          <button
+            type="button"
+            onClick={toggle}
+            aria-pressed={enabled}
+            className="rounded-full border border-current px-3 py-1 text-[0.7rem] uppercase tracking-[0.2em] text-chocolate transition-colors group-data-[tone=light]:text-cream"
+          >
+            Som {enabled ? "ligado" : "desligado"}
+          </button>
+        </div>
       </header>
       <div className="pointer-events-none fixed right-0 top-0 z-40 h-full w-[3px] bg-chocolate/10" aria-hidden>
         <span ref={barRef} className="block h-full origin-top scale-y-0 bg-caramel" />

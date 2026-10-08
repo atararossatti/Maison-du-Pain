@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { MagneticButton } from "@/components/ui/MagneticButton";
 import { useDeviceTier } from "@/hooks/useDeviceTier";
 import { useFinePointer, useReducedMotion } from "@/hooks/useMediaQuery";
 import { Illustration } from "../awakening/Illustration";
@@ -50,16 +51,15 @@ export function Scene06Return() {
         style={{ opacity: reduced ? 1 : 0, visibility: reduced ? "visible" : "hidden" }}
       >
         {ACTIONS.map((action) => (
-          <button
+          <MagneticButton
             key={action.id}
-            type="button"
             onClick={() => setOpen(action.id)}
             className={`rounded-full px-6 py-3 text-sm tracking-wide shadow-lg transition hover:-translate-y-0.5 ${
               action.primary ? "bg-gold text-chocolate hover:bg-caramel" : "bg-cream/90 text-chocolate hover:bg-cream"
             }`}
           >
             {action.label}
-          </button>
+          </MagneticButton>
         ))}
       </div>
 

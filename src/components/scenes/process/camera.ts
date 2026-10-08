@@ -37,6 +37,8 @@ export interface ProcessFrame {
   oven: { opacity: number; x: number; door: number; glow: number };
   bread: { opacity: number; x: number; y: number; scale: number };
   bowl: number;
+  /** Brilho quente do forno que toma a tela no final. */
+  finalGlow: number;
   stageIndex: number;
   captionA: number;
   captionB: number;
@@ -110,6 +112,7 @@ export function computeProcessFrame(progress: number): ProcessFrame {
       scale: lerp(0.5, 1.6, breadOut),
     },
     bowl: step(PHASE.kitchenIn) * (1 - smoothstep(0.78, 0.84, p)),
+    finalGlow: smoothstep(0.9, 1, p),
     stageIndex: stageIndexFor(p),
     captionA: pulse(PHASE.captionA),
     captionB: pulse(PHASE.captionB),

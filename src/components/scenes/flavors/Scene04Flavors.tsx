@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, type ComponentType } from "react";
+import { MagneticButton } from "@/components/ui/MagneticButton";
 import { SplitWords } from "@/components/ui/SplitWords";
 import { PRODUCTS, type Product, type ProductId } from "@/config/products";
 import { CoffeeArt } from "./illustrations/Coffee";
@@ -52,13 +53,12 @@ function ProductCard({ product, index, onOpen }: { product: Product; index: numb
         <p className="font-hand text-xl text-crust" lang="fr">{product.french}</p>
         <h3 id={`produto-${product.id}`} className="font-display text-2xl text-chocolate sm:text-3xl">{product.name}</h3>
         <p className="mt-2 text-sm text-chocolate/75">{product.description}</p>
-        <button
-          type="button"
+        <MagneticButton
           onClick={() => onOpen(product)}
           className="mt-4 rounded-full border border-chocolate/40 px-5 py-2 text-xs uppercase tracking-[0.2em] text-chocolate transition hover:bg-chocolate hover:text-cream"
         >
           Ver detalhes
-        </button>
+        </MagneticButton>
       </div>
     </article>
   );

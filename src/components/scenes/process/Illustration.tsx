@@ -16,6 +16,10 @@ export function Illustration() {
           <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="23" />
           <feColorMatrix values="0 0 0 0 0.29  0 0 0 0 0.19  0 0 0 0 0.15  0 0 0 0.9 -0.28" />
         </filter>
+        <radialGradient id="processFinalGlow" cx="80%" cy="68%" r="70%">
+          <stop offset="0" stopColor="var(--color-gold)" stopOpacity="0.9" />
+          <stop offset="1" stopColor="var(--color-gold)" stopOpacity="0" />
+        </radialGradient>
         <radialGradient id="processVignette" cx="50%" cy="48%" r="75%">
           <stop offset="0.55" stopColor="var(--color-chocolate)" stopOpacity="0" />
           <stop offset="1" stopColor="var(--color-chocolate)" stopOpacity="0.4" />
@@ -51,6 +55,7 @@ export function Illustration() {
       <Clock />
       <Bread />
 
+      <rect data-el="finalGlow" width={PROCESS_VIEWBOX.width} height={PROCESS_VIEWBOX.height} fill="url(#processFinalGlow)" style={{ opacity: 0, mixBlendMode: "screen" }} />
       <rect width={PROCESS_VIEWBOX.width} height={PROCESS_VIEWBOX.height} fill="url(#processVignette)" />
       <rect className="grain" width={PROCESS_VIEWBOX.width} height={PROCESS_VIEWBOX.height} filter="url(#processGrain)" opacity="0.5" style={{ mixBlendMode: "multiply" }} />
     </svg>

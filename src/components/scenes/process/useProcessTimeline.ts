@@ -34,6 +34,7 @@ const setupProcess = (root: HTMLElement) => {
     bread: q(root, "bread"),
     bowl: q(root, "bowl"),
     bowlFront: q(root, "bowlFront"),
+    finalGlow: q(root, "finalGlow"),
   };
   const stageItems = Array.from(root.querySelectorAll<HTMLElement>("[data-stage]"));
   const captions = {
@@ -80,6 +81,7 @@ const setupProcess = (root: HTMLElement) => {
       drop.style.opacity = fixed(state.opacity);
     });
 
+    el.finalGlow?.style.setProperty("opacity", fixed(0.55 * frame.finalGlow));
     el.bowl?.style.setProperty("opacity", fixed(frame.bowl));
     el.bowlFront?.style.setProperty("opacity", fixed(frame.bowl));
     el.dough?.setAttribute("transform", `translate(${frame.dough.x.toFixed(1)} ${frame.dough.y.toFixed(1)}) scale(${frame.dough.scale.toFixed(4)} ${(frame.dough.scale * frame.dough.squash).toFixed(4)})`);

@@ -33,7 +33,7 @@ export function Scene05Process() {
         Está no tempo, no cuidado e no amor por cada detalhe.
       </p>
 
-      <ol aria-label="Etapas do processo" className="absolute inset-x-0 bottom-[4svh] z-10 flex flex-wrap justify-center gap-x-5 gap-y-1 px-4 text-[0.7rem] uppercase tracking-[0.22em] text-chocolate/55 sm:gap-x-8">
+      <ol aria-label="Etapas do processo" className="absolute bottom-[3svh] left-1/2 z-10 flex w-max max-w-[94vw] -translate-x-1/2 flex-wrap justify-center gap-x-5 gap-y-1 rounded-3xl bg-cream/85 px-5 py-2 text-[0.7rem] uppercase tracking-[0.22em] text-chocolate/75 shadow-sm backdrop-blur sm:gap-x-8">
         {STAGES.map((stage, index) => (
           <li key={stage} data-stage={index} data-active={index === 0} className="transition-colors duration-300 data-[active=true]:text-chocolate data-[active=true]:underline data-[active=true]:underline-offset-8">
             {stage}

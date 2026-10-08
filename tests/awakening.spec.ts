@@ -261,3 +261,39 @@ test("cena 06: recuo ao entardecer e botões com ações reais", async ({ page }
   await page.keyboard.press("Escape");
   expect(errors).toEqual([]);
 });
+
+test.describe("acessibilidade e preferências", () => {
+  test("movimento reduzido: sem pins, conteúdo visível e loader dispensado sozinho", async ({ browser }) => {
+    const context = await browser.newContext({ reducedMotion: "reduce", viewport: { width: 1280, height: 720 } });
+    const page = await context.newPage();
+    await page.goto("/");
+    await expect(page.getByRole("status")).toHaveCount(0, { timeout: 10_000 });
+    expect(await page.locator(".pin-spacer").count()).toBe(0);
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+    await page.evaluate(() => document.querySelector("[data-scene='return']")?.scrollIntoView());
+    await expect(page.getByRole("button", { name: "Faça seu pedido" })).toBeVisible();
+    await expect(page.getByRole("banner")).toHaveAttribute("data-tone", "light");
+    await page.screenshot({ path: `${SHOTS}/reduced-motion.png` });
+    await context.close();
+  });
+
+  test("som começa desligado e o cursor nativo permanece", async ({ page }) => {
+    await skipLoader(page);
+    const toggle = page.getByRole("button", { name: /Som/ });
+    await expect(toggle).toHaveAttribute("aria-pressed", "false");
+    await expect(toggle).toContainText("desligado");
+    await toggle.click();
+    await expect(toggle).toHaveAttribute("aria-pressed", "true");
+    const cursor = await page.evaluate(() => getComputedStyle(document.body).cursor);
+    expect(cursor).not.toBe("none");
+  });
+
+  test("títulos em ordem e landmarks presentes", async ({ page }) => {
+    await skipLoader(page);
+    await expect(page.getByRole("main")).toHaveCount(1);
+    await expect(page.getByRole("banner")).toHaveCount(1);
+    await expect(page.getByRole("contentinfo")).toHaveCount(1);
+    expect(await page.getByRole("heading", { level: 1 }).count()).toBe(1);
+    await expect(page.getByRole("link", { name: "Ir para o conteúdo" })).toHaveCount(1);
+  });
+});
