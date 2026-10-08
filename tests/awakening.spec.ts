@@ -174,3 +174,39 @@ test.describe("cena 04: universo dos sabores", () => {
     await context.close();
   });
 });
+
+test("cena 05: do trigo ao pão, reversível e sem erros", async ({ page }) => {
+  test.setTimeout(120_000);
+  const errors: string[] = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  page.on("console", (msg) => msg.type() === "error" && errors.push(msg.text()));
+
+  await skipLoader(page);
+  const goTo = async (progress: number) => {
+    await page.evaluate((p) => {
+      const section = document.querySelector("[data-scene='process']");
+      const spacer = section?.closest(".pin-spacer") ?? section;
+      if (!spacer) throw new Error("Cena 05 não encontrada");
+      const top = spacer.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo(0, top + p * 8 * window.innerHeight);
+    }, progress);
+    await page.waitForTimeout(1_300);
+  };
+  const activeStage = () => page.locator("[data-stage][data-active='true']").evaluate((el) => el.textContent ?? "");
+
+  const seen: string[] = [];
+  for (const progress of [0.02, 0.13, 0.24, 0.4, 0.55, 0.7, 0.84, 0.9, 0.99]) {
+    await goTo(progress);
+    seen.push(await activeStage());
+    await page.screenshot({ path: `${SHOTS}/process-${Math.round(progress * 100)}.png` });
+  }
+  expect(seen[0]).toBe("Campo");
+  expect(seen.at(-1)).toBe("Pão");
+  expect(new Set(seen).size).toBeGreaterThanOrEqual(6);
+
+  const bread = () => page.locator("[data-el='bread']").evaluate((el) => (el as unknown as SVGElement).style.opacity);
+  expect(Number(await bread())).toBeGreaterThan(0.5);
+  await goTo(0.3);
+  expect(Number(await bread())).toBe(0);
+  expect(errors).toEqual([]);
+});
