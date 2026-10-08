@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import { MagneticButton } from "@/components/ui/MagneticButton";
+import { Grain } from "@/components/ui/Grain";
 import { useDeviceTier } from "@/hooks/useDeviceTier";
 import { useFinePointer, useReducedMotion } from "@/hooks/useMediaQuery";
 import { Illustration } from "../awakening/Illustration";
@@ -31,6 +32,7 @@ export function Scene06Return() {
   return (
     <section ref={rootRef} data-scene="return" aria-labelledby="retorno" className="relative h-svh w-full overflow-hidden bg-chocolate">
       <Illustration dusk />
+      <Grain />
 
       <div data-ui="headline" className="pointer-events-none absolute inset-x-0 top-[9svh] z-10 px-6 text-center will-change-transform" style={{ opacity: reduced ? 1 : 0 }}>
         <h2

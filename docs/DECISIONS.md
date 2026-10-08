@@ -7,6 +7,12 @@
 - Ambiente: Node 24 + Git instalados via winget. O caminho do usuário contém crase: no PowerShell use `-LiteralPath` e aspas simples. Chromium do Playwright instalado. Alguns navegadores embutidos emulam `prefers-reduced-motion`; testes de movimento usam Playwright (`reducedMotion: no-preference`).
 - Próximo passo: validar loader cinematográfico por screenshot e refinar o final da Cena 01; depois Cena 02.
 
+## Refinamento pós-publicação
+- Desempenho: grão virou textura estática; ambient pausado fora da tela (`data-offscreen`); p95 2D 50 → 33,4 ms.
+- Mobile: `VIEWBOX_PORTRAIT` (900×1950) nas Cenas 01/06 quando `max-aspect-ratio: 4/5`. Cenas 02 e 05 ainda usam o recorte central.
+- Arte: baguete com aro de casca, croissant 2D em arco, Cena 05 com tábua, brasas e a frase final.
+- Correção: o tom do cabeçalho na cena escura agora usa IntersectionObserver (o ScrollTrigger não calculava a posição da cena fixada).
+
 ## Checklist de publicação (Fase 08)
 - [x] `tsc`, ESLint, `next build` e 11 testes Playwright passam; `npm audit --omit=dev` sem vulnerabilidades.
 - [x] Repositório revisado: sem `.env`, chaves, `node_modules` ou `.next` rastreados; maior arquivo é o `package-lock.json`.

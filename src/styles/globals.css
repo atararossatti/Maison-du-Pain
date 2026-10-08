@@ -175,3 +175,6 @@ html.lenis body {
 }
 .cursor-ring[data-visible="true"] { opacity: 0.9; }
 .cursor-ring[data-active="true"] { scale: 1.7; background-color: rgb(255 249 239 / 0.25); }
+
+/* Cenas fora da tela não animam: ver useScrubbedScene. */
+[data-offscreen="true"] [class*="amb-"] { animation-play-state: paused; }

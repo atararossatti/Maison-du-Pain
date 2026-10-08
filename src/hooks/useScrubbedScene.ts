@@ -23,9 +23,15 @@ export function useScrubbedScene(rootRef: RefObject<HTMLElement | null>, options
     if (!root) return;
     const render = setup(root);
 
+    // Animações ambientais (nuvens, flores, trigo) fora da tela só gastam quadros: pausa via CSS.
+    const visibility = new IntersectionObserver(([entry]) => {
+      root.dataset.offscreen = String(!(entry?.isIntersecting ?? true));
+    });
+    visibility.observe(root);
+
     if (!enabled) {
       render(staticProgress);
-      return;
+      return () => visibility.disconnect();
     }
 
     const ctx = gsap.context(() => {
@@ -49,6 +55,9 @@ export function useScrubbedScene(rootRef: RefObject<HTMLElement | null>, options
 
     // Fontes e ilustrações alteram alturas após a hidratação; recalcula os pontos de pin.
     ScrollTrigger.refresh();
-    return () => ctx.revert();
+    return () => {
+      ctx.revert();
+      visibility.disconnect();
+    };
   }, [rootRef, enabled, screens, setup, staticProgress]);
 }

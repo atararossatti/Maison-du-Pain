@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import { Grain } from "@/components/ui/Grain";
 import { useReducedMotion } from "@/hooks/useMediaQuery";
 import { Interior } from "./Interior";
 import { useBakeryTimeline } from "./useBakeryTimeline";
@@ -13,6 +14,7 @@ export function Scene02Bakery() {
   return (
     <section ref={rootRef} data-scene="bakery" aria-labelledby="interior" className="relative h-svh w-full overflow-hidden bg-butter">
       <Interior />
+      <Grain />
 
       <div data-ui="captionA" className="absolute left-[6vw] top-[16svh] z-10 max-w-[30ch] will-change-transform" style={{ opacity: reduced ? 1 : 0 }}>
         <p lang="fr" className="font-hand text-[clamp(1.8rem,3.6vw,3.2rem)] leading-tight text-chocolate">

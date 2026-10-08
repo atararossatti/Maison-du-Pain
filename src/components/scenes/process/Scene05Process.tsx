@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { STAGES } from "@/config/process";
+import { Grain } from "@/components/ui/Grain";
 import { useReducedMotion } from "@/hooks/useMediaQuery";
 import { Illustration } from "./Illustration";
 import { useProcessTimeline } from "./useProcessTimeline";
@@ -14,6 +15,7 @@ export function Scene05Process() {
   return (
     <section ref={rootRef} data-scene="process" data-static={reduced} aria-labelledby="processo" className="relative h-svh w-full overflow-hidden bg-butter">
       <Illustration />
+      <Grain />
 
       <div data-ui="captionA" className="pointer-events-none absolute inset-x-0 top-[12svh] z-10 px-6 text-center will-change-transform" style={{ opacity: reduced ? 1 : 0 }}>
         <h2
@@ -31,6 +33,15 @@ export function Scene05Process() {
         style={{ opacity: reduced ? 1 : 0 }}
       >
         Está no tempo, no cuidado e no amor por cada detalhe.
+      </p>
+
+      <p
+        data-ui="captionC"
+        lang="fr"
+        className="pointer-events-none absolute inset-x-0 top-[14svh] z-10 px-6 text-center font-hand text-[clamp(2rem,4.4vw,3.8rem)] text-chocolate will-change-transform"
+        style={{ opacity: reduced ? 0 : 0, textShadow: "0 2px 18px rgba(255,249,239,.7)" }}
+      >
+        Chaque bouchée raconte une histoire.
       </p>
 
       <ol aria-label="Etapas do processo" className="absolute bottom-[3svh] left-1/2 z-10 flex w-max max-w-[94vw] -translate-x-1/2 flex-wrap justify-center gap-x-5 gap-y-1 rounded-3xl bg-cream/85 px-5 py-2 text-[0.7rem] uppercase tracking-[0.22em] text-chocolate/75 shadow-sm backdrop-blur sm:gap-x-8">

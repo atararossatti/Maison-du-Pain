@@ -32,7 +32,7 @@ export function Sky({ dusk = false }: { dusk?: boolean }) {
           <stop offset="1" stopColor="var(--color-gold)" stopOpacity="0" />
         </radialGradient>
       </defs>
-      <rect x="-200" y="-200" width="2000" height="1300" fill={dusk ? "url(#duskSky)" : "url(#dawnSky)"} />
+      <rect x="-600" y="-1000" width="2800" height="3000" fill={dusk ? "url(#duskSky)" : "url(#dawnSky)"} />
       <circle cx="1190" cy={dusk ? 600 : 470} r="420" fill="url(#sunHalo)" />
       <circle cx="1190" cy={dusk ? 600 : 470} r="54" fill="var(--color-cream)" opacity="0.9" />
     </g>

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { SplitWords } from "@/components/ui/SplitWords";
+import { Grain } from "@/components/ui/Grain";
 import { useFinePointer, useReducedMotion } from "@/hooks/useMediaQuery";
 import { useDeviceTier } from "@/hooks/useDeviceTier";
 import { gsap } from "@/lib/gsap";
@@ -42,6 +43,7 @@ export function Scene01Awakening({ ready }: { ready: boolean }) {
       className="relative h-svh w-full overflow-hidden bg-butter"
     >
       <Illustration />
+      <Grain />
 
       <div data-ui="headline" className="absolute inset-x-0 top-[11svh] z-10 px-6 text-center will-change-transform sm:top-[8svh]">
         <h1

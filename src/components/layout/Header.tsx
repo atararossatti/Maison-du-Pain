@@ -19,15 +19,16 @@ export function Header() {
     });
     // A cena final é escura: o cabeçalho troca para a versão clara enquanto ela ocupa o topo.
     const header = headerRef.current;
-    const tone = ScrollTrigger.create({
-      trigger: "[data-scene='return']",
-      start: "top 6%",
-      end: "bottom 6%",
-      onToggle: (self) => header?.setAttribute("data-tone", self.isActive ? "light" : "dark"),
-    });
+    const finale = document.querySelector("[data-scene='return']");
+    const tone = new IntersectionObserver(
+      ([entry]) => header?.setAttribute("data-tone", entry?.isIntersecting ? "light" : "dark"),
+      // Faixa fina no topo da tela, onde o cabeçalho fica: independe de pin ou espaçadores do ScrollTrigger.
+      { rootMargin: "-4% 0px -95% 0px" },
+    );
+    if (finale) tone.observe(finale);
     return () => {
       trigger.kill();
-      tone.kill();
+      tone.disconnect();
     };
   }, []);
 

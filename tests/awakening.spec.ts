@@ -297,3 +297,23 @@ test.describe("acessibilidade e preferências", () => {
     await expect(page.getByRole("link", { name: "Ir para o conteúdo" })).toHaveCount(1);
   });
 });
+
+test("cena 01 e 06 em retrato mostram a fachada inteira", async ({ browser }) => {
+  const context = await browser.newContext({ viewport: { width: 390, height: 844 }, reducedMotion: "no-preference", hasTouch: true });
+  const page = await context.newPage();
+  await skipLoader(page);
+  await page.waitForTimeout(2_000);
+  await page.screenshot({ path: `${SHOTS}/mobile-abertura.png` });
+  await page.evaluate(() => {
+    const section = document.querySelector("[data-scene='return']");
+    const spacer = section?.closest(".pin-spacer") ?? section;
+    if (!spacer) throw new Error("Cena 06 não encontrada");
+    window.scrollTo(0, spacer.getBoundingClientRect().top + window.scrollY + 4.9 * window.innerHeight);
+  });
+  await page.waitForTimeout(1_500);
+  await page.screenshot({ path: `${SHOTS}/mobile-retorno.png` });
+  await expect(page.getByRole("button", { name: "Faça seu pedido" })).toBeVisible();
+  await expect(page.getByRole("banner")).toHaveAttribute("data-tone", "light");
+  expect(await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)).toBeLessThanOrEqual(0);
+  await context.close();
+});

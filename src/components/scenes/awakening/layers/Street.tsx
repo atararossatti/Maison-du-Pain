@@ -21,8 +21,8 @@ export function Street() {
           <stop offset="1" stopColor="var(--color-gold)" stopOpacity="0" />
         </radialGradient>
       </defs>
-      <rect x="-400" y="736" width="2400" height="420" fill="url(#cobbles)" />
-      <rect x="-400" y="736" width="2400" height="420" fill="url(#streetShade)" />
+      <rect x="-400" y="736" width="2400" height="1200" fill="url(#cobbles)" />
+      <rect x="-400" y="736" width="2400" height="1200" fill="url(#streetShade)" />
       <rect x="-400" y="716" width="2400" height="22" fill="var(--color-cream)" />
       <rect x="-400" y="736" width="2400" height="4" fill="var(--color-chocolate)" opacity="0.2" />
       {/* Luz que escapa da janela e se espalha pelo calçamento. */}

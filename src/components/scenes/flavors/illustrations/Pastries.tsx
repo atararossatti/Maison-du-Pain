@@ -1,24 +1,29 @@
 /** Cada ilustração lê `--v`, `--px` e `--py` do `ProductStage` que a envolve. */
 
-const SEGMENTS = Array.from({ length: 7 }, (_, index) => {
-  const t = (index - 3) / 3;
-  const theta = t * 1.05;
-  const size = 0.38 + 0.62 * Math.cos((t * Math.PI) / 2);
+/**
+ * Cristas ao longo de um arco em "∩" cujas pontas se enrolam para baixo, como as pontas do croissant.
+ * Cada crista é alongada na direção radial (perpendicular ao arco) e as vizinhas se sobrepõem.
+ */
+const ARC_RADIUS = 128;
+const ARC_CENTER = { x: 210, y: 196 };
+const SEGMENTS = Array.from({ length: 9 }, (_, index) => {
+  const t = (index - 4) / 4;
+  const phi = t * (84 * Math.PI) / 180;
+  const size = 0.3 + 0.7 * Math.pow(Math.cos((t * Math.PI) / 2), 0.9);
   return {
     key: index,
-    x: 210 + 128 * Math.sin(theta),
-    y: 120 + 120 * (1 - Math.cos(theta)),
-    // A crista é perpendicular ao arco: inclina para dentro, não para fora.
-    angle: (-theta * 180) / Math.PI,
-    rx: 30 * size + 10,
-    ry: 52 * size + 16,
+    x: ARC_CENTER.x + ARC_RADIUS * Math.sin(phi),
+    y: ARC_CENTER.y - ARC_RADIUS * Math.cos(phi),
+    angle: (phi * 180) / Math.PI,
+    rx: 26 * size + 12,
+    ry: 38 * size + 14,
   };
 });
 
 const CROISSANT_LAYERS = [
-  { fill: "var(--color-gold)", offset: 36, grow: 1.12 },
-  { fill: "var(--color-caramel)", offset: 0, grow: 1.06 },
-  { fill: "var(--color-crust)", offset: -36, grow: 1 },
+  { fill: "var(--color-gold)", offset: 30, grow: 1.1 },
+  { fill: "var(--color-caramel)", offset: 0, grow: 1.05 },
+  { fill: "var(--color-crust)", offset: -30, grow: 1 },
 ] as const;
 
 export function CroissantArt() {

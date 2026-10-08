@@ -1,5 +1,7 @@
-﻿/** Ponto de fuga da cÃ¢mera: o centro da janela principal, em coordenadas do viewBox. */
+/** Ponto de fuga da cÃ¢mera: o centro da janela principal, em coordenadas do viewBox. */
 export const VIEWBOX = { width: 1600, height: 900 } as const;
+/** Enquadramento para telas em retrato (proporção ~0,46): mostra a fachada inteira e abre céu para o título. */
+export const VIEWBOX_PORTRAIT = { x: 350, y: -480, width: 900, height: 1950 } as const;
 export const CAMERA_ORIGIN = { x: 800, y: 480 } as const;
 
 /** DistÃ¢ncia de scroll (em alturas de viewport) que a cena ocupa fixada na tela. */

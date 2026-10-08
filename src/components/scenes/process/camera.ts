@@ -42,6 +42,7 @@ export interface ProcessFrame {
   stageIndex: number;
   captionA: number;
   captionB: number;
+  captionC: number;
 }
 
 type Range = readonly [number, number];
@@ -116,6 +117,7 @@ export function computeProcessFrame(progress: number): ProcessFrame {
     stageIndex: stageIndexFor(p),
     captionA: pulse(PHASE.captionA),
     captionB: pulse(PHASE.captionB),
+    captionC: smoothstep(PHASE.captionC[0], PHASE.captionC[1], p),
   };
 }
 

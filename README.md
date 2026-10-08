@@ -45,6 +45,12 @@ Um livro ilustrado que ganha profundidade. A narrativa é guiada pela **luz**: a
 | --- | --- | --- |
 | ![Sabores](docs/screenshots/05-sabores.jpg) | ![Processo](docs/screenshots/06-processo.jpg) | ![Retorno](docs/screenshots/07-retorno.jpg) |
 
+Em telas verticais (390×844), a fachada aparece inteira:
+
+| Abertura | Retorno |
+| --- | --- |
+| ![Abertura no celular](docs/screenshots/09-mobile-abertura.jpg) | ![Retorno no celular](docs/screenshots/10-mobile-retorno.jpg) |
+
 Todas as imagens acima são capturas reais geradas pelos testes Playwright. O GIF acima foi gravado com Playwright (Chromium headless, WebGL por software).
 
 ## Tecnologias
@@ -129,19 +135,19 @@ Medições reais (`npm run build && npm start`, depois `npm run measure`), em um
 | --- | --- |
 | Carregamento (`load`, localhost) | ~180 ms |
 | Transferido (corpo, sem compressão adicional) | JS ≈ 450 KB · fontes ≈ 220 KB · CSS ≈ 8 KB · imagens 0 |
-| Percurso completo da página, só cenas 2D (`NO_WEBGL=1`) | mediana 16,7 ms/quadro · p95 50 ms · pior 83 ms |
+| Percurso completo da página, só cenas 2D (`NO_WEBGL=1`) | mediana 16,7 ms/quadro · p95 33,4 ms · pior 83 ms (antes da otimização do grão: p95 50 ms) |
 | Percurso completo com a Cena 03 (WebGL por **software**) | mediana 16,7 ms · p95 200 ms · pior 2,4 s |
 | Heap JS após percorrer tudo e voltar | 10 MB → 10 MB (sem crescimento observado) |
 | Erros de console | nenhum |
 | `npm audit --omit=dev` | 0 vulnerabilidades |
 
-Leitura honesta: nas cenas 2D os quadros longos são raros, mas o p95 de 50 ms indica que ainda há custo (provável: filtro de grão e muitos nós SVG) a otimizar. Os 200 ms/2,4 s da Cena 03 vêm de WebGL emulado em CPU e do primeiro compilar de shaders, **não representam uma GPU real**. Lighthouse, FPS em celular e memória em dispositivos reais continuam **sem medição**.
+Otimizações aplicadas: o grão de papel deixou de ser um filtro SVG recalculado a cada quadro e virou uma textura estática (`public/textures/grain.png`, 25 KB), e as animações ambientais pausam nas cenas fora da tela. Leitura honesta: ainda restam quadros de ~33 ms nas cenas 2D (provável custo: muitos nós SVG rasterizados em escalas altas). Os 200 ms/2,4 s da Cena 03 vêm de WebGL emulado em CPU e do primeiro compilar de shaders, **não representam uma GPU real**. Lighthouse, FPS em celular e memória em dispositivos reais continuam **sem medição**.
 
 ## Roadmap / pendências
 
-- Composição mobile real da Cena 01 (o viewBox em retrato corta árvores e mesas) e testes em celulares.
+- Testes em celulares reais (a Cena 01 e a 06 já têm enquadramento próprio em retrato; as cenas 02 e 05 ainda cortam as laterais em telas verticais).
 - Transições cinematográficas contínuas entre algumas cenas (hoje usam uma troca de cor).
-- Ilustração 2D do croissant na Cena 04 e quadro final da Cena 05 mais ricos.
+- Mais refinamento de arte: o croissant 2D da Cena 04 ainda é estilizado e simples.
 - Medir em GPU/celular reais, rodar Lighthouse, otimizar o custo de quadros das cenas 2D e automatizar a auditoria de contraste.
 - Domínio próprio para a demonstração (hoje em `*.vercel.app`).
 

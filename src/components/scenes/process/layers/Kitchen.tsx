@@ -152,6 +152,9 @@ export function Oven() {
       <path d="M1160 700V540A140 140 0 0 1 1440 540V700Z" fill="url(#processBricks)" stroke="var(--color-ink)" strokeOpacity="0.4" strokeWidth="3" />
       <path d={OVEN_MOUTH_PATH} fill="var(--color-ink)" />
       <path data-el="glow" d={OVEN_MOUTH_PATH} fill="url(#processFire)" />
+      {[0, 1, 2, 3, 4].map((i) => (
+        <circle key={i} className="amb-spark" cx={1262 + i * 19} cy={620 - (i % 2) * 14} r={2.2 + (i % 3)} fill="var(--color-gold)" style={{ ["--delay" as string]: `${i * 0.5}s` }} />
+      ))}
       <g clipPath="url(#ovenMouthClip)">
         <g data-el="door">
           <path d={OVEN_MOUTH_PATH} fill="var(--color-chocolate)" stroke="var(--color-ink)" strokeWidth="5" />
@@ -166,7 +169,12 @@ export function Oven() {
 export function Bread() {
   return (
     <g data-el="bread" style={{ opacity: 0 }}>
-      <ellipse cx="0" cy="8" rx="120" ry="16" fill="var(--color-ink)" opacity="0.25" />
+      <ellipse cx="0" cy="14" rx="150" ry="20" fill="var(--color-ink)" opacity="0.25" />
+      <path d="M-150 2Q-150 -8 -138 -8H138Q150 -8 150 2V10Q150 20 138 20H-138Q-150 20 -150 10Z" fill="var(--color-crust)" stroke="var(--color-chocolate)" strokeWidth="3" />
+      <rect x="-146" y="-8" width="292" height="6" rx="3" fill="var(--color-gold)" opacity="0.7" />
+      {[[-96, -14, 4], [-60, -12, 3], [70, -13, 4], [104, -11, 3], [128, -12, 2.5]].map(([x, y, r]) => (
+        <circle key={`${x}-${y}`} cx={x} cy={y} r={r} fill="var(--color-cream)" opacity="0.85" />
+      ))}
       <defs>
         <radialGradient id="processBoule" cx="42%" cy="30%" r="80%">
           <stop offset="0" stopColor="var(--color-gold)" />

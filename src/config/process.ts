@@ -39,6 +39,7 @@ export const PHASE = {
   breadOut: [0.95, 1],
   captionA: [0.04, 0.1, 0.16, 0.22],
   captionB: [0.64, 0.7, 0.82, 0.88],
+  captionC: [0.96, 0.995],
 } as const;
 
 export const GRAIN_COUNT = 24;

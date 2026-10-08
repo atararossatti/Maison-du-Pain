@@ -1,4 +1,4 @@
-const LOAF = "M30 124Q30 92 72 86L486 58Q538 56 538 88Q538 118 486 128L72 156Q30 158 30 124Z";
+const LOAF = "M20 128Q34 96 90 86L482 52Q548 48 548 88Q548 126 482 136L90 160Q34 158 20 128Z";
 const SCORES = [96, 186, 276, 366, 446];
 const CRUMB_HOLES = [
   [90, 112, 9], [150, 100, 6], [210, 118, 11], [262, 96, 7], [320, 110, 10], [376, 92, 6], [430, 104, 9], [490, 90, 7],
@@ -13,21 +13,32 @@ export function BaguetteArt() {
           <stop offset="0" stopColor="var(--color-gold)" />
           <stop offset="1" stopColor="var(--color-crust)" />
         </linearGradient>
+        <linearGradient id="crumbTone" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="var(--color-cream)" />
+          <stop offset="1" stopColor="var(--color-butter)" />
+        </linearGradient>
+        <clipPath id="loafClip">
+          <path d={LOAF} />
+        </clipPath>
       </defs>
       <g className="fb" style={{ transform: "rotate(-7deg)" }}>
         <ellipse cx="285" cy="176" rx="250" ry="12" fill="var(--color-chocolate)" opacity="0.18" />
         <path d={LOAF} fill="url(#crustTone)" stroke="var(--color-crust)" strokeWidth="4" />
         {SCORES.map((x) => (
-          <path key={x} d={`M${x} 124Q${x + 30} 82 ${x + 62} 78`} stroke="var(--color-cream)" strokeWidth="9" fill="none" strokeLinecap="round" opacity="0.8" />
+          <path key={x} d={`M${x} 126Q${x + 30} 86 ${x + 62} 80`} stroke="var(--color-cream)" strokeWidth="9" fill="none" strokeLinecap="round" opacity="0.8" />
         ))}
         {/* Miolo: o clip-path revela a textura interna conforme o ponteiro avança pela baguete. */}
         <g className="fb" style={{ clipPath: "inset(0 calc((1 - var(--v)) * 100%) 0 0)" }}>
-          <path d={LOAF} fill="var(--color-cream)" stroke="var(--color-butter)" strokeWidth="4" />
-          {CRUMB_HOLES.map(([x, y, r]) => (
-            <ellipse key={`${x}-${y}`} cx={x} cy={y} rx={r * 1.3} ry={r} fill="var(--color-butter)" stroke="var(--color-gold)" strokeOpacity="0.5" strokeWidth="1.5" />
-          ))}
+          <g clipPath="url(#loafClip)">
+            <rect x="0" y="40" width="570" height="130" fill="url(#crumbTone)" />
+            {CRUMB_HOLES.map(([x, y, r]) => (
+              <ellipse key={`${x}-${y}`} cx={x} cy={y} rx={r * 1.3} ry={r} fill="var(--color-butter)" stroke="var(--color-gold)" strokeOpacity="0.55" strokeWidth="1.5" />
+            ))}
+            {/* A casca aparece como aro dourado no corte; o clip mantém só a metade interna do traço. */}
+            <path d={LOAF} fill="none" stroke="url(#crustTone)" strokeWidth="18" />
+          </g>
         </g>
-        <rect x="26" y="50" width="4" height="116" rx="2" fill="var(--color-cream)" style={{ transform: "translateX(calc(var(--v) * 510px))" }} opacity="0.9" />
+        <rect x="26" y="40" width="4" height="132" rx="2" fill="var(--color-cream)" style={{ transform: "translateX(calc(var(--v) * 510px))" }} opacity="0.9" />
       </g>
     </svg>
   );

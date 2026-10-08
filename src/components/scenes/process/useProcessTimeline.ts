@@ -40,6 +40,7 @@ const setupProcess = (root: HTMLElement) => {
   const captions = {
     a: root.querySelector<HTMLElement>("[data-ui='captionA']"),
     b: root.querySelector<HTMLElement>("[data-ui='captionB']"),
+    c: root.querySelector<HTMLElement>("[data-ui='captionC']"),
   };
   const isStatic = root.dataset.static === "true";
   let lastStage = -1;
@@ -109,6 +110,7 @@ const setupProcess = (root: HTMLElement) => {
     if (isStatic) return;
     showCaption(captions.a, frame.captionA);
     showCaption(captions.b, frame.captionB);
+    showCaption(captions.c, frame.captionC);
   };
 };
 
