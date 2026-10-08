@@ -135,3 +135,23 @@ html.lenis body {
   -webkit-mask-image: radial-gradient(circle at 50% 54%, transparent calc(var(--hole) * 1%), #000 calc(var(--hole) * 1% + 14%));
   mask-image: radial-gradient(circle at 50% 54%, transparent calc(var(--hole) * 1%), #000 calc(var(--hole) * 1% + 14%));
 }
+
+/* ---------- Cena 04: ilustrações dos produtos (reagem a --v, --px e --py) ---------- */
+.product-stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  cursor: crosshair;
+  border-radius: 1.5rem;
+  outline-offset: 6px;
+}
+.fb {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+@keyframes wisp {
+  0% { opacity: 0; transform: translateY(14px); }
+  35% { opacity: 0.65; }
+  100% { opacity: 0; transform: translateY(-26px); }
+}
+.amb-wisp { animation: wisp 4.2s ease-in-out infinite; animation-delay: var(--delay, 0s); }

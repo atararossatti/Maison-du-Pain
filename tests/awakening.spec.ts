@@ -108,3 +108,69 @@ test("cena 03: croissant 3D acompanha o scroll e reverte", async ({ page }) => {
   expect(Number(await veil())).toBeLessThan(Number(late));
   expect(errors).toEqual([]);
 });
+
+test.describe("cena 04: universo dos sabores", () => {
+  test("cada produto reage ao ponteiro, ao teclado e abre detalhes", async ({ page }) => {
+    const errors: string[] = [];
+    page.on("pageerror", (error) => errors.push(error.message));
+    page.on("console", (msg) => msg.type() === "error" && errors.push(msg.text()));
+
+    await skipLoader(page);
+    const section = page.locator("[data-scene='flavors']");
+    await section.scrollIntoViewIfNeeded();
+    await page.evaluate(() => document.querySelector("[data-scene='flavors']")?.scrollIntoView());
+    await page.waitForTimeout(800);
+    await page.screenshot({ path: `${SHOTS}/flavors-top.png` });
+
+    const stages = page.getByRole("slider");
+    await expect(stages).toHaveCount(6);
+    const names = ["croissant", "chocolate", "baguete", "pão", "rolinho", "xícara"];
+    expect(names.length).toBe(6);
+
+    for (let i = 0; i < 6; i++) {
+      const stage = stages.nth(i);
+      await stage.scrollIntoViewIfNeeded();
+      const box = await stage.boundingBox();
+      if (!box) throw new Error(`Produto ${i} sem caixa de layout`);
+      const readValue = () => stage.evaluate((el) => el.style.getPropertyValue("--v"));
+      const rest = Number(await readValue());
+      await page.mouse.move(box.x + box.width * 0.85, box.y + box.height * 0.5);
+      await page.waitForTimeout(900);
+      const moved = Number(await readValue());
+      expect(Math.abs(moved - rest)).toBeGreaterThan(0.2);
+      await page.screenshot({ path: `${SHOTS}/flavors-${i + 1}.png` });
+
+      await stage.focus();
+      const before = Number(await stage.getAttribute("aria-valuenow"));
+      await page.keyboard.press("Home");
+      await page.waitForTimeout(900);
+      expect(Number(await stage.getAttribute("aria-valuenow"))).toBeLessThan(before + 1);
+      await page.keyboard.press("ArrowRight");
+      await page.waitForTimeout(900);
+      expect(Number(await stage.getAttribute("aria-valuenow"))).toBeGreaterThan(0);
+    }
+
+    const open = page.getByRole("button", { name: "Ver detalhes" }).first();
+    await open.scrollIntoViewIfNeeded();
+    await open.click();
+    const dialog = page.getByRole("dialog");
+    await expect(dialog).toBeVisible();
+    await expect(dialog).toContainText("Maison du Pain é uma marca fictícia");
+    await page.screenshot({ path: `${SHOTS}/flavors-dialog.png` });
+    await page.keyboard.press("Escape");
+    await expect(dialog).toBeHidden();
+    expect(errors).toEqual([]);
+  });
+
+  test("layout mobile sem rolagem horizontal", async ({ browser }) => {
+    const context = await browser.newContext({ viewport: { width: 390, height: 844 }, reducedMotion: "no-preference", hasTouch: true });
+    const page = await context.newPage();
+    await skipLoader(page);
+    await page.evaluate(() => document.querySelector("[data-scene='flavors']")?.scrollIntoView());
+    await page.waitForTimeout(800);
+    await page.screenshot({ path: `${SHOTS}/flavors-mobile.png` });
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+    expect(overflow).toBeLessThanOrEqual(0);
+    await context.close();
+  });
+});
