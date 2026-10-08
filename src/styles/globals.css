@@ -119,7 +119,7 @@ html.lenis body {
 .amb-spark { animation: spark-rise 2.4s ease-out infinite; animation-delay: var(--delay, 0s); }
 
 @media (prefers-reduced-motion: reduce) {
-  [class*="amb-"] { animation: none !important; }
+  :root:not([data-motion="full"]) [class*="amb-"] { animation: none !important; }
 }
 [data-tier="low"] [class*="amb-"]:not(.amb-smoke):not(.amb-drift) { animation: none; }
 [data-tier="low"] .grain { display: none; }
@@ -129,7 +129,7 @@ html.lenis body {
 .word-inner { display: inline-block; will-change: transform; }
 [data-scene="awakening"]:not([data-ready="true"]) .word-inner { transform: translateY(115%); }
 @media (prefers-reduced-motion: reduce) {
-  [data-scene="awakening"]:not([data-ready="true"]) .word-inner { transform: none; }
+  :root:not([data-motion="full"]) [data-scene="awakening"]:not([data-ready="true"]) .word-inner { transform: none; }
 }
 /* Véu de massa da Cena 03: `--hole` (0–140) é o raio, em %, do furo transparente. */
 .dough-wash {

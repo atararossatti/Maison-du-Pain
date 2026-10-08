@@ -8,6 +8,7 @@
 - Próximo passo: validar loader cinematográfico por screenshot e refinar o final da Cena 01; depois Cena 02.
 
 ## Refinamento pós-publicação
+- Movimento reduzido: confirmado em um Chrome real que `prefers-reduced-motion` estava ativo (site em versão estática). Agora `MotionNotice` explica e oferece "Ver a experiência completa" (`enableFullMotion`, só em memória); `useReducedMotion` = sistema && !override; CSS respeita `[data-motion="full"]`.
 - Cena 01: a câmera agora avança até a **porta** (`CAMERA_ORIGIN` = centro da porta) e a folha gira (`applyDoor`, `data-fx="doorLeaf"`) revelando o interior enquanto o scroll desce; a Cena 06 usa a mesma câmera ao contrário (a porta fecha ao recuar). Loader com rede de segurança de 20 s (`WATCHDOG_MS`).
 - Transições: Cena 02 abre em íris âmbar com a câmera recuando (`arrival`); Cena 03 termina dissolvendo para o creme da 04; Cena 05 entra da cor da 04 e sai em flash dourado, cor em que a 06 começa. Cena 05 reaproveita janela, lâmpadas e utensílios da padaria da Cena 02; o diálogo emite o som `open` (só se o som estiver ligado).
 - Desempenho: grão virou textura estática; ambient pausado fora da tela (`data-offscreen`); p95 2D 50 → 33,4 ms.

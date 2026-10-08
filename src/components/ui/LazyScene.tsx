@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useReducedMotion } from "@/hooks/useMediaQuery";
 
 interface LazySceneProps {
   /** Nome da cena, usado por testes e leitores de tela. */
@@ -8,6 +9,8 @@ interface LazySceneProps {
   title: string;
   /** Altura reservada (classes Tailwind de `min-h`): igual à da cena montada, para o scroll não mudar. */
   reserve: string;
+  /** Altura da cena montada com movimento reduzido (sem pin); padrão: a mesma de `reserve`. */
+  reserveReduced?: string;
   children: ReactNode;
 }
 
@@ -17,7 +20,8 @@ interface LazySceneProps {
  * placeholder ocupa a mesma altura, então a barra de scroll e as posições dos pins não mudam.
  * O título fica em texto oculto para a navegação por títulos de leitores de tela.
  */
-export function LazyScene({ name, title, reserve, children }: LazySceneProps) {
+export function LazyScene({ name, title, reserve, reserveReduced = reserve, children }: LazySceneProps) {
+  const reduced = useReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
   const [mounted, setMounted] = useState(false);
 
@@ -36,7 +40,7 @@ export function LazyScene({ name, title, reserve, children }: LazySceneProps) {
 
   if (mounted) return <>{children}</>;
   return (
-    <div ref={ref} data-lazy={name} className={`bg-butter ${reserve}`}>
+    <div ref={ref} data-lazy={name} className={`bg-butter ${reduced ? reserveReduced : reserve}`}>
       <h2 className="sr-only">{title}</h2>
     </div>
   );

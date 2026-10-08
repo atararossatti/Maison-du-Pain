@@ -349,3 +349,22 @@ test("cenas sob demanda preservam a altura total do scroll", async ({ page }) =>
   // A Cena 04 usa uma altura natural estimada; as demais são exatas. Tolerância de 3%.
   expect(Math.abs(after - before) / before).toBeLessThan(0.03);
 });
+
+test("movimento reduzido: aviso oferece a experiência completa", async ({ browser }) => {
+  const context = await browser.newContext({ reducedMotion: "reduce", viewport: { width: 1280, height: 720 } });
+  const page = await context.newPage();
+  await page.goto("/");
+  await expect(page.getByRole("status")).toHaveCount(0, { timeout: 10_000 });
+  expect(await page.locator(".pin-spacer").count()).toBe(0);
+  const notice = page.getByRole("region", { name: "Aviso sobre animações" });
+  await expect(notice).toBeVisible();
+  await notice.getByRole("button", { name: "Ver a experiência completa" }).click();
+  await expect(notice).toBeHidden();
+  // Com a experiência completa, a Cena 01 passa a ser fixada e a câmera responde ao scroll.
+  await expect(page.locator(".pin-spacer").first()).toBeAttached({ timeout: 5_000 });
+  await page.evaluate(() => window.scrollTo(0, 400));
+  await page.waitForTimeout(1_500);
+  const scale = await page.locator("[data-scene='awakening'] [data-layer='facade']").getAttribute("transform");
+  expect(Number(scale?.match(/scale\(([\d.]+)\)/)?.[1])).toBeGreaterThan(1.2);
+  await context.close();
+});
