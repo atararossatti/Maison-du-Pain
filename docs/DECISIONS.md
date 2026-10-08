@@ -4,7 +4,7 @@
 - Fase 01/02: concluída. Fase 03 (protótipo): **loader + Cena 01 + transição pela janela implementados e validados** (tsc, eslint, `next build`, 2 testes Playwright, screenshots em `test-results/shots`).
 - Cenas 02–06: não iniciadas (`NextChapter` é um marcador honesto). O frame final da Cena 01 (zoom no interior da vitrine) é provisório; a Cena 02 deve assumir o interior completo.
 - Pendências conhecidas: composição mobile (viewBox `slice` corta árvores/mesas em retrato), cursor customizado, som, README, e screenshots do loader no modo cinematográfico (o navegador embutido só exercitou o modo reduzido).
-- Ambiente: Node 24 + Git instalados via winget. O caminho do usuário contém crase: no PowerShell use `-LiteralPath` e aspas simples. Chromium do Playwright instalado. O navegador embutido do Claude emula `prefers-reduced-motion`; testes de movimento usam Playwright (`reducedMotion: no-preference`). Configurar `git config user.name/email` antes do primeiro commit.
+- Ambiente: Node 24 + Git instalados via winget. O caminho do usuário contém crase: no PowerShell use `-LiteralPath` e aspas simples. Chromium do Playwright instalado. Alguns navegadores embutidos emulam `prefers-reduced-motion`; testes de movimento usam Playwright (`reducedMotion: no-preference`).
 - Próximo passo: validar loader cinematográfico por screenshot e refinar o final da Cena 01; depois Cena 02.
 
 ## Direção artística

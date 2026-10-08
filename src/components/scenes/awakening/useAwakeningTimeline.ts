@@ -1,6 +1,6 @@
-import { useEffect, type RefObject } from "react";
+import { useCallback, type RefObject } from "react";
 import { LAYER_IDS, SCROLL_SCREENS } from "@/config/awakening";
-import { gsap, ScrollTrigger } from "@/lib/gsap";
+import { useScrubbedScene } from "@/hooks/useScrubbedScene";
 import { computeFrame, scaleAboutOrigin, type CameraFrame } from "./camera";
 
 const setOpacity = (el: Element | null, value: number) => {
@@ -33,38 +33,10 @@ function applyFrame(root: HTMLElement, frame: CameraFrame) {
   }
 }
 
-/**
- * Fixa a cena e liga o progresso do scroll à câmera. O `scrub` suaviza apenas o valor
- * de `progress`; o desenho do quadro continua sendo uma função pura (ver `computeFrame`).
- */
+const setup = (root: HTMLElement) => (progress: number) => applyFrame(root, computeFrame(progress));
+
+/** Liga o scroll à câmera da Cena 01 (ver `computeFrame`). */
 export function useAwakeningTimeline(rootRef: RefObject<HTMLElement | null>, enabled: boolean) {
-  useEffect(() => {
-    const root = rootRef.current;
-    if (!root || !enabled) return;
-
-    const ctx = gsap.context(() => {
-      const state = { progress: 0 };
-      const render = () => applyFrame(root, computeFrame(state.progress));
-
-      gsap.to(state, {
-        progress: 1,
-        ease: "none",
-        onUpdate: render,
-        scrollTrigger: {
-          trigger: root,
-          start: "top top",
-          end: () => `+=${window.innerHeight * SCROLL_SCREENS}`,
-          pin: true,
-          scrub: 0.6,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-        },
-      });
-      render();
-    }, root);
-
-    // Fontes e a ilustração mudam alturas depois da hidratação; recalcula os pontos de pin.
-    ScrollTrigger.refresh();
-    return () => ctx.revert();
-  }, [rootRef, enabled]);
+  const stableSetup = useCallback(setup, []);
+  useScrubbedScene(rootRef, { enabled, screens: SCROLL_SCREENS, setup: stableSetup, staticProgress: 0 });
 }
