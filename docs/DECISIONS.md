@@ -7,6 +7,15 @@
 - Ambiente: Node 24 + Git instalados via winget. O caminho do usuário contém crase: no PowerShell use `-LiteralPath` e aspas simples. Chromium do Playwright instalado. Alguns navegadores embutidos emulam `prefers-reduced-motion`; testes de movimento usam Playwright (`reducedMotion: no-preference`).
 - Próximo passo: validar loader cinematográfico por screenshot e refinar o final da Cena 01; depois Cena 02.
 
+## Checklist de publicação (Fase 08)
+- [x] `tsc`, ESLint, `next build` e 11 testes Playwright passam; `npm audit --omit=dev` sem vulnerabilidades.
+- [x] Repositório revisado: sem `.env`, chaves, `node_modules` ou `.next` rastreados; maior arquivo é o `package-lock.json`.
+- [x] Metadados (`package.json`, Open Graph, favicon), LICENSE, CONTRIBUTING, CI (`typecheck`, `lint`, `build`).
+- [x] Capturas reais em `docs/screenshots`; medições em `scripts/measure.mjs`.
+- [ ] **Push** para `github.com/atararossatti/Maison-du-Pain` (requer login do usuário).
+- [ ] GIF da experiência e link da demo publicada (README tem os espaços).
+- [ ] Medição em dispositivo real e Lighthouse.
+
 ## Direção artística
 **Conceito:** "um livro ilustrado que ganha profundidade". Camadas de papel recortado (SVG, ilustração própria) com luz volumétrica; o 3D (croissant) surge como o único objeto "real" do mundo, o que dá peso à transformação da Cena 03.
 **Luz como narrador:** amanhecer (rosa-creme frio) → interior (âmbar quente) → fim de tarde (dourado + janelas acesas), guiada pelo scroll.

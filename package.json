@@ -2,13 +2,19 @@
   "name": "maison-du-pain",
   "version": "0.1.0",
   "private": true,
+  "description": "Maison du Pain: experiência imersiva de scrollytelling sobre uma padaria francesa fictícia.",
+  "license": "MIT",
+  "author": "atararossatti",
+  "repository": { "type": "git", "url": "git+https://github.com/atararossatti/Maison-du-Pain.git" },
+  "engines": { "node": ">=20" },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "test": "playwright test"
+    "test": "playwright test",
+    "measure": "node scripts/measure.mjs"
   },
   "dependencies": {
     "@react-three/fiber": "^9.8.1",

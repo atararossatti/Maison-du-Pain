@@ -121,14 +121,26 @@ Limitações conhecidas dos testes: rodam em Chromium sobre WebGL por software (
 
 Medidas e técnicas **implementadas**: WebGL carregado só perto da Cena 03 e pausado fora da tela; DPR limitado a 1,5 (1 em dispositivos fracos); animações guiadas por transformações (atributos SVG e `transform`), sem re-render do React durante o scroll; limpeza de timelines, ScrollTriggers e recursos WebGL; versão simplificada por *device tier*.
 
-**Ainda não medido:** FPS, Lighthouse, uso de memória e consumo em dispositivos móveis reais. Não há números a reportar.
+Medições reais (`npm run build && npm start`, depois `npm run measure`), em um PC Windows com Chromium headless, viewport 1440×810:
+
+| Métrica | Resultado |
+| --- | --- |
+| Carregamento (`load`, localhost) | ~180 ms |
+| Transferido (corpo, sem compressão adicional) | JS ≈ 450 KB · fontes ≈ 220 KB · CSS ≈ 8 KB · imagens 0 |
+| Percurso completo da página, só cenas 2D (`NO_WEBGL=1`) | mediana 16,7 ms/quadro · p95 50 ms · pior 83 ms |
+| Percurso completo com a Cena 03 (WebGL por **software**) | mediana 16,7 ms · p95 200 ms · pior 2,4 s |
+| Heap JS após percorrer tudo e voltar | 10 MB → 10 MB (sem crescimento observado) |
+| Erros de console | nenhum |
+| `npm audit --omit=dev` | 0 vulnerabilidades |
+
+Leitura honesta: nas cenas 2D os quadros longos são raros, mas o p95 de 50 ms indica que ainda há custo (provável: filtro de grão e muitos nós SVG) a otimizar. Os 200 ms/2,4 s da Cena 03 vêm de WebGL emulado em CPU e do primeiro compilar de shaders, **não representam uma GPU real**. Lighthouse, FPS em celular e memória em dispositivos reais continuam **sem medição**.
 
 ## Roadmap / pendências
 
 - Composição mobile real da Cena 01 (o viewBox em retrato corta árvores e mesas) e testes em celulares.
 - Transições cinematográficas contínuas entre algumas cenas (hoje usam uma troca de cor).
 - Ilustração 2D do croissant na Cena 04 e quadro final da Cena 05 mais ricos.
-- Medições de performance e auditoria de contraste automatizada.
+- Medir em GPU/celular reais, rodar Lighthouse, otimizar o custo de quadros das cenas 2D e automatizar a auditoria de contraste.
 - Gravar o GIF e publicar a demonstração.
 
 ## Créditos e licenças
