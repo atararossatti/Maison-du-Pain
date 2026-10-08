@@ -1,0 +1,119 @@
+@import "tailwindcss";
+
+@theme static {
+  --color-butter: #f7e9d0;
+  --color-chocolate: #493126;
+  --color-caramel: #c88b52;
+  --color-olive: #687451;
+  --color-cream: #fff9ef;
+  --color-gold: #d8ad65;
+  /* Tons derivados da paleta para sombras, céu e tijolo; nunca preto ou azul puro. */
+  --color-crust: #9c6030;
+  --color-rose: #e7b7a0;
+  --color-blush: #f3d2bc;
+  --color-brick: #8b5a44;
+  --color-moss: #4f5a3b;
+  --color-ink: #2e1d16;
+
+  --font-display: var(--font-fraunces), "Times New Roman", serif;
+  --font-sans: var(--font-instrument), system-ui, sans-serif;
+  --font-hand: var(--font-caveat), cursive;
+}
+
+html {
+  background: var(--color-butter);
+  color: var(--color-chocolate);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  min-height: 100svh;
+  overflow-x: clip;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-chocolate);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.skip-link {
+  position: fixed;
+  left: 1rem;
+  top: 1rem;
+  z-index: 100;
+  padding: 0.6rem 1rem;
+  background: var(--color-chocolate);
+  color: var(--color-cream);
+  transform: translateY(-200%);
+}
+.skip-link:focus {
+  transform: none;
+}
+
+/* Lenis */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* ---------- Animações ambientais (independentes do scroll) ---------- */
+@keyframes drift {
+  from { transform: translateX(-12%); }
+  to { transform: translateX(12%); }
+}
+@keyframes fly {
+  from { transform: translate(-300px, 40px); }
+  to { transform: translate(1900px, -120px); }
+}
+@keyframes flap {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(0.35); }
+}
+@keyframes smoke {
+  0% { transform: translate(0, 0) scale(0.5); opacity: 0; }
+  15% { opacity: 0.75; }
+  100% { transform: translate(34px, -150px) scale(2.2); opacity: 0; }
+}
+@keyframes sway {
+  0%, 100% { transform: rotate(-1.8deg); }
+  50% { transform: rotate(1.8deg); }
+}
+@keyframes flicker {
+  0%, 100% { opacity: 0.85; }
+  40% { opacity: 1; }
+  70% { opacity: 0.72; }
+}
+@keyframes spark-rise {
+  from { transform: translateY(0); opacity: 0.9; }
+  to { transform: translateY(-46px); opacity: 0; }
+}
+
+.amb-drift { animation: drift var(--dur, 40s) ease-in-out infinite alternate; }
+.amb-fly { animation: fly var(--dur, 40s) linear infinite; animation-delay: var(--delay, 0s); }
+.amb-flap { animation: flap 0.5s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+.amb-smoke { animation: smoke 5.5s ease-out infinite; animation-delay: var(--delay, 0s); transform-box: fill-box; transform-origin: center; }
+.amb-sway { animation: sway var(--dur, 5s) ease-in-out infinite; transform-box: fill-box; transform-origin: 50% 100%; animation-delay: var(--delay, 0s); }
+.amb-flicker { animation: flicker 3.2s ease-in-out infinite; animation-delay: var(--delay, 0s); }
+.amb-spark { animation: spark-rise 2.4s ease-out infinite; animation-delay: var(--delay, 0s); }
+
+@media (prefers-reduced-motion: reduce) {
+  [class*="amb-"] { animation: none !important; }
+}
+[data-tier="low"] [class*="amb-"]:not(.amb-smoke):not(.amb-drift) { animation: none; }
+[data-tier="low"] .grain { display: none; }
+
+/* ---------- Revelação tipográfica ---------- */
+.word-mask { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.12em; margin-bottom: -0.12em; }
+.word-inner { display: inline-block; will-change: transform; }
+[data-scene="awakening"]:not([data-ready="true"]) .word-inner { transform: translateY(115%); }
+@media (prefers-reduced-motion: reduce) {
+  [data-scene="awakening"]:not([data-ready="true"]) .word-inner { transform: none; }
+}
