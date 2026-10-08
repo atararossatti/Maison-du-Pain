@@ -1,7 +1,7 @@
 import { type RefObject } from "react";
 import { LAYER_IDS, SCROLL_SCREENS } from "@/config/awakening";
 import { useScrubbedScene } from "@/hooks/useScrubbedScene";
-import { computeFrame, scaleAboutOrigin, type CameraFrame } from "./camera";
+import { applyDoor, computeFrame, scaleAboutOrigin, type CameraFrame } from "./camera";
 
 const setOpacity = (el: Element | null, value: number) => {
   if (el instanceof HTMLElement || el instanceof SVGElement) el.style.opacity = value.toFixed(3);
@@ -11,6 +11,7 @@ function applyFrame(root: HTMLElement, frame: CameraFrame) {
   for (const id of LAYER_IDS) {
     root.querySelector(`[data-layer="${id}"]`)?.setAttribute("transform", scaleAboutOrigin(frame.layerScale[id], frame.lift));
   }
+  applyDoor(root, frame.door);
   root.querySelectorAll("[data-fx]").forEach((el) => {
     const fx = (el as HTMLElement).dataset.fx;
     if (fx === "dawnTint") setOpacity(el, frame.dawnTint);

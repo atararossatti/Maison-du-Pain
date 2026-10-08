@@ -26,7 +26,7 @@ export function Street() {
       <rect x="-400" y="716" width="2400" height="22" fill="var(--color-cream)" />
       <rect x="-400" y="736" width="2400" height="4" fill="var(--color-chocolate)" opacity="0.2" />
       {/* Luz que escapa da janela e se espalha pelo calçamento. */}
-      <ellipse data-fx="windowGlow" cx="800" cy="790" rx="420" ry="90" fill="url(#spill)" style={{ opacity: 0 }} />
+      <ellipse data-fx="windowGlow" cx="1040" cy="780" rx="320" ry="80" fill="url(#spill)" style={{ opacity: 0 }} />
     </g>
   );
 }

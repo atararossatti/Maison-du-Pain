@@ -6,6 +6,8 @@ export interface CameraFrame {
   lift: number;
   dawnTint: number;
   windowGlow: number;
+  /** 0 = porta fechada, 1 = aberta: a folha gira enquanto a câmera se aproxima. */
+  door: number;
   glassAlpha: number;
   frameAlpha: number;
   headline: { opacity: number; y: number };
@@ -32,12 +34,22 @@ export function computeFrame(progress: number): CameraFrame {
     lift: OPENING_LIFT * (1 - dolly),
     dawnTint: 0.38 * (1 - smoothstep(0, 0.5, p)),
     windowGlow: smoothstep(0.12, 0.7, p),
+    door: smoothstep(0.38, 0.72, p),
     glassAlpha: 1 - 0.85 * smoothstep(0.6, 0.86, p),
     frameAlpha: 1 - smoothstep(0.8, 0.93, p),
     headline: { opacity: 1 - headlineOut, y: -70 * headlineOut },
     scrollHint: 1 - smoothstep(0.01, 0.06, p),
     caption: smoothstep(0.88, 0.985, p),
   };
+}
+
+/** Gira a folha da porta (escala horizontal em torno da dobradiça, com leve inclinação de perspectiva). */
+export const DOOR_HINGE_X = 995;
+export function applyDoor(root: Element, open: number) {
+  const leaf = root.querySelector("[data-fx='doorLeaf']");
+  if (!leaf) return;
+  const width = 1 - 0.88 * open;
+  leaf.setAttribute("transform", `translate(${DOOR_HINGE_X} 580) skewY(${(-6 * open).toFixed(2)}) scale(${width.toFixed(3)} 1) translate(${-DOOR_HINGE_X} -580)`);
 }
 
 /** `scale` em torno de um ponto, expresso como atributo SVG (rápido e livre de CSS). */

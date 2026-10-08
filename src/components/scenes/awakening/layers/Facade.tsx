@@ -115,6 +115,33 @@ function Lights() {
   );
 }
 
+/** O que se vê pela porta aberta: parede quente, lâmpada, balcão e pães. A câmera termina aqui. */
+function DoorInterior() {
+  return (
+    <g>
+      <defs>
+        <linearGradient id="doorWall" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="var(--color-caramel)" />
+          <stop offset="1" stopColor="var(--color-gold)" />
+        </linearGradient>
+      </defs>
+      <rect x="995" y="440" width="90" height="280" fill="url(#doorWall)" />
+      <circle className="amb-flicker" cx="1040" cy="520" r="70" fill="url(#lampGlow)" />
+      <path d="M1040 440V500" stroke="var(--color-chocolate)" strokeWidth="1.5" />
+      <path d="M1032 508L1036 500H1044L1048 508Z" fill="var(--color-chocolate)" />
+      <rect x="995" y="602" width="90" height="118" fill="var(--color-chocolate)" />
+      <rect x="995" y="598" width="90" height="6" fill="var(--color-crust)" />
+      {[1012, 1040, 1068].map((x, i) => (
+        <ellipse key={x} cx={x} cy={590 - (i % 2) * 2} rx="13" ry="7" fill="var(--color-crust)" stroke="var(--color-chocolate)" strokeWidth="1.2" />
+      ))}
+      <rect x="995" y="560" width="90" height="4" fill="var(--color-chocolate)" opacity="0.7" />
+      {[1006, 1030, 1054, 1076].map((x) => (
+        <ellipse key={x} cx={x} cy="555" rx="8" ry="5" fill="var(--color-caramel)" stroke="var(--color-chocolate)" strokeWidth="1" />
+      ))}
+    </g>
+  );
+}
+
 export function Facade({ dusk = false }: { dusk?: boolean }) {
   return (
     <g>
@@ -160,10 +187,13 @@ export function Facade({ dusk = false }: { dusk?: boolean }) {
       <Lantern x={970} />
 
       {/* Porta com toldo listrado. */}
-      <rect x="995" y="440" width="90" height="280" fill="var(--color-olive)" stroke="var(--color-chocolate)" strokeWidth="5" />
-      <rect x="1007" y="454" width="66" height="70" fill="var(--color-gold)" opacity="0.85" />
-      <rect x="1007" y="540" width="66" height="150" fill="none" stroke="var(--color-moss)" strokeWidth="4" />
-      <circle cx="1070" cy="610" r="5" fill="var(--color-gold)" />
+      <DoorInterior />
+      <g data-fx="doorLeaf">
+        <rect x="995" y="440" width="90" height="280" fill="var(--color-olive)" stroke="var(--color-chocolate)" strokeWidth="5" />
+        <rect x="1007" y="454" width="66" height="70" fill="var(--color-gold)" opacity="0.85" />
+        <rect x="1007" y="540" width="66" height="150" fill="none" stroke="var(--color-moss)" strokeWidth="4" />
+        <circle cx="1070" cy="610" r="5" fill="var(--color-gold)" />
+      </g>
       {Array.from({ length: 6 }, (_, i) => (
         <polygon
           key={i}

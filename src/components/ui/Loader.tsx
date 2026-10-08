@@ -15,6 +15,9 @@ interface LoaderProps {
   onDone: () => void;
 }
 
+/** Tempo máximo que o loader pode ocupar a tela antes de ser dispensado à força. */
+const WATCHDOG_MS = 20_000;
+
 const select = (root: HTMLElement, name: string) => root.querySelectorAll<HTMLElement>(`[data-el="${name}"]`);
 
 export function Loader({ onReveal, onDone }: LoaderProps) {
@@ -58,7 +61,12 @@ export function Loader({ onReveal, onDone }: LoaderProps) {
     finished.current = true;
     contextRef.current?.add(() => {
       const root = rootRef.current;
-      if (!root) return;
+      if (!root) {
+        // Sem o elemento não há o que animar: libera a página mesmo assim.
+        onReveal();
+        onDone();
+        return;
+      }
       setReady(true);
       const timeline = gsap.timeline({ onComplete: onDone });
 
@@ -89,6 +97,14 @@ export function Loader({ onReveal, onDone }: LoaderProps) {
       }
     });
   };
+
+  // Rede de segurança: o loader nunca pode prender a página. Se nada concluir em 20 s (recurso travado,
+  // erro de animação em algum navegador), a página é liberada com a saída rápida.
+  useEffect(() => {
+    const watchdog = window.setTimeout(() => finish(true), WATCHDOG_MS);
+    return () => window.clearTimeout(watchdog);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- `finish` só usa refs e callbacks estáveis do pai.
+  }, []);
 
   useEffect(() => {
     // Reduced motion: sem animação de cozimento, apenas confirma e revela.

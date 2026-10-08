@@ -2,7 +2,7 @@ import { type RefObject } from "react";
 import { LAYER_IDS } from "@/config/awakening";
 import { useScrubbedScene } from "@/hooks/useScrubbedScene";
 import { clamp, smoothstep } from "@/lib/math";
-import { computeFrame, scaleAboutOrigin } from "../awakening/camera";
+import { applyDoor, computeFrame, scaleAboutOrigin } from "../awakening/camera";
 
 const RETURN_SCREENS = 5;
 /** Fração do scroll em que o recuo da câmera termina; o resto é pausa para ler e agir. */
@@ -25,6 +25,7 @@ function setupReturn(root: HTMLElement) {
     const frame = computeFrame(1 - clamp(q / PULL_BACK_END));
 
     layers.forEach(({ id, el }) => el?.setAttribute("transform", scaleAboutOrigin(frame.layerScale[id], frame.lift)));
+    applyDoor(root, frame.door);
     setOpacity(nodes.glass, frame.glassAlpha);
     setOpacity(nodes.frame, frame.frameAlpha);
     setOpacity(nodes.glow, smoothstep(0.1, 0.7, q));
