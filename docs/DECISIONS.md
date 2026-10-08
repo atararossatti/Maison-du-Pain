@@ -14,7 +14,7 @@
 - [x] Capturas reais em `docs/screenshots`; medições em `scripts/measure.mjs`.
 - [ ] **Push** para `github.com/atararossatti/Maison-du-Pain` (requer login do usuário).
 - [x] GIF da experiência (`docs/demo.gif`).
-- [ ] Link da demo publicada (README tem o espaço).
+- [x] Demo publicada na Vercel: https://maison-du-pain-two.vercel.app (projeto `maison-du-pain`, integrado ao GitHub: cada push em `main` publica de novo).
 - [ ] Medição em dispositivo real e Lighthouse.
 
 ## Direção artística

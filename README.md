@@ -7,7 +7,7 @@
 *An immersive journey through the art of French baking.*
 *Where handcrafted tradition meets creative technology.*
 
-[Demonstração publicada: _em breve_]
+**[Ver a demonstração online](https://maison-du-pain-two.vercel.app)**
 
 </div>
 
@@ -143,7 +143,7 @@ Leitura honesta: nas cenas 2D os quadros longos são raros, mas o p95 de 50 ms i
 - Transições cinematográficas contínuas entre algumas cenas (hoje usam uma troca de cor).
 - Ilustração 2D do croissant na Cena 04 e quadro final da Cena 05 mais ricos.
 - Medir em GPU/celular reais, rodar Lighthouse, otimizar o custo de quadros das cenas 2D e automatizar a auditoria de contraste.
-- Publicar a demonstração online.
+- Domínio próprio para a demonstração (hoje em `*.vercel.app`).
 
 ## Créditos e licenças
 
