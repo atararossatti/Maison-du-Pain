@@ -17,14 +17,14 @@ function Layer({ id, children }: { id: LayerId; children: ReactNode }) {
   );
 }
 
-export function Illustration() {
+export function Illustration({ dusk = false }: { dusk?: boolean }) {
   return (
     <svg
       viewBox={`0 0 ${VIEWBOX.width} ${VIEWBOX.height}`}
       preserveAspectRatio="xMidYMid slice"
       className="absolute inset-0 h-full w-full"
       role="img"
-      aria-label="Ilustração da fachada da Maison du Pain ao amanhecer: sobrado francês com flores nas janelas, mesas na calçada, árvores e uma chaminé soltando fumaça."
+      aria-label={dusk ? "Ilustração da fachada da Maison du Pain ao entardecer: janelas acesas, rua de paralelepípedos dourada e mesas na calçada." : "Ilustração da fachada da Maison du Pain ao amanhecer: sobrado francês com flores nas janelas, mesas na calçada, árvores e uma chaminé soltando fumaça."}
     >
       <defs>
         <filter id="paperGrain" x="0" y="0" width="100%" height="100%">
@@ -37,16 +37,16 @@ export function Illustration() {
         </radialGradient>
       </defs>
 
-      <Layer id="sky"><Sky /></Layer>
+      <Layer id="sky"><Sky dusk={dusk} /></Layer>
       <Layer id="clouds"><Clouds /></Layer>
       <Layer id="town"><Town /></Layer>
       <Layer id="street"><Street /></Layer>
-      <Layer id="facade"><Facade /></Layer>
+      <Layer id="facade"><Facade dusk={dusk} /></Layer>
       <Layer id="trees"><Trees /></Layer>
       <Layer id="props"><Props /></Layer>
       <Layer id="foreground"><Foreground /></Layer>
 
-      <rect data-fx="dawnTint" width={VIEWBOX.width} height={VIEWBOX.height} fill="var(--color-rose)" style={{ opacity: 0.38, mixBlendMode: "multiply" }} />
+      <rect data-fx="dawnTint" width={VIEWBOX.width} height={VIEWBOX.height} fill={dusk ? "var(--color-dusk)" : "var(--color-rose)"} style={{ opacity: dusk ? 0 : 0.38, mixBlendMode: "multiply" }} />
       <rect width={VIEWBOX.width} height={VIEWBOX.height} fill="url(#vignette)" />
       <rect className="grain" width={VIEWBOX.width} height={VIEWBOX.height} filter="url(#paperGrain)" opacity="0.5" style={{ mixBlendMode: "multiply" }} />
     </svg>

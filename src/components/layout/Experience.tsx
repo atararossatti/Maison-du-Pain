@@ -5,11 +5,12 @@ import { ScrollProvider } from "@/components/animations/ScrollProvider";
 import { Scene01Awakening } from "@/components/scenes/awakening/Scene01Awakening";
 import { Scene02Bakery } from "@/components/scenes/bakery/Scene02Bakery";
 import { Scene03Croissant } from "@/components/scenes/croissant/Scene03Croissant";
-import { Scene05Process } from "@/components/scenes/process/Scene05Process";
+import { Scene06Return } from "@/components/scenes/finale/Scene06Return";
 import { Scene04Flavors } from "@/components/scenes/flavors/Scene04Flavors";
-import { NextChapter } from "@/components/scenes/NextChapter";
+import { Scene05Process } from "@/components/scenes/process/Scene05Process";
 import { Loader } from "@/components/ui/Loader";
 import { useDeviceTier } from "@/hooks/useDeviceTier";
+import { Footer } from "./Footer";
 import { Header } from "./Header";
 
 export function Experience() {
@@ -28,8 +29,9 @@ export function Experience() {
           <Scene03Croissant />
           <Scene04Flavors />
           <Scene05Process />
-          <NextChapter />
+          <Scene06Return />
         </main>
+        <Footer />
       </ScrollProvider>
       {loaderMounted && (
         <Loader onReveal={() => setRevealed(true)} onDone={() => setLoaderMounted(false)} />

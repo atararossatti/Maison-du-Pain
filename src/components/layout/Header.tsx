@@ -5,6 +5,7 @@ import { gsap, ScrollTrigger } from "@/lib/gsap";
 
 export function Header() {
   const barRef = useRef<HTMLSpanElement>(null);
+  const headerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const bar = barRef.current;
@@ -14,20 +15,31 @@ export function Header() {
       end: "max",
       onUpdate: (self) => gsap.set(bar, { scaleY: self.progress }),
     });
-    return () => trigger.kill();
+    // A cena final é escura: o cabeçalho troca para a versão clara enquanto ela ocupa o topo.
+    const header = headerRef.current;
+    const tone = ScrollTrigger.create({
+      trigger: "[data-scene='return']",
+      start: "top 6%",
+      end: "bottom 6%",
+      onToggle: (self) => header?.setAttribute("data-tone", self.isActive ? "light" : "dark"),
+    });
+    return () => {
+      trigger.kill();
+      tone.kill();
+    };
   }, []);
 
   return (
     <>
-      <header className="pointer-events-none fixed inset-x-0 top-0 z-40 flex items-center justify-between px-5 py-4 sm:px-9 sm:py-6">
+      <header ref={headerRef} data-tone="dark" className="group pointer-events-none fixed inset-x-0 top-0 z-40 flex items-center justify-between px-5 py-4 sm:px-9 sm:py-6">
         <a
           href="#"
-          className="pointer-events-auto font-display text-lg tracking-tight text-chocolate sm:text-xl"
+          className="pointer-events-auto font-display text-lg tracking-tight text-chocolate transition-colors group-data-[tone=light]:text-cream sm:text-xl"
           aria-label="Maison du Pain — início"
         >
           Maison <span className="italic text-crust">du</span> Pain
         </a>
-        <p className="font-hand text-xl text-chocolate/80 max-sm:hidden" lang="fr">
+        <p className="font-hand text-xl text-chocolate/80 transition-colors group-data-[tone=light]:text-cream/80 max-sm:hidden" lang="fr">
           Le bonheur se savoure
         </p>
       </header>

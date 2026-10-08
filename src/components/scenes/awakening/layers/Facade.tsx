@@ -94,7 +94,28 @@ function ShopInterior() {
   );
 }
 
-export function Facade() {
+const LIGHTS = [
+  { x: 800, y: 480, r: 200 },
+  { x: 515, y: 500, r: 100 },
+  { x: 1175, y: 500, r: 100 },
+  { x: 1040, y: 490, r: 90 },
+  { x: 500, y: 255, r: 70 },
+  { x: 800, y: 255, r: 70 },
+  { x: 1100, y: 255, r: 70 },
+] as const;
+
+/** Halos das janelas acesas ao entardecer; ligados pelo `data-fx="lights"`. */
+function Lights() {
+  return (
+    <g data-fx="lights" style={{ opacity: 0 }}>
+      {LIGHTS.map((light) => (
+        <circle key={`${light.x}-${light.y}`} className="amb-flicker" cx={light.x} cy={light.y} r={light.r} fill="url(#lampGlow)" />
+      ))}
+    </g>
+  );
+}
+
+export function Facade({ dusk = false }: { dusk?: boolean }) {
   return (
     <g>
       <defs>
@@ -170,6 +191,7 @@ export function Facade() {
       <rect x="684" y="604" width="232" height="26" rx="4" fill="var(--color-crust)" stroke="var(--color-chocolate)" strokeWidth="3" />
       <path d="M700 604V630M740 604V630M780 604V630M820 604V630M860 604V630M900 604V630" stroke="var(--color-chocolate)" strokeOpacity="0.35" strokeWidth="2" />
       <Flowers x={688} y={606} width={224} />
+      {dusk && <Lights />}
     </g>
   );
 }

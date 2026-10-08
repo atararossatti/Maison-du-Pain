@@ -30,7 +30,7 @@ test("scroll controla a câmera e é reversível", async ({ page }) => {
   await page.waitForTimeout(2_000);
 
   const facadeTransform = () =>
-    page.locator('[data-layer="facade"]').getAttribute("transform");
+    page.locator('[data-scene="awakening"] [data-layer="facade"]').getAttribute("transform");
 
   const frames: Record<string, string | null> = {};
   for (const progress of [0, 0.3, 0.6, 0.8, 0.95]) {
@@ -208,5 +208,56 @@ test("cena 05: do trigo ao pão, reversível e sem erros", async ({ page }) => {
   expect(Number(await bread())).toBeGreaterThan(0.5);
   await goTo(0.3);
   expect(Number(await bread())).toBe(0);
+  expect(errors).toEqual([]);
+});
+
+test("cena 06: recuo ao entardecer e botões com ações reais", async ({ page }) => {
+  test.setTimeout(120_000);
+  const errors: string[] = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  page.on("console", (msg) => msg.type() === "error" && errors.push(msg.text()));
+
+  await skipLoader(page);
+  const goTo = async (progress: number) => {
+    await page.evaluate((p) => {
+      const section = document.querySelector("[data-scene='return']");
+      const spacer = section?.closest(".pin-spacer") ?? section;
+      if (!spacer) throw new Error("Cena 06 não encontrada");
+      window.scrollTo(0, spacer.getBoundingClientRect().top + window.scrollY + p * 5 * window.innerHeight);
+    }, progress);
+    await page.waitForTimeout(1_300);
+  };
+
+  const actions = page.locator("[data-ui='actions']");
+  await goTo(0.3);
+  await expect(actions).toBeHidden();
+  for (const progress of [0.05, 0.5, 0.75]) {
+    await goTo(progress);
+    await page.screenshot({ path: `${SHOTS}/return-${Math.round(progress * 100)}.png` });
+  }
+  await goTo(0.99);
+  await expect(actions).toBeVisible();
+  await page.screenshot({ path: `${SHOTS}/return-99.png` });
+
+  await page.getByRole("button", { name: "Conheça nosso cardápio" }).click();
+  await expect(page.getByRole("dialog")).toContainText("Croissant artesanal");
+  await page.keyboard.press("Escape");
+  await expect(page.getByRole("dialog")).toBeHidden();
+
+  await page.getByRole("button", { name: "Venha nos visitar" }).click();
+  await expect(page.getByRole("dialog")).toContainText("A definir");
+  await page.keyboard.press("Escape");
+
+  await page.getByRole("button", { name: "Faça seu pedido" }).click();
+  const dialog = page.getByRole("dialog");
+  await expect(dialog.getByRole("button", { name: "Gerar resumo" })).toBeDisabled();
+  await dialog.getByRole("button", { name: "Adicionar Croissant artesanal" }).click();
+  await dialog.getByRole("button", { name: "Adicionar Croissant artesanal" }).click();
+  await dialog.getByRole("button", { name: "Adicionar Café especial" }).click();
+  await dialog.getByRole("button", { name: "Gerar resumo" }).click();
+  await expect(dialog.getByLabel("Resumo do pedido")).toContainText("2× Croissant artesanal");
+  await expect(dialog.getByLabel("Resumo do pedido")).toContainText("1× Café especial");
+  await page.screenshot({ path: `${SHOTS}/return-order.png` });
+  await page.keyboard.press("Escape");
   expect(errors).toEqual([]);
 });

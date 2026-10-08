@@ -11,10 +11,16 @@ const CLOUDS = [
   { x: 620, y: 250, scale: 0.7, dur: 48 },
 ];
 
-export function Sky() {
+export function Sky({ dusk = false }: { dusk?: boolean }) {
   return (
     <g>
       <defs>
+        <linearGradient id="duskSky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="var(--color-dusk)" />
+          <stop offset="0.45" stopColor="var(--color-brick)" />
+          <stop offset="0.8" stopColor="var(--color-caramel)" />
+          <stop offset="1" stopColor="var(--color-gold)" />
+        </linearGradient>
         <linearGradient id="dawnSky" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0" stopColor="var(--color-rose)" />
           <stop offset="0.55" stopColor="var(--color-blush)" />
@@ -26,9 +32,9 @@ export function Sky() {
           <stop offset="1" stopColor="var(--color-gold)" stopOpacity="0" />
         </radialGradient>
       </defs>
-      <rect x="-200" y="-200" width="2000" height="1300" fill="url(#dawnSky)" />
-      <circle cx="1190" cy="470" r="420" fill="url(#sunHalo)" />
-      <circle cx="1190" cy="470" r="54" fill="var(--color-cream)" opacity="0.9" />
+      <rect x="-200" y="-200" width="2000" height="1300" fill={dusk ? "url(#duskSky)" : "url(#dawnSky)"} />
+      <circle cx="1190" cy={dusk ? 600 : 470} r="420" fill="url(#sunHalo)" />
+      <circle cx="1190" cy={dusk ? 600 : 470} r="54" fill="var(--color-cream)" opacity="0.9" />
     </g>
   );
 }
