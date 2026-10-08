@@ -69,9 +69,9 @@ Não usados, de propósito: Rive e Spline (sem integração verificada; SVG + GS
 - Seis cenas controladas pelo scroll, **reversíveis**: cada cena é uma função pura do progresso, então rolar rápido, voltar ou redimensionar sempre reproduz o mesmo quadro.
 - Croissant 3D procedural (sem arquivo GLB): cristas em barril, texturas geradas em canvas, partículas de farinha, leque com corte em espiral.
 - Seis produtos interativos que funcionam por ponteiro, toque e **teclado** (cada um é um slider acessível), com painel de detalhes em `<dialog>` nativo.
-- Cursor em anel, botões magnéticos, paralaxe por ponteiro, indicador de progresso, cabeçalho que se adapta a fundos escuros.
+- Botões magnéticos, paralaxe por ponteiro, indicador de progresso, cabeçalho que se adapta a fundos escuros.
 - Efeitos sonoros opcionais, sintetizados em código, **desligados por padrão** (o áudio só é inicializado quando o usuário liga).
-- Suporte a `prefers-reduced-motion`: sem pins, sem Lenis, sem cursor/magnetismo, versão estática de cada cena.
+- Suporte a `prefers-reduced-motion`: sem pins, sem Lenis, sem magnetismo, versão estática de cada cena.
 - Ações finais reais e honestas: cardápio, dados de visita ("A definir") com compartilhamento, e um pedido de **demonstração** que gera um resumo copiável sem enviar nada.
 
 ## Arquitetura
@@ -83,7 +83,7 @@ src/
 │   ├── animations/          ScrollProvider (Lenis ↔ GSAP), SoundProvider
 │   ├── layout/              Experience (montagem), Header, Footer
 │   ├── scenes/              uma pasta por cena (camera.ts = função pura)
-│   └── ui/                  Loader, Dialog, Cursor, MagneticButton…
+│   └── ui/                  Loader, Dialog, MagneticButton…
 ├── config/                  constantes de cada cena, produtos, contato
 ├── hooks/                   useScrubbedScene, useMagnetic, useDeviceTier…
 ├── lib/                     gsap (registro), math

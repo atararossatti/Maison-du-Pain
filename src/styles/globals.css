@@ -158,26 +158,6 @@ html.lenis body {
   100% { opacity: 0; transform: translateY(-26px); }
 }
 .amb-wisp { animation: wisp 4.2s ease-in-out infinite; animation-delay: var(--delay, 0s); }
-
-/* ---------- Cursor ---------- */
-.cursor-ring {
-  position: fixed;
-  left: 0;
-  top: 0;
-  z-index: 60;
-  width: 38px;
-  height: 38px;
-  margin: -19px 0 0 -19px;
-  border: 2px solid var(--color-cream);
-  border-radius: 9999px;
-  pointer-events: none;
-  mix-blend-mode: difference;
-  opacity: 0;
-  transition: opacity 0.25s, scale 0.25s, background-color 0.25s;
-}
-.cursor-ring[data-visible="true"] { opacity: 0.9; }
-.cursor-ring[data-active="true"] { scale: 1.7; background-color: rgb(255 249 239 / 0.25); }
-
 /* Cenas fora da tela não animam: ver useScrubbedScene. */
 [data-offscreen="true"] [class*="amb-"] { animation-play-state: paused; }
 

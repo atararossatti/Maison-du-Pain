@@ -52,7 +52,7 @@ A Cena 01 é renderizada no servidor. As Cenas 02–06 ficam atrás de `ui/LazyS
 - **ScrollProvider**: uma instância do Lenis dirigida por `gsap.ticker`; `locked` bloqueia o scroll durante o loader. Não é criada com movimento reduzido.
 - **Loader**: `useCriticalAssets` pondera tarefas reais (fontes, `load`, imagens de `config/loading.ts`). O progresso exibido é `min(real, tempo/MIN_BAKE_MS)`. Falha ou timeout apenas marca a tarefa como concluída e degrada a animação.
 - **SoundProvider**: `AudioContext` criado só no primeiro "ligar"; sons sintetizados.
-- **Cursor / MagneticButton / useMagnetic**: só em `pointer: fine` e sem movimento reduzido; o cursor nativo permanece.
+- **MagneticButton / useMagnetic**: só em `pointer: fine` e sem movimento reduzido; o cursor nativo permanece (o anel que seguia o mouse foi removido).
 - **Dialog**: `<dialog>` nativo (foco preso, Esc, clique no fundo).
 
 ## Cena 03 (WebGL)

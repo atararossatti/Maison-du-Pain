@@ -5,7 +5,6 @@ import { ScrollProvider } from "@/components/animations/ScrollProvider";
 import { SoundProvider } from "@/components/animations/SoundProvider";
 import dynamic from "next/dynamic";
 import { Scene01Awakening } from "@/components/scenes/awakening/Scene01Awakening";
-import { Cursor } from "@/components/ui/Cursor";
 import { LazyScene } from "@/components/ui/LazyScene";
 import { MotionNotice } from "@/components/ui/MotionNotice";
 import { Loader } from "@/components/ui/Loader";
@@ -28,7 +27,6 @@ export function Experience() {
   return (
     <SoundProvider>
     <div data-tier={tier}>
-      <Cursor />
       <MotionNotice />
       <ScrollProvider locked={!revealed}>
         <a className="skip-link" href="#conteudo">Ir para o conteúdo</a>
