@@ -2,7 +2,7 @@
 
 ## Estado
 - Fase 01/02: concluída. Fase 03 (protótipo): **loader + Cena 01 + transição pela janela implementados e validados** (tsc, eslint, `next build`, 2 testes Playwright, screenshots em `test-results/shots`).
-- Cenas 02–06: não iniciadas (`NextChapter` é um marcador honesto). O frame final da Cena 01 (zoom no interior da vitrine) é provisório; a Cena 02 deve assumir o interior completo.
+- Cena 02 (interior/massa) implementada em `scenes/bakery` (farinha → ingredientes → sova ligada ao scroll → massa cresce → mergulho). Começa com um "wash" âmbar que casa com o fim da Cena 01 (corte por cor, não zoom contínuo da vitrine: refinar depois). Cenas 03–06 não iniciadas (`NextChapter` é um marcador honesto). Scroll: Cena 01 = 5 telas de pin, Cena 02 = 6.
 - Pendências conhecidas: composição mobile (viewBox `slice` corta árvores/mesas em retrato), cursor customizado, som, README, e screenshots do loader no modo cinematográfico (o navegador embutido só exercitou o modo reduzido).
 - Ambiente: Node 24 + Git instalados via winget. O caminho do usuário contém crase: no PowerShell use `-LiteralPath` e aspas simples. Chromium do Playwright instalado. Alguns navegadores embutidos emulam `prefers-reduced-motion`; testes de movimento usam Playwright (`reducedMotion: no-preference`).
 - Próximo passo: validar loader cinematográfico por screenshot e refinar o final da Cena 01; depois Cena 02.

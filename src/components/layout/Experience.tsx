@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ScrollProvider } from "@/components/animations/ScrollProvider";
 import { Scene01Awakening } from "@/components/scenes/awakening/Scene01Awakening";
+import { Scene02Bakery } from "@/components/scenes/bakery/Scene02Bakery";
 import { NextChapter } from "@/components/scenes/NextChapter";
 import { Loader } from "@/components/ui/Loader";
 import { useDeviceTier } from "@/hooks/useDeviceTier";
@@ -20,6 +21,7 @@ export function Experience() {
         <Header />
         <main id="conteudo">
           <Scene01Awakening ready={revealed} />
+          <Scene02Bakery />
           <NextChapter />
         </main>
       </ScrollProvider>

@@ -14,6 +14,7 @@
   --color-brick: #8b5a44;
   --color-moss: #4f5a3b;
   --color-ink: #2e1d16;
+  --color-skin: #e8be9b;
 
   --font-display: var(--font-fraunces), "Times New Roman", serif;
   --font-sans: var(--font-instrument), system-ui, sans-serif;
@@ -91,6 +92,14 @@ html.lenis body {
   40% { opacity: 1; }
   70% { opacity: 0.72; }
 }
+@keyframes fall {
+  from { transform: translateY(0); opacity: 0.9; }
+  to { transform: translateY(380px); opacity: 0; }
+}
+@keyframes mote {
+  0%, 100% { transform: translate(0, 0); opacity: 0.2; }
+  50% { transform: translate(14px, -22px); opacity: 0.85; }
+}
 @keyframes spark-rise {
   from { transform: translateY(0); opacity: 0.9; }
   to { transform: translateY(-46px); opacity: 0; }
@@ -102,6 +111,8 @@ html.lenis body {
 .amb-smoke { animation: smoke 5.5s ease-out infinite; animation-delay: var(--delay, 0s); transform-box: fill-box; transform-origin: center; }
 .amb-sway { animation: sway var(--dur, 5s) ease-in-out infinite; transform-box: fill-box; transform-origin: 50% 100%; animation-delay: var(--delay, 0s); }
 .amb-flicker { animation: flicker 3.2s ease-in-out infinite; animation-delay: var(--delay, 0s); }
+.amb-fall { animation: fall 1.3s linear infinite; animation-delay: var(--delay, 0s); }
+.amb-mote { animation: mote var(--dur, 7s) ease-in-out infinite; animation-delay: var(--delay, 0s); }
 .amb-spark { animation: spark-rise 2.4s ease-out infinite; animation-delay: var(--delay, 0s); }
 
 @media (prefers-reduced-motion: reduce) {

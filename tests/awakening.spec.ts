@@ -54,3 +54,28 @@ test("scroll controla a câmera e é reversível", async ({ page }) => {
 
   expect(errors).toEqual([]);
 });
+test("cena 02: sova sincronizada ao scroll e mergulho na massa", async ({ page }) => {
+  const errors: string[] = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  page.on("console", (msg) => msg.type() === "error" && errors.push(msg.text()));
+
+  await skipLoader(page);
+  const arm = () => page.locator('[data-el="armL"]').getAttribute("transform");
+  const frames: Record<string, string | null> = {};
+
+  for (const progress of [0.05, 0.2, 0.4, 0.55, 0.75, 0.93, 0.995]) {
+    // Cena 02 começa após a Cena 01 (1 tela + 5 de pin).
+    await page.evaluate((p) => window.scrollTo(0, (6 + p * 6) * window.innerHeight), progress);
+    await page.waitForTimeout(1_200);
+    frames[progress] = await arm();
+    await page.screenshot({ path: `${SHOTS}/bakery-${Math.round(progress * 100)}.png` });
+  }
+
+  // Sova ligada ao scroll: dois pontos diferentes da fase de sova geram braços diferentes.
+  expect(frames[0.4]).not.toBe(frames[0.55]);
+
+  await page.evaluate(() => window.scrollTo(0, 6.05 * window.innerHeight));
+  await page.waitForTimeout(1_500);
+  expect(await arm()).toBe(frames[0.05]);
+  expect(errors).toEqual([]);
+});
