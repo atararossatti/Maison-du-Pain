@@ -29,6 +29,7 @@ export function useCroissantTimeline(
       const wash = root.querySelector<HTMLElement>("[data-ui='doughWash']");
       const captionA = root.querySelector<HTMLElement>("[data-ui='captionA']");
       const captionB = root.querySelector<HTMLElement>("[data-ui='captionB']");
+      const stage = root.querySelector<HTMLElement>("[data-ui='stage']");
       const isStatic = root.dataset.static === "true";
 
       return (progress: number) => {
@@ -36,6 +37,8 @@ export function useCroissantTimeline(
         const frame = computeCroissantFrame(progress);
         wash?.style.setProperty("--hole", (frame.reveal * WASH_HOLE_MAX).toFixed(1));
         if (wash) wash.style.visibility = frame.reveal >= 1 ? "hidden" : "visible";
+        root.style.setProperty("--edge", (1 - frame.exit).toFixed(3));
+        if (stage) stage.style.opacity = (1 - frame.exit).toFixed(3);
         if (isStatic) return;
         showCaption(captionA, frame.captionA);
         showCaption(captionB, frame.captionB);

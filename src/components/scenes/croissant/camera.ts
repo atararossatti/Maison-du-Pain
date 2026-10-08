@@ -13,6 +13,7 @@ export interface CroissantFrame {
   burstExplode: number;
   captionA: number;
   captionB: number;
+  exit: number;
 }
 
 type Range = readonly [number, number];
@@ -43,5 +44,6 @@ export function computeCroissantFrame(progress: number): CroissantFrame {
     burstExplode: step(PHASE.burstExplode),
     captionA: smoothstep(aIn, aFullIn, p) * (1 - smoothstep(aOut, aFullOut, p)),
     captionB: step(PHASE.captionB),
+    exit: step(PHASE.exit),
   };
 }

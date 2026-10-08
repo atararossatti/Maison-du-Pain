@@ -10,7 +10,9 @@ export const BAKERY_LAYER_IDS = Object.keys(BAKERY_LAYER_SCALE) as BakeryLayerId
 
 /** Intervalos [início, fim] do progresso (0–1) de cada etapa da história. */
 export const PHASE = {
-  wash: [0, 0.07],
+  /** A íris âmbar (continuação da vitrine da Cena 01) abre do centro e a câmera recua para dentro da sala. */
+  wash: [0, 0.1],
+  arrival: [0, 0.14],
   sackIn: [0.04, 0.1],
   sackOut: [0.3, 0.37],
   sackTilt: [0.1, 0.15],

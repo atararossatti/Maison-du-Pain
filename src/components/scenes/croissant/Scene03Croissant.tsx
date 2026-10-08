@@ -57,9 +57,13 @@ export function Scene03Croissant() {
       data-static={reduced}
       aria-labelledby="croissant-titulo"
       className="relative h-svh w-full overflow-hidden"
-      style={{ background: "radial-gradient(ellipse at 50% 45%, var(--color-cream), var(--color-butter) 55%, var(--color-gold))" }}
+      style={{
+        background:
+          "radial-gradient(ellipse at 50% 45%, var(--color-cream), var(--color-butter) 55%, color-mix(in srgb, var(--color-gold) calc(var(--edge, 1) * 100%), var(--color-butter)))",
+      }}
     >
       <div
+        data-ui="stage"
         className="absolute inset-0"
         role="img"
         aria-label="Croissant em três dimensões que gira e abre suas camadas folhadas, uma a uma."

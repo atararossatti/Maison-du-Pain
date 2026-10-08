@@ -8,6 +8,7 @@
 - Próximo passo: validar loader cinematográfico por screenshot e refinar o final da Cena 01; depois Cena 02.
 
 ## Refinamento pós-publicação
+- Transições: Cena 02 abre em íris âmbar com a câmera recuando (`arrival`); Cena 03 termina dissolvendo para o creme da 04; Cena 05 entra da cor da 04 e sai em flash dourado, cor em que a 06 começa. Cena 05 reaproveita janela, lâmpadas e utensílios da padaria da Cena 02; o diálogo emite o som `open` (só se o som estiver ligado).
 - Desempenho: grão virou textura estática; ambient pausado fora da tela (`data-offscreen`); p95 2D 50 → 33,4 ms.
 - Mobile: `VIEWBOX_PORTRAIT` (900×1950) nas Cenas 01/06 quando `max-aspect-ratio: 4/5`. Cenas 02 e 05 ainda usam o recorte central.
 - Arte: baguete com aro de casca, croissant 2D em arco, Cena 05 com tábua, brasas e a frase final.

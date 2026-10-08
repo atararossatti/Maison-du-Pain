@@ -39,6 +39,8 @@ export interface ProcessFrame {
   bowl: number;
   /** Brilho quente do forno que toma a tela no final. */
   finalGlow: number;
+  enter: number;
+  exit: number;
   stageIndex: number;
   captionA: number;
   captionB: number;
@@ -114,6 +116,8 @@ export function computeProcessFrame(progress: number): ProcessFrame {
     },
     bowl: step(PHASE.kitchenIn) * (1 - smoothstep(0.78, 0.84, p)),
     finalGlow: smoothstep(0.9, 1, p),
+    enter: 1 - step(PHASE.enter),
+    exit: step(PHASE.exit),
     stageIndex: stageIndexFor(p),
     captionA: pulse(PHASE.captionA),
     captionB: pulse(PHASE.captionB),

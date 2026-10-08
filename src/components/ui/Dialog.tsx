@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, type ReactNode } from "react";
+import { useSound } from "@/components/animations/SoundProvider";
 
 interface DialogProps {
   open: boolean;
@@ -12,13 +13,17 @@ interface DialogProps {
 /** `<dialog>` nativo: foco preso, Esc fecha, clique no fundo fecha e o foco volta ao botão de origem. */
 export function Dialog({ open, onClose, labelledBy, children }: DialogProps) {
   const ref = useRef<HTMLDialogElement>(null);
+  const { play } = useSound();
 
   useEffect(() => {
     const dialog = ref.current;
     if (!dialog) return;
-    if (open && !dialog.open) dialog.showModal();
+    if (open && !dialog.open) {
+      dialog.showModal();
+      play("open");
+    }
     if (!open && dialog.open) dialog.close();
-  }, [open]);
+  }, [open, play]);
 
   return (
     <dialog

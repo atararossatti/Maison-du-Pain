@@ -68,7 +68,7 @@ export function Scene06Return() {
       <div
         data-ui="wash"
         className="pointer-events-none absolute inset-0 z-30"
-        style={{ background: "linear-gradient(to bottom, var(--color-butter), var(--color-blush))", opacity: reduced ? 0 : 1 }}
+        style={{ background: "var(--color-gold)", opacity: reduced ? 0 : 1 }}
         aria-hidden
       />
 

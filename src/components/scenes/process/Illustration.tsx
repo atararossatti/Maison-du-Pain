@@ -51,6 +51,7 @@ export function Illustration() {
       <Clock />
       <Bread />
 
+      <rect data-el="exitFlash" x="-800" y="-800" width="3200" height="2500" fill="var(--color-gold)" style={{ opacity: 0 }} />
       <rect data-el="finalGlow" width={PROCESS_VIEWBOX.width} height={PROCESS_VIEWBOX.height} fill="url(#processFinalGlow)" style={{ opacity: 0, mixBlendMode: "screen" }} />
       <rect width={PROCESS_VIEWBOX.width} height={PROCESS_VIEWBOX.height} fill="url(#processVignette)" />
     </svg>

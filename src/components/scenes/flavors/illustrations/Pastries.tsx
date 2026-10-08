@@ -34,18 +34,47 @@ export function CroissantArt() {
         {CROISSANT_LAYERS.map((layer) => (
           <g key={layer.fill} style={{ transform: `translateY(calc(var(--v) * ${layer.offset}px))` }}>
             {SEGMENTS.map((segment) => (
-              <ellipse
-                key={segment.key}
-                cx={segment.x}
-                cy={segment.y}
-                rx={segment.rx * layer.grow}
-                ry={segment.ry * layer.grow}
-                transform={`rotate(${segment.angle.toFixed(1)} ${segment.x.toFixed(1)} ${segment.y.toFixed(1)})`}
-                fill={layer.fill}
-                stroke="var(--color-chocolate)"
-                strokeOpacity="0.35"
-                strokeWidth="2"
-              />
+              <g key={segment.key} transform={`rotate(${segment.angle.toFixed(1)} ${segment.x.toFixed(1)} ${segment.y.toFixed(1)})`}>
+                <ellipse
+                  cx={segment.x}
+                  cy={segment.y}
+                  rx={segment.rx * layer.grow}
+                  ry={segment.ry * layer.grow}
+                  fill={layer.fill}
+                  stroke="var(--color-chocolate)"
+                  strokeOpacity="0.35"
+                  strokeWidth="2"
+                />
+                {layer.offset < 0 && (
+                  <>
+                    {/* Camada de cima: sombra na borda de baixo, dobras da massa e brilho de manteiga. */}
+                    <path
+                      d={`M${segment.x - segment.rx * 0.8} ${segment.y + segment.ry * 0.35}Q${segment.x} ${segment.y + segment.ry * 0.7} ${segment.x + segment.rx * 0.8} ${segment.y + segment.ry * 0.35}`}
+                      stroke="var(--color-ink)"
+                      strokeOpacity="0.22"
+                      strokeWidth="4"
+                      fill="none"
+                      strokeLinecap="round"
+                    />
+                    <path
+                      d={`M${segment.x - segment.rx * 0.55} ${segment.y - segment.ry * 0.05}Q${segment.x} ${segment.y - segment.ry * 0.3} ${segment.x + segment.rx * 0.55} ${segment.y - segment.ry * 0.05}`}
+                      stroke="var(--color-crust)"
+                      strokeOpacity="0.55"
+                      strokeWidth="2.5"
+                      fill="none"
+                      strokeLinecap="round"
+                    />
+                    <ellipse
+                      cx={segment.x - segment.rx * 0.25}
+                      cy={segment.y - segment.ry * 0.5}
+                      rx={segment.rx * 0.45}
+                      ry={segment.ry * 0.14}
+                      fill="var(--color-cream)"
+                      opacity="0.4"
+                    />
+                  </>
+                )}
+              </g>
             ))}
           </g>
         ))}

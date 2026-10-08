@@ -38,7 +38,8 @@ function setupBakery(root: HTMLElement) {
     const frame = computeBakeryFrame(progress);
 
     layers.forEach(({ id, el }) => el?.setAttribute("transform", scaleAbout(frame.layerScale[id])));
-    if (wash) wash.style.opacity = frame.wash.toFixed(3);
+    // `wash` vai de 1 (cobre a tela) a 0; a íris é o furo transparente que cresce de 0 a 140%.
+    if (wash) wash.style.setProperty("--hole", ((1 - frame.wash) * 140).toFixed(1));
 
     sack?.setAttribute("transform", `translate(0 ${frame.sack.y.toFixed(1)}) rotate(${frame.sack.tilt.toFixed(2)} ${SACK_X} 200)`);
     sack?.style.setProperty("opacity", frame.sack.opacity.toFixed(3));

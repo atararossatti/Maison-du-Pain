@@ -183,3 +183,11 @@ html.lenis body {
 
 /* Sob o loader a cena de abertura ainda não é vista: suas animações ambientais só gastam pintura. */
 [data-scene="awakening"]:not([data-ready="true"]) [class*="amb-"] { animation-play-state: paused; }
+
+/* Íris da Cena 02: o âmbar em que a Cena 01 terminou abre do centro (`--hole`, 0–140). */
+.iris-wash {
+  --hole: 0;
+  background: linear-gradient(to bottom, var(--color-caramel), var(--color-gold));
+  -webkit-mask-image: radial-gradient(circle at 50% 52%, transparent calc(var(--hole) * 1%), #000 calc(var(--hole) * 1% + 10%));
+  mask-image: radial-gradient(circle at 50% 52%, transparent calc(var(--hole) * 1%), #000 calc(var(--hole) * 1% + 10%));
+}

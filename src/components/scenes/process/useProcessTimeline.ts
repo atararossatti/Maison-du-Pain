@@ -35,7 +35,9 @@ const setupProcess = (root: HTMLElement) => {
     bowl: q(root, "bowl"),
     bowlFront: q(root, "bowlFront"),
     finalGlow: q(root, "finalGlow"),
+    exitFlash: q(root, "exitFlash"),
   };
+  const entry = root.querySelector<HTMLElement>("[data-ui='entry']");
   const stageItems = Array.from(root.querySelectorAll<HTMLElement>("[data-stage]"));
   const captions = {
     a: root.querySelector<HTMLElement>("[data-ui='captionA']"),
@@ -83,6 +85,8 @@ const setupProcess = (root: HTMLElement) => {
     });
 
     el.finalGlow?.style.setProperty("opacity", fixed(0.55 * frame.finalGlow));
+    el.exitFlash?.style.setProperty("opacity", fixed(frame.exit));
+    if (entry) entry.style.opacity = fixed(frame.enter);
     el.bowl?.style.setProperty("opacity", fixed(frame.bowl));
     el.bowlFront?.style.setProperty("opacity", fixed(frame.bowl));
     el.dough?.setAttribute("transform", `translate(${frame.dough.x.toFixed(1)} ${frame.dough.y.toFixed(1)}) scale(${frame.dough.scale.toFixed(4)} ${(frame.dough.scale * frame.dough.squash).toFixed(4)})`);

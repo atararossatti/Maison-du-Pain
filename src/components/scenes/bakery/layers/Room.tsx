@@ -6,7 +6,7 @@ const JARS = [
   { x: 1280, fill: "var(--color-cream)" },
 ];
 
-const MOTES = Array.from({ length: 14 }, (_, i) => ({
+export const MOTES = Array.from({ length: 14 }, (_, i) => ({
   id: i,
   x: 330 + ((i * 97) % 420),
   y: 300 + ((i * 61) % 300),
@@ -15,7 +15,7 @@ const MOTES = Array.from({ length: 14 }, (_, i) => ({
   dur: 6 + (i % 4),
 }));
 
-function Lamp({ x, cord }: { x: number; cord: number }) {
+export function Lamp({ x, cord }: { x: number; cord: number }) {
   return (
     <g>
       <circle className="amb-flicker" cx={x} cy={cord + 40} r="190" fill="url(#lampHalo)" />
@@ -26,7 +26,7 @@ function Lamp({ x, cord }: { x: number; cord: number }) {
   );
 }
 
-function Window() {
+export function Window() {
   const frame = "M150 480V300A90 90 0 0 1 330 300V480Z";
   return (
     <g>
@@ -77,7 +77,7 @@ function Shelves() {
   );
 }
 
-function Utensils() {
+export function Utensils() {
   return (
     <g stroke="var(--color-chocolate)" strokeWidth="3" fill="none" strokeLinecap="round">
       <path d="M380 200H700" strokeWidth="6" />

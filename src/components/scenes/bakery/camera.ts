@@ -39,8 +39,13 @@ export function computeBakeryFrame(progress: number): BakeryFrame {
 
   const dive = step(PHASE.dive);
   const drift = 1 + 0.05 * p;
+  // Chegada: a sala começa ampliada (como se a câmera tivesse acabado de atravessar a janela) e se acomoda.
+  const arrival = 1 - step(PHASE.arrival);
   const layerScale = {} as Record<BakeryLayerId, number>;
-  for (const id of BAKERY_LAYER_IDS) layerScale[id] = Math.pow(BAKERY_LAYER_SCALE[id], dive) * drift;
+  for (const id of BAKERY_LAYER_IDS) {
+    const closeness = id === "wall" ? 0.25 : id === "oven" ? 0.4 : id === "main" ? 0.7 : 1;
+    layerScale[id] = Math.pow(BAKERY_LAYER_SCALE[id], dive) * drift * (1 + 0.55 * closeness * arrival);
+  }
 
   const sackIn = step(PHASE.sackIn);
   const sackOut = step(PHASE.sackOut);

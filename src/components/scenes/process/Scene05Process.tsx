@@ -16,6 +16,7 @@ export function Scene05Process() {
     <section ref={rootRef} data-scene="process" data-static={reduced} aria-labelledby="processo" className="relative h-svh w-full overflow-hidden bg-butter">
       <Illustration />
       <Grain />
+      <div data-ui="entry" aria-hidden className="pointer-events-none absolute inset-0 z-[6] bg-butter" style={{ opacity: reduced ? 0 : 1 }} />
 
       <div data-ui="captionA" className="pointer-events-none absolute inset-x-0 top-[12svh] z-10 px-6 text-center will-change-transform" style={{ opacity: reduced ? 1 : 0 }}>
         <h2

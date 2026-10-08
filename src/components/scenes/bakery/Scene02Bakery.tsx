@@ -32,8 +32,8 @@ export function Scene02Bakery() {
       {/* Continuidade com o fim da Cena 01: a mesma luz âmbar se dissolve no interior. */}
       <div
         data-ui="wash"
-        className="pointer-events-none absolute inset-0 z-20"
-        style={{ background: "linear-gradient(to bottom, var(--color-caramel), var(--color-gold))", opacity: reduced ? 0 : 1 }}
+        className="iris-wash pointer-events-none absolute inset-0 z-20"
+        style={{ ["--hole" as string]: reduced ? 140 : 0 }}
         aria-hidden
       />
     </section>

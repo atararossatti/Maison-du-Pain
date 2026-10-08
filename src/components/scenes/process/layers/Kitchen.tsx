@@ -1,4 +1,5 @@
 import { BOWL } from "@/config/process";
+import { Lamp, MOTES, Utensils, Window } from "../../bakery/layers/Room";
 
 export const STREAM_GEOMETRY = { x: 800, top: 420, bottom: 640, width: 14 } as const;
 export const CLOCK_CENTER = { x: 1320, y: 220 } as const;
@@ -25,6 +26,20 @@ export function KitchenBackdrop() {
       </defs>
       <rect x="-300" y="-300" width="2200" height="1500" fill="url(#kitchenWall)" />
       <rect x="-300" y="-300" width="2200" height="1500" fill="url(#processStripes)" />
+      {/* Mesma padaria da Cena 02: janela, utensílios e lâmpadas (o halo precisa existir mesmo sem a Cena 02 montada). */}
+      <radialGradient id="lampHalo">
+        <stop offset="0" stopColor="var(--color-cream)" stopOpacity="0.7" />
+        <stop offset="1" stopColor="var(--color-gold)" stopOpacity="0" />
+      </radialGradient>
+      <rect x="-300" y="500" width="2200" height="500" fill="var(--color-olive)" opacity="0.4" />
+      <rect x="-300" y="494" width="2200" height="12" fill="var(--color-chocolate)" opacity="0.3" />
+      <Window />
+      <Utensils />
+      <Lamp x={560} cord={130} />
+      <Lamp x={1060} cord={110} />
+      {MOTES.map((mote) => (
+        <circle key={mote.id} className="amb-mote" cx={mote.x + 380} cy={mote.y} r={mote.r} fill="var(--color-cream)" style={{ ["--delay" as string]: `${mote.delay}s`, ["--dur" as string]: `${mote.dur}s` }} />
+      ))}
       <rect x="-300" y="720" width="2200" height="500" fill="var(--color-crust)" />
       <rect x="-300" y="720" width="2200" height="50" fill="url(#counterEdge)" />
       <rect x="-300" y="690" width="2200" height="34" fill="var(--color-caramel)" />
