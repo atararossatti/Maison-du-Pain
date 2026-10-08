@@ -16,7 +16,7 @@ async function skipLoader(page: Page) {
 
 /** Rola até uma fração do pin da Cena 01 (0–1) e aguarda o scrub assentar. */
 async function scrollToProgress(page: Page, progress: number) {
-  await page.evaluate((p) => window.scrollTo(0, p * window.innerHeight * 5), progress);
+  await page.evaluate((p) => window.scrollTo(0, p * window.innerHeight * 4), progress);
   await page.waitForTimeout(1_200);
 }
 
@@ -38,6 +38,12 @@ test("scroll controla a câmera e é reversível", async ({ page }) => {
   const facadeTransform = () =>
     page.locator('[data-scene="awakening"] [data-layer="facade"]').getAttribute("transform");
 
+  // Resposta imediata: poucos toques da roda (300 px) já precisam mover a câmera de forma visível.
+  await page.evaluate(() => window.scrollTo(0, 300));
+  await page.waitForTimeout(1_200);
+  const early = Number(((await facadeTransform()) ?? "").match(/scale\(([\d.]+)\)/)?.[1]);
+  expect(early).toBeGreaterThan(1.3);
+
   const frames: Record<string, string | null> = {};
   for (const progress of [0, 0.3, 0.6, 0.8, 0.95]) {
     await scrollToProgress(page, progress);
@@ -52,7 +58,7 @@ test("scroll controla a câmera e é reversível", async ({ page }) => {
 
   // Rolagem rápida de ida e volta não deixa a cena em estado inconsistente.
   for (let i = 0; i < 5; i++) {
-    await page.evaluate(() => window.scrollTo(0, window.innerHeight * 5));
+    await page.evaluate(() => window.scrollTo(0, window.innerHeight * 4));
     await page.evaluate(() => window.scrollTo(0, 0));
   }
   await page.waitForTimeout(1_500);
@@ -71,8 +77,8 @@ test("cena 02: sova sincronizada ao scroll e mergulho na massa", async ({ page }
   const frames: Record<string, string | null> = {};
 
   for (const progress of [0.05, 0.2, 0.4, 0.55, 0.75, 0.93, 0.995]) {
-    // Cena 02 começa após a Cena 01 (1 tela + 5 de pin).
-    await page.evaluate((p) => window.scrollTo(0, (6 + p * 6) * window.innerHeight), progress);
+    // Cena 02 começa após a Cena 01 (1 tela + 4 de pin).
+    await page.evaluate((p) => window.scrollTo(0, (5 + p * 6) * window.innerHeight), progress);
     await page.waitForTimeout(1_200);
     frames[progress] = await arm();
     await page.screenshot({ path: `${SHOTS}/bakery-${Math.round(progress * 100)}.png` });
@@ -81,7 +87,7 @@ test("cena 02: sova sincronizada ao scroll e mergulho na massa", async ({ page }
   // Sova ligada ao scroll: dois pontos diferentes da fase de sova geram braços diferentes.
   expect(frames[0.4]).not.toBe(frames[0.55]);
 
-  await page.evaluate(() => window.scrollTo(0, 6.05 * window.innerHeight));
+  await page.evaluate(() => window.scrollTo(0, 5.05 * window.innerHeight));
   await page.waitForTimeout(1_500);
   expect(await arm()).toBe(frames[0.05]);
   expect(errors).toEqual([]);
@@ -97,8 +103,8 @@ test("cena 03: croissant 3D acompanha o scroll e reverte", async ({ page }) => {
   await skipLoader(page);
   await reveal(page, "croissant");
   const goTo = async (progress: number) => {
-    // Cada cena ocupa 1 tela + as telas de pin: Cena 03 começa em 6 + 7 = 13.
-    await page.evaluate((p) => window.scrollTo(0, (13 + p * 6) * window.innerHeight), progress);
+    // Cada cena ocupa 1 tela + as telas de pin: Cena 03 começa em 5 + 7 = 12.
+    await page.evaluate((p) => window.scrollTo(0, (12 + p * 6) * window.innerHeight), progress);
     await page.waitForTimeout(1_800);
   };
 

@@ -6,7 +6,7 @@ export const VIEWBOX_PORTRAIT = { x: 350, y: -480, width: 900, height: 1950 } as
 export const CAMERA_ORIGIN = { x: 1040, y: 580 } as const;
 
 /** Distância de scroll (em alturas de viewport) que a cena ocupa fixada na tela. */
-export const SCROLL_SCREENS = 5;
+export const SCROLL_SCREENS = 4;
 
 /** Deslocamento vertical inicial (unidades do viewBox) que abre espaço de céu para o título; some com o dolly. */
 export const OPENING_LIFT = 125;

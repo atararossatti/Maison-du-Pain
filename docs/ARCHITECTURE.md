@@ -34,10 +34,10 @@ Cada cena ocupa 1 tela mais as telas de pin. Para posicionar testes ou âncoras:
 
 | Cena | Pin (telas) | Início (telas) |
 | --- | --- | --- |
-| 01 Despertar | 5 | 0 |
-| 02 Interior | 6 | 6 |
-| 03 Croissant | 6 | 13 |
-| 04 Sabores | — (altura natural) | 20 |
+| 01 Despertar | 4 | 0 |
+| 02 Interior | 6 | 5 |
+| 03 Croissant | 6 | 12 |
+| 04 Sabores | — (altura natural) | 19 |
 | 05 Processo | 8 | depende da altura da 04 |
 | 06 Retorno | 5 | depende da 05 |
 

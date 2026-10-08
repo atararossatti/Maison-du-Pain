@@ -22,7 +22,8 @@ export interface CameraFrame {
 export function computeFrame(progress: number): CameraFrame {
   const p = clamp(progress);
   // Dolly exponencial: a escala cresce de forma multiplicativa, como uma câmera real avançando.
-  const dolly = Math.pow(clamp(p / 0.95), 1.55);
+  // Expoente 1: a câmera já se move no primeiro toque da roda (com expoente maior a abertura parecia parada).
+  const dolly = clamp(p / 0.92);
 
   const layerScale = {} as Record<LayerId, number>;
   for (const id of LAYER_IDS) layerScale[id] = Math.pow(LAYER_SCALE[id], dolly);
@@ -34,7 +35,7 @@ export function computeFrame(progress: number): CameraFrame {
     lift: OPENING_LIFT * (1 - dolly),
     dawnTint: 0.38 * (1 - smoothstep(0, 0.5, p)),
     windowGlow: smoothstep(0.12, 0.7, p),
-    door: smoothstep(0.38, 0.72, p),
+    door: smoothstep(0.1, 0.5, p),
     glassAlpha: 1 - 0.85 * smoothstep(0.6, 0.86, p),
     frameAlpha: 1 - smoothstep(0.8, 0.93, p),
     headline: { opacity: 1 - headlineOut, y: -70 * headlineOut },
