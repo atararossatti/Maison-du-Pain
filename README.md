@@ -141,22 +141,22 @@ Medições reais (`npm run build && npm start`, depois `npm run measure`), em um
 | Erros de console | nenhum |
 | `npm audit --omit=dev` | 0 vulnerabilidades |
 
-Otimizações aplicadas: o grão de papel deixou de ser um filtro SVG recalculado a cada quadro e virou uma textura estática (`public/textures/grain.png`, 25 KB), e as animações ambientais pausam nas cenas fora da tela. Leitura honesta: ainda restam quadros de ~33 ms nas cenas 2D (provável custo: muitos nós SVG rasterizados em escalas altas). Os 200 ms/2,4 s da Cena 03 vêm de WebGL emulado em CPU e do primeiro compilar de shaders, **não representam uma GPU real**. **Lighthouse** 13.5.0 (Chromium headless, padrões do Lighthouse: no mobile, CPU 4× mais lenta e rede 4G simulada). "Antes" é a demo publicada na primeira medição; "depois" é o build de produção local, mesma máquina, após as otimizações abaixo (2 execuções idênticas por perfil):
+Otimizações aplicadas: o grão de papel deixou de ser um filtro SVG recalculado a cada quadro e virou uma textura estática (`public/textures/grain.png`, 25 KB), e as animações ambientais pausam nas cenas fora da tela. Leitura honesta: ainda restam quadros de ~33 ms nas cenas 2D (provável custo: muitos nós SVG rasterizados em escalas altas). Os 200 ms/2,4 s da Cena 03 vêm de WebGL emulado em CPU e do primeiro compilar de shaders, **não representam uma GPU real**. **Lighthouse** 13.5.0 (Chromium headless, padrões do Lighthouse: no mobile, CPU 4× mais lenta e rede 4G simulada). "Antes" e "depois" são medições da **demo publicada** (`https://maison-du-pain-two.vercel.app`), uma execução cada, antes e depois das otimizações abaixo. Um build local equivalente deu resultados parecidos (mobile 57, desktop 74):
 
 | | Mobile antes | Mobile depois | Desktop antes | Desktop depois |
 | --- | --- | --- | --- | --- |
-| **Performance** | 51 | **57** | 65 | **74** |
+| **Performance** | 51 | **56** | 65 | **70** |
 | Acessibilidade | 96 | **100** | 96 | **100** |
 | Boas práticas / SEO | 100 / 100 | 100 / 100 | 100 / 100 | 100 / 100 |
-| FCP | 1,1 s | 0,8 s | 0,3 s | 0,2 s |
-| LCP | 3,8 s | 3,8 s | 0,8 s | 0,8 s |
-| Total Blocking Time | 3.570 ms | 2.550 ms | 750 ms | 560 ms |
+| FCP | 1,1 s | 0,9 s | 0,3 s | 0,3 s |
+| LCP | 3,8 s | 3,2 s | 0,8 s | 0,7 s |
+| Total Blocking Time | 3.570 ms | 2.720 ms | 750 ms | 550 ms |
 | CLS | 0,049 | 0 | 0,048 | 0,003 |
-| Speed Index | 8,0 s | 4,4 s | 3,2 s | 1,7 s |
+| Speed Index | 8,0 s | 7,6 s | 3,2 s | 2,9 s |
 
 O que foi feito: as cenas 2 a 6 passaram a ser montadas sob demanda (`LazyScene` + `next/dynamic`), o que cortou o HTML inicial de 214 KB para 62 KB e a hidratação, com placeholders de mesma altura para o scroll não mudar (há teste); o contraste dos rótulos pequenos foi corrigido; e as animações ambientais da abertura ficam pausadas sob o loader.
 
-O que ainda pesa: o TBT mobile continua alto (≈ 2,5 s sob CPU 4× mais lenta). O perfil de CPU mostra que o custo restante é majoritariamente **pintura nativa** da ilustração SVG da abertura (poucos ms de JavaScript próprio), e o LCP de 3,8 s é a duração do próprio loader cinematográfico. Esconder a abertura sob o loader reduziu o TBT, mas piorou o LCP e a nota, então foi descartado. FPS em celular e memória em dispositivos reais continuam **sem medição**.
+O que ainda pesa: o TBT mobile continua alto (≈ 2,7 s sob CPU 4× mais lenta) e o Speed Index mobile ainda é 7,6 s. O perfil de CPU mostra que o custo restante é majoritariamente **pintura nativa** da ilustração SVG da abertura (poucos ms de JavaScript próprio), e o LCP (3,2 s) é, em grande parte, a duração do próprio loader cinematográfico. Esconder a abertura sob o loader reduziu o TBT, mas piorou o LCP e a nota, então foi descartado. FPS em celular e memória em dispositivos reais continuam **sem medição**.
 
 ## Roadmap / pendências
 
