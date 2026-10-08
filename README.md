@@ -7,11 +7,13 @@
 *An immersive journey through the art of French baking.*
 *Where handcrafted tradition meets creative technology.*
 
-[Demonstração publicada: _em breve_] · [GIF da experiência: _em breve_]
+[Demonstração publicada: _em breve_]
 
 </div>
 
-![Abertura: a fachada da Maison du Pain ao amanhecer](docs/screenshots/02-abertura.jpg)
+![Percurso da experiência: loader, cenas 01 a 06 e pedido de demonstração](docs/demo.gif)
+
+*Gravação real do site em produção local (720×405): o loader, as seis cenas guiadas pelo scroll, a interação com o croissant e a baguete e o pedido de demonstração. Os quadros foram capturados em passos de scroll, então o ritmo é ilustrativo, não a fluidez real.*
 
 ## Apresentação
 
@@ -43,7 +45,7 @@ Um livro ilustrado que ganha profundidade. A narrativa é guiada pela **luz**: a
 | --- | --- | --- |
 | ![Sabores](docs/screenshots/05-sabores.jpg) | ![Processo](docs/screenshots/06-processo.jpg) | ![Retorno](docs/screenshots/07-retorno.jpg) |
 
-Todas as imagens acima são capturas reais geradas pelos testes Playwright. Um GIF da experiência ainda não foi gravado.
+Todas as imagens acima são capturas reais geradas pelos testes Playwright. O GIF acima foi gravado com Playwright (Chromium headless, WebGL por software).
 
 ## Tecnologias
 
@@ -141,7 +143,7 @@ Leitura honesta: nas cenas 2D os quadros longos são raros, mas o p95 de 50 ms i
 - Transições cinematográficas contínuas entre algumas cenas (hoje usam uma troca de cor).
 - Ilustração 2D do croissant na Cena 04 e quadro final da Cena 05 mais ricos.
 - Medir em GPU/celular reais, rodar Lighthouse, otimizar o custo de quadros das cenas 2D e automatizar a auditoria de contraste.
-- Gravar o GIF e publicar a demonstração.
+- Publicar a demonstração online.
 
 ## Créditos e licenças
 

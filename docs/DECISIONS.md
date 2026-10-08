@@ -13,7 +13,8 @@
 - [x] Metadados (`package.json`, Open Graph, favicon), LICENSE, CONTRIBUTING, CI (`typecheck`, `lint`, `build`).
 - [x] Capturas reais em `docs/screenshots`; medições em `scripts/measure.mjs`.
 - [ ] **Push** para `github.com/atararossatti/Maison-du-Pain` (requer login do usuário).
-- [ ] GIF da experiência e link da demo publicada (README tem os espaços).
+- [x] GIF da experiência (`docs/demo.gif`).
+- [ ] Link da demo publicada (README tem o espaço).
 - [ ] Medição em dispositivo real e Lighthouse.
 
 ## Direção artística
