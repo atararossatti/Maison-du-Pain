@@ -128,3 +128,10 @@ html.lenis body {
 @media (prefers-reduced-motion: reduce) {
   [data-scene="awakening"]:not([data-ready="true"]) .word-inner { transform: none; }
 }
+/* Véu de massa da Cena 03: `--hole` (0–140) é o raio, em %, do furo transparente. */
+.dough-wash {
+  --hole: 0;
+  background: radial-gradient(circle at 40% 35%, var(--color-cream), var(--color-butter) 60%, var(--color-gold));
+  -webkit-mask-image: radial-gradient(circle at 50% 54%, transparent calc(var(--hole) * 1%), #000 calc(var(--hole) * 1% + 14%));
+  mask-image: radial-gradient(circle at 50% 54%, transparent calc(var(--hole) * 1%), #000 calc(var(--hole) * 1% + 14%));
+}

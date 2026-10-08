@@ -79,3 +79,32 @@ test("cena 02: sova sincronizada ao scroll e mergulho na massa", async ({ page }
   expect(await arm()).toBe(frames[0.05]);
   expect(errors).toEqual([]);
 });
+
+test("cena 03: croissant 3D acompanha o scroll e reverte", async ({ page }) => {
+  // WebGL por software (SwiftShader) no CI/headless é lento.
+  test.setTimeout(240_000);
+  const errors: string[] = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  page.on("console", (msg) => msg.type() === "error" && errors.push(msg.text()));
+
+  await skipLoader(page);
+  const goTo = async (progress: number) => {
+    // Cada cena ocupa 1 tela + as telas de pin: Cena 03 começa em 6 + 7 = 13.
+    await page.evaluate((p) => window.scrollTo(0, (13 + p * 6) * window.innerHeight), progress);
+    await page.waitForTimeout(1_800);
+  };
+
+  await goTo(0.02);
+  await expect(page.locator("[data-scene='croissant'] canvas")).toHaveCount(1, { timeout: 15_000 });
+
+  for (const progress of [0.08, 0.25, 0.45, 0.7, 0.82, 0.98]) {
+    await goTo(progress);
+    await page.screenshot({ path: `${SHOTS}/croissant-${Math.round(progress * 100)}.png` });
+  }
+
+  const veil = () => page.locator("[data-ui='doughWash']").evaluate((el) => (el as HTMLElement).style.getPropertyValue("--hole"));
+  const late = await veil();
+  await goTo(0.02);
+  expect(Number(await veil())).toBeLessThan(Number(late));
+  expect(errors).toEqual([]);
+});
