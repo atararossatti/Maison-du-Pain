@@ -1,6 +1,8 @@
 "use client";
 
+import { ScrubStage, stageClass } from "@/components/ui/ScrubStage";
 import dynamic from "next/dynamic";
+import { CROISSANT_SCREENS } from "@/config/croissant";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { useDeviceTier } from "@/hooks/useDeviceTier";
 import { useReducedMotion } from "@/hooks/useMediaQuery";
@@ -51,12 +53,13 @@ export function Scene03Croissant() {
   useCroissantTimeline(rootRef, !reduced, progressRef);
 
   return (
+    <ScrubStage screens={CROISSANT_SCREENS} overlap covered layer={3} reduced={reduced}>
     <section
       ref={rootRef}
       data-scene="croissant"
       data-static={reduced}
       aria-labelledby="croissant-titulo"
-      className="relative h-svh w-full overflow-hidden"
+      className={`${stageClass(reduced)} h-svh w-full overflow-hidden`}
       style={{
         background:
           "radial-gradient(ellipse at 50% 45%, var(--color-cream), var(--color-butter) 55%, color-mix(in srgb, var(--color-gold) calc(var(--edge, 1) * 100%), var(--color-butter)))",
@@ -107,6 +110,7 @@ export function Scene03Croissant() {
         aria-hidden
       />
     </section>
+    </ScrubStage>
   );
 }
 

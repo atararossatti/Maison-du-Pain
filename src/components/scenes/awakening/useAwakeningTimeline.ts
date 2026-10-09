@@ -1,5 +1,5 @@
 import { type RefObject } from "react";
-import { LAYER_IDS, SCROLL_SCREENS } from "@/config/awakening";
+import { LAYER_IDS } from "@/config/awakening";
 import { useScrubbedScene } from "@/hooks/useScrubbedScene";
 import { applyDoor, computeFrame, scaleAboutOrigin, type CameraFrame } from "./camera";
 
@@ -38,5 +38,5 @@ const setup = (root: HTMLElement) => (progress: number) => applyFrame(root, comp
 
 /** Liga o scroll à câmera da Cena 01 (ver `computeFrame`). */
 export function useAwakeningTimeline(rootRef: RefObject<HTMLElement | null>, enabled: boolean) {
-  useScrubbedScene(rootRef, { enabled, screens: SCROLL_SCREENS, setup, staticProgress: 0 });
+  useScrubbedScene(rootRef, { enabled, setup, staticProgress: 0 });
 }

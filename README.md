@@ -56,7 +56,7 @@ Todas as imagens acima são capturas reais geradas pelos testes Playwright. O GI
 ## Tecnologias
 
 - **Next.js 16** (App Router), **React 19**, **TypeScript** estrito, **Tailwind CSS 4**
-- **GSAP + ScrollTrigger** (pin, scrub) e **Lenis** (scroll suave, sincronizado com o ticker do GSAP)
+- **GSAP + ScrollTrigger** (scrub) sobre palcos `position: sticky` (fixação feita pelo navegador, scroll nativo)
 - **Three.js + React Three Fiber** (somente na Cena 03, carregado sob demanda)
 - **Playwright** (testes de fluxo e capturas), ESLint, `tsc`
 - Fontes: Fraunces, Instrument Sans e Caveat via `next/font`
@@ -71,7 +71,7 @@ Não usados, de propósito: Rive e Spline (sem integração verificada; SVG + GS
 - Seis produtos interativos que funcionam por ponteiro, toque e **teclado** (cada um é um slider acessível), com painel de detalhes em `<dialog>` nativo.
 - Botões magnéticos, paralaxe por ponteiro, indicador de progresso, cabeçalho que se adapta a fundos escuros.
 - Efeitos sonoros opcionais, sintetizados em código, **desligados por padrão** (o áudio só é inicializado quando o usuário liga).
-- Suporte a `prefers-reduced-motion`: sem pins, sem Lenis, sem magnetismo, versão estática de cada cena.
+- A experiência cinematográfica roda **por padrão em qualquer navegador**, sem botão de ativação e mesmo com "reduzir movimento" no sistema (decisão de produto). Quem prefere uma versão estática a escolhe em "Modo estático" no cabeçalho (a página recarrega; nunca há troca de modo no meio da navegação). Limitação de acessibilidade assumida: a preferência do sistema não é aplicada automaticamente.
 - Ações finais reais e honestas: cardápio, dados de visita ("A definir") com compartilhamento, e um pedido de **demonstração** que gera um resumo copiável sem enviar nada.
 
 ## Arquitetura
@@ -80,7 +80,7 @@ Não usados, de propósito: Rive e Spline (sem integração verificada; SVG + GS
 src/
 ├── app/                     layout (fontes, metadados) e página
 ├── components/
-│   ├── animations/          ScrollProvider (Lenis ↔ GSAP), SoundProvider
+│   ├── animations/          ScrollLock, SoundProvider
 │   ├── layout/              Experience (montagem), Header, Footer
 │   ├── scenes/              uma pasta por cena (camera.ts = função pura)
 │   └── ui/                  Loader, Dialog, MagneticButton…
@@ -121,7 +121,7 @@ npx playwright install chromium   # uma vez
 npm test                          # 11 testes; salva capturas em test-results/shots
 ```
 
-Os testes cobrem: loader, scroll progressivo/reverso/rápido da Cena 01, sova sincronizada da Cena 02, croissant 3D, interações e diálogos dos seis produtos, layout mobile (390 px) sem rolagem horizontal, o percurso completo da Cena 05, as três ações finais, movimento reduzido, som desligado por padrão e landmarks/títulos.
+Os testes cobrem: loader, scroll progressivo/reverso/rápido da Cena 01, sova sincronizada da Cena 02, croissant 3D, interações e diálogos dos seis produtos, layout mobile (390 px) sem rolagem horizontal, o percurso completo da Cena 05, as três ações finais, modo estático, experiência completa com movimento reduzido no sistema, som desligado por padrão e landmarks/títulos.
 
 Limitações conhecidas dos testes: rodam em Chromium sobre WebGL por software (lento) e emulam o celular só por viewport; não há testes em dispositivos reais, Safari ou Firefox.
 
@@ -170,5 +170,5 @@ O que ainda pesa: o TBT mobile continua alto (≈ 2,7 s sob CPU 4× mais lenta) 
 
 - Código e ilustrações: originais deste repositório, sob licença [MIT](LICENSE). Nenhum asset de terceiros além das fontes.
 - Fontes **Fraunces**, **Instrument Sans** e **Caveat**: SIL Open Font License (Google Fonts).
-- Bibliotecas: Next.js, React, Tailwind CSS, Three.js, React Three Fiber, Lenis e Playwright sob MIT/Apache; **GSAP** segue a [licença própria da GreenSock](https://gsap.com/standard-license), que deve ser conferida antes de uso comercial.
+- Bibliotecas: Next.js, React, Tailwind CSS, Three.js, React Three Fiber e Playwright sob MIT/Apache; **GSAP** segue a [licença própria da GreenSock](https://gsap.com/standard-license), que deve ser conferida antes de uso comercial.
 - Marca "Maison du Pain", personagens e produtos: fictícios, sem relação com empresas reais.

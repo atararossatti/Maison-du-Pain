@@ -1,5 +1,5 @@
 import { type RefObject } from "react";
-import { BAKERY_LAYER_IDS, BAKERY_SCREENS, DOUGH_CENTER, INGREDIENTS } from "@/config/bakery";
+import { BAKERY_LAYER_IDS, DOUGH_CENTER, INGREDIENTS } from "@/config/bakery";
 import { useScrubbedScene } from "@/hooks/useScrubbedScene";
 import { computeBakeryFrame, scaleAbout } from "./camera";
 import { SACK_X, STREAM } from "./layers/Main";
@@ -78,5 +78,5 @@ function setupBakery(root: HTMLElement) {
 
 /** Liga o scroll à Cena 02: farinha, ingredientes, sova, crescimento e mergulho na massa. */
 export function useBakeryTimeline(rootRef: RefObject<HTMLElement | null>, enabled: boolean) {
-  useScrubbedScene(rootRef, { enabled, screens: BAKERY_SCREENS, setup: setupBakery, staticProgress: STATIC_PROGRESS });
+  useScrubbedScene(rootRef, { enabled, setup: setupBakery, staticProgress: STATIC_PROGRESS });
 }

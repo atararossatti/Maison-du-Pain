@@ -4,7 +4,6 @@ import { useScrubbedScene } from "@/hooks/useScrubbedScene";
 import { clamp, smoothstep } from "@/lib/math";
 import { applyDoor, computeFrame, scaleAboutOrigin } from "../awakening/camera";
 
-const RETURN_SCREENS = 5;
 /** Fração do scroll em que o recuo da câmera termina; o resto é pausa para ler e agir. */
 const PULL_BACK_END = 0.8;
 
@@ -51,5 +50,5 @@ function setupReturn(root: HTMLElement) {
 
 /** Cena 06: a câmera recua da janela até a rua ao entardecer, com as luzes acendendo. */
 export function useReturnTimeline(rootRef: RefObject<HTMLElement | null>, enabled: boolean) {
-  useScrubbedScene(rootRef, { enabled, screens: RETURN_SCREENS, setup: setupReturn, staticProgress: 1 });
+  useScrubbedScene(rootRef, { enabled, setup: setupReturn, staticProgress: 1 });
 }

@@ -5,7 +5,7 @@
 Cada cena é uma **função pura do progresso do scroll**. Não há estado acumulado: dado `progress ∈ [0, 1]`, a função devolve o quadro inteiro. Por isso rolar rápido, inverter a direção ou redimensionar a janela sempre produz o mesmo resultado, e os testes podem comparar quadros.
 
 ```
-ScrollTrigger (pin + scrub) ──► progress ──► computeXFrame(progress) ──► apply (atributos/CSS)
+ScrollTrigger (scrub sobre o palco sticky) ──► progress ──► computeXFrame(progress) ──► apply (atributos/CSS)
 ```
 
 O `scrub` do GSAP só suaviza o número de progresso; o desenho continua determinístico.
@@ -16,43 +16,50 @@ Cenas fixadas (01, 02, 03, 05, 06) seguem a mesma forma:
 
 | Arquivo | Papel |
 | --- | --- |
-| `src/config/<cena>.ts` | Constantes: viewBox, telas de pin, intervalos de fase (`PHASE`), escalas. Nada de números mágicos nos componentes. |
+| `src/config/<cena>.ts` | Constantes: viewBox, telas de scroll, intervalos de fase (`PHASE`), escalas. Nada de números mágicos nos componentes. |
 | `scenes/<cena>/camera.ts` | `computeFrame(progress)`: função pura. Usa `smoothstep` e `clamp` de `lib/math`. |
 | `scenes/<cena>/use<Cena>Timeline.ts` | `setup(root)` localiza elementos **uma vez** e devolve `render(progress)`; chama `useScrubbedScene`. |
 | `scenes/<cena>/Scene0X*.tsx` | A seção, textos e acessibilidade. |
 | `scenes/<cena>/Illustration.tsx` + `layers/` | O SVG em camadas; elementos animados levam `data-el`/`data-layer`/`data-ui`. |
 
-`hooks/useScrubbedScene.ts` cria o pin e o scrub com `gsap.context` (limpeza garantida) e, com movimento reduzido, desenha o `staticProgress` e não cria nenhum ScrollTrigger.
+`hooks/useScrubbedScene.ts` liga o scrub ao palco com `gsap.context` (limpeza garantida) e, no modo estático, desenha o `staticProgress` e não cria nenhum ScrollTrigger.
 
 ### Escala por camada (paralaxe)
 
 Nas cenas de câmera (01, 06 e o mergulho da 02), cada camada tem uma escala final `S`; o quadro aplica `scale = S^dolly` em torno de um ponto de fuga. Camadas mais próximas têm `S` maior, e a diferença entre elas gera paralaxe real.
 
-### Mapa de scroll
+### Palcos `sticky` e transições entre cenas
 
-Cada cena ocupa 1 tela mais as telas de pin. Para posicionar testes ou âncoras: início da cena *n* = soma de (1 + pin) das anteriores.
+Cada cena é um **palco**: um contêiner alto (`ui/ScrubStage.tsx`) cujo filho (`<section>`) usa `position: sticky; top: 0`. O ScrollTrigger não faz pin: ele só lê o progresso do contêiner (`start: "top top"`, `end: "bottom bottom"`). A fixação é do navegador (thread do compositor), sem o salto de um quadro que o pin por JavaScript dava ao engatar e soltar. Não há scroll suave por biblioteca (o Lenis foi removido): o scroll é o nativo de cada navegador, e o `scrub` do GSAP suaviza o valor de progresso.
 
-| Cena | Pin (telas) | Início (telas) |
-| --- | --- | --- |
-| 01 Despertar | 4 | 0 |
-| 02 Interior | 6 | 5 |
-| 03 Croissant | 6 | 12 |
-| 04 Sabores | — (altura natural) | 19 |
-| 05 Processo | 8 | depende da altura da 04 |
-| 06 Retorno | 5 | depende da 05 |
+- Altura do palco = (telas + 1) viewports; +1 se houver `covered` (outra cena sobe por cima do último quadro).
+- `overlap` aplica `margin-top: -100svh`: a cena seguinte sobe cobrindo o último quadro da anterior, que fica parado durante essa tela. Cada cena termina e começa na mesma cor (íris âmbar, véu de massa, flash dourado), então a passagem é contínua em vez de um "corte de página".
+- `layer` define o empilhamento (cenas seguintes cobrem as anteriores).
 
-Os testes localizam a cena por `.pin-spacer` em vez de assumir offsets.
+| Cena | Telas de scroll | Sobrepõe a anterior | Coberta pela próxima |
+| --- | --- | --- | --- |
+| 01 Despertar | 4 | — | sim |
+| 02 Interior | 6 | sim | sim |
+| 03 Croissant | 6 | sim | sim (a 04 é uma seção normal com margem negativa) |
+| 04 Sabores | altura natural | sim | não |
+| 05 Processo | 8 | não (entra deslizando, a partir da cor de fundo da 04) | sim |
+| 06 Retorno | 5 | sim | não (o rodapé vem depois) |
 
+Os testes localizam o percurso de uma cena por `[data-scene]` → `parentElement` (o palco) em vez de assumir offsets.
+
+### Movimento: a experiência é sempre completa
+
+A preferência `prefers-reduced-motion` do sistema **não** desliga a experiência (decisão de produto: tudo precisa funcionar do mesmo jeito em qualquer navegador, sem botão de ativação). Quem quiser uma versão estática a escolhe no cabeçalho ("Modo estático"): a escolha fica no `localStorage` e a página recarrega, então nunca há troca de modo no meio da navegação. No modo estático os palcos viram seções normais (`useReducedMotion()` = modo estático escolhido).
 ## Carregamento sob demanda
 
-A Cena 01 é renderizada no servidor. As Cenas 02–06 ficam atrás de `ui/LazyScene.tsx`: um placeholder com a **mesma altura** (1 tela + telas de pin; `motion-reduce:min-h-svh` com movimento reduzido) é trocado pela cena, carregada via `next/dynamic`, quando entra a 250% da viewport. Ao criar ou alterar uma cena, mantenha a altura reservada em `Experience.tsx` coerente (o teste "cenas sob demanda preservam a altura total do scroll" cobre isso). Testes precisam chamar `reveal(page, nome)` antes de consultar uma cena abaixo da dobra.
+A Cena 01 é renderizada no servidor. As Cenas 02–06 ficam atrás de `ui/LazyScene.tsx`: um placeholder com a **mesma altura** (altura do palco, com margem negativa nas cenas sobrepostas; `reserveReduced` no modo estático) é trocado pela cena, carregada via `next/dynamic`, quando entra a 400% da viewport; depois da abertura os chunks de todas as cenas são baixados em silêncio. Ao criar ou alterar uma cena, mantenha a altura reservada em `Experience.tsx` coerente (o teste "cenas sob demanda preservam a altura total do scroll" cobre isso). Testes precisam chamar `reveal(page, nome)` antes de consultar uma cena abaixo da dobra.
 
 ## Componentes transversais
 
-- **ScrollProvider**: uma instância do Lenis dirigida por `gsap.ticker`; `locked` bloqueia o scroll durante o loader. Não é criada com movimento reduzido.
+- **ScrollLock**: bloqueia o scroll (`overflow: hidden`) enquanto o loader cobre a tela.
 - **Loader**: `useCriticalAssets` pondera tarefas reais (fontes, `load`, imagens de `config/loading.ts`). O progresso exibido é `min(real, tempo/MIN_BAKE_MS)`. Falha ou timeout apenas marca a tarefa como concluída e degrada a animação.
 - **SoundProvider**: `AudioContext` criado só no primeiro "ligar"; sons sintetizados.
-- **MagneticButton / useMagnetic**: só em `pointer: fine` e sem movimento reduzido; o cursor nativo permanece (o anel que seguia o mouse foi removido).
+- **MagneticButton / useMagnetic**: só em `pointer: fine` e fora do modo estático; o cursor nativo permanece (o anel que seguia o mouse foi removido).
 - **Dialog**: `<dialog>` nativo (foco preso, Esc, clique no fundo).
 
 ## Cena 03 (WebGL)
@@ -69,7 +76,7 @@ A Cena 01 é renderizada no servidor. As Cenas 02–06 ficam atrás de `ui/LazyS
 3. Desenhe `Illustration.tsx` marcando o que anima com `data-el`.
 4. Crie `use<Cena>Timeline.ts` com `setup` (estável, no nível do módulo ou `useCallback` com função inline) e `useScrubbedScene`.
 5. Monte `Scene0X*.tsx` (landmarks, `aria-labelledby`, legendas com `opacity: reduced ? 1 : 0`) e inclua em `components/layout/Experience.tsx`.
-6. Adicione um teste em `tests/` que role até a cena via `.pin-spacer` e capture quadros.
+6. Adicione um teste em `tests/` que role até a cena (`scrollStage`, pelo palco) e capture quadros.
 
 ## Como adicionar um produto
 

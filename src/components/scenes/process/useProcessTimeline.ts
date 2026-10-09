@@ -1,5 +1,5 @@
 import { useCallback, type RefObject } from "react";
-import { BOWL, EAR_CENTER, GRAIN_COUNT, HOPPER, PROCESS_SCREENS } from "@/config/process";
+import { BOWL, EAR_CENTER, GRAIN_COUNT, HOPPER } from "@/config/process";
 import { useScrubbedScene } from "@/hooks/useScrubbedScene";
 import { computeProcessFrame } from "./camera";
 import { STREAM_GEOMETRY } from "./layers/Kitchen";
@@ -38,6 +38,7 @@ const setupProcess = (root: HTMLElement) => {
     exitFlash: q(root, "exitFlash"),
   };
   const entry = root.querySelector<HTMLElement>("[data-ui='entry']");
+  const stagesList = root.querySelector<HTMLElement>("[data-ui='stages']");
   const stageItems = Array.from(root.querySelectorAll<HTMLElement>("[data-stage]"));
   const captions = {
     a: root.querySelector<HTMLElement>("[data-ui='captionA']"),
@@ -87,6 +88,7 @@ const setupProcess = (root: HTMLElement) => {
     el.finalGlow?.style.setProperty("opacity", fixed(0.55 * frame.finalGlow));
     el.exitFlash?.style.setProperty("opacity", fixed(frame.exit));
     if (entry) entry.style.opacity = fixed(frame.enter);
+    if (stagesList) stagesList.style.opacity = fixed(1 - frame.enter);
     el.bowl?.style.setProperty("opacity", fixed(frame.bowl));
     el.bowlFront?.style.setProperty("opacity", fixed(frame.bowl));
     el.dough?.setAttribute("transform", `translate(${frame.dough.x.toFixed(1)} ${frame.dough.y.toFixed(1)}) scale(${frame.dough.scale.toFixed(4)} ${(frame.dough.scale * frame.dough.squash).toFixed(4)})`);
@@ -121,5 +123,5 @@ const setupProcess = (root: HTMLElement) => {
 /** Liga o scroll à Cena 05: do campo de trigo ao pão saindo do forno. */
 export function useProcessTimeline(rootRef: RefObject<HTMLElement | null>, enabled: boolean) {
   const setup = useCallback((root: HTMLElement) => setupProcess(root), []);
-  useScrubbedScene(rootRef, { enabled, screens: PROCESS_SCREENS, setup, staticProgress: STATIC_PROGRESS });
+  useScrubbedScene(rootRef, { enabled, setup, staticProgress: STATIC_PROGRESS });
 }

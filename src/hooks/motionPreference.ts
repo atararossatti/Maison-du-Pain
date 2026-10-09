@@ -1,26 +1,30 @@
 import { useSyncExternalStore } from "react";
 
+const KEY = "mdp-static-mode";
+
 /**
- * Escolha explícita do visitante de ver a experiência completa mesmo com `prefers-reduced-motion`.
- * Fica só em memória (vale até recarregar): a preferência do sistema continua sendo o padrão.
+ * A experiência cinematográfica é o padrão para todos os visitantes, em qualquer navegador.
+ * O modo estático (sem pins nem câmera) só existe por escolha explícita do visitante, guardada
+ * neste navegador. A troca recarrega a página: nunca há mudança de modo no meio da navegação.
  */
-let forcedFull = false;
-const listeners = new Set<() => void>();
-
-const subscribe = (notify: () => void) => {
-  listeners.add(notify);
-  return () => listeners.delete(notify);
-};
-
-export function enableFullMotion() {
-  forcedFull = true;
-  document.documentElement.dataset.motion = "full";
-  listeners.forEach((notify) => notify());
+export function readStaticMode(): boolean {
+  try {
+    return window.localStorage.getItem(KEY) === "1";
+  } catch {
+    return false;
+  }
 }
 
-export const useForcedFullMotion = () =>
-  useSyncExternalStore(
-    subscribe,
-    () => forcedFull,
-    () => false,
-  );
+export function setStaticMode(enabled: boolean) {
+  try {
+    if (enabled) window.localStorage.setItem(KEY, "1");
+    else window.localStorage.removeItem(KEY);
+  } catch {
+    // Sem armazenamento disponível (modo privado restrito): a escolha vale só até recarregar.
+  }
+  window.location.reload();
+}
+
+const noSubscription = () => () => {};
+
+export const useStaticMode = () => useSyncExternalStore(noSubscription, readStaticMode, () => false);

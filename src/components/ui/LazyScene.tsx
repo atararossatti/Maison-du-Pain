@@ -15,7 +15,7 @@ interface LazySceneProps {
 }
 
 /**
- * Monta uma cena só quando ela se aproxima da tela. As cenas abaixo da dobra deixam de entrar no
+ * Monta uma cena só quando ela se aproxima da tela (4 viewports de antecedência, para a pintura inicial acontecer antes de ser vista). As cenas abaixo da dobra deixam de entrar no
  * HTML inicial e na hidratação (o gargalo de Total Blocking Time medido no Lighthouse), mas o
  * placeholder ocupa a mesma altura, então a barra de scroll e as posições dos pins não mudam.
  * O título fica em texto oculto para a navegação por títulos de leitores de tela.
@@ -32,7 +32,7 @@ export function LazyScene({ name, title, reserve, reserveReduced = reserve, chil
       ([entry]) => {
         if (entry?.isIntersecting) setMounted(true);
       },
-      { rootMargin: "250% 0px" },
+      { rootMargin: "400% 0px" },
     );
     observer.observe(el);
     return () => observer.disconnect();

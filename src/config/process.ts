@@ -41,7 +41,7 @@ export const PHASE = {
   captionB: [0.64, 0.7, 0.82, 0.88],
   captionC: [0.96, 0.995],
   /** Entrada: o campo surge da cor da Cena 04. Saída: o forno inunda a tela de ouro, cor em que a Cena 06 começa. */
-  enter: [0, 0.05],
+  enter: [0, 0.03],
   exit: [0.97, 1],
 } as const;
 

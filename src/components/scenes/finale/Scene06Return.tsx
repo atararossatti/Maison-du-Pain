@@ -1,8 +1,10 @@
 "use client";
 
+import { ScrubStage, stageClass } from "@/components/ui/ScrubStage";
 import { useRef, useState } from "react";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 import { Grain } from "@/components/ui/Grain";
+import { RETURN_SCREENS } from "@/config/awakening";
 import { useDeviceTier } from "@/hooks/useDeviceTier";
 import { useFinePointer, useReducedMotion } from "@/hooks/useMediaQuery";
 import { Illustration } from "../awakening/Illustration";
@@ -30,7 +32,8 @@ export function Scene06Return() {
   const close = () => setOpen(null);
 
   return (
-    <section ref={rootRef} data-scene="return" aria-labelledby="retorno" className="relative h-svh w-full overflow-hidden bg-chocolate">
+    <ScrubStage screens={RETURN_SCREENS} overlap layer={6} reduced={reduced}>
+    <section ref={rootRef} data-scene="return" aria-labelledby="retorno" className={`${stageClass(reduced)} h-svh w-full overflow-hidden bg-chocolate`}>
       <Illustration dusk />
       <Grain />
 
@@ -76,5 +79,6 @@ export function Scene06Return() {
       <VisitDialog open={open === "visit"} onClose={close} />
       <OrderDialog open={open === "order"} onClose={close} />
     </section>
+    </ScrubStage>
   );
 }

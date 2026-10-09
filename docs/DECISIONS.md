@@ -63,3 +63,8 @@ Next.js 16 (App Router) + TS estrito + Tailwind 4. GSAP + ScrollTrigger + Lenis 
 - Safari/iOS e `pin`: `ignoreMobileResize` + `svh` (ainda não testado em dispositivo real).
 - Peso do 3D em mobile: croissant ≤30k tris, DPR limitado a 1.5.
 - Grão feTurbulence re-rasteriza no resize; oculto em tier baixo.
+
+## Decisão: cinema sempre ligado, palcos sticky (sem Lenis)
+- Antes, `prefers-reduced-motion` do sistema deixava o site estático e um botão "Ver a experiência completa" trocava de modo no meio da página (um corte brusco). Agora a experiência cinematográfica é o padrão em qualquer navegador; só quem escolhe "Modo estático" no cabeçalho a desliga (recarrega a página).
+- Pins do ScrollTrigger e Lenis foram trocados por palcos `position: sticky` (`ScrubStage`) com scroll nativo: sem o salto de ~115 px que o pin dava ao engatar e sem scroll por JavaScript.
+- Cenas se encaixam por sobreposição (`overlap`/`covered`): a próxima sobe por cima do último quadro parado da anterior, na mesma cor de passagem.

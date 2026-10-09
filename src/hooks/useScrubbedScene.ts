@@ -3,8 +3,6 @@ import { gsap, ScrollTrigger } from "@/lib/gsap";
 
 interface ScrubbedSceneOptions {
   enabled: boolean;
-  /** Alturas de viewport que a cena permanece fixada. */
-  screens: number;
   /** Prepara os elementos uma vez e devolve a função que desenha o quadro para um progresso. */
   setup: (root: HTMLElement) => (progress: number) => void;
   /** Progresso exibido quando `enabled` é falso (movimento reduzido). */
@@ -12,11 +10,11 @@ interface ScrubbedSceneOptions {
 }
 
 /**
- * Fixa a cena e liga o progresso do scroll a `render`. O `scrub` suaviza apenas o número
+ * Liga o progresso do scroll sobre o palco (`ScrubStage`, o pai da cena) a `render`. O `scrub` suaviza apenas o número
  * de progresso; o desenho do quadro deve ser uma função pura dele.
  */
 export function useScrubbedScene(rootRef: RefObject<HTMLElement | null>, options: ScrubbedSceneOptions) {
-  const { enabled, screens, setup, staticProgress } = options;
+  const { enabled, setup, staticProgress } = options;
 
   useEffect(() => {
     const root = rootRef.current;
@@ -34,6 +32,9 @@ export function useScrubbedScene(rootRef: RefObject<HTMLElement | null>, options
       return () => visibility.disconnect();
     }
 
+    const stage = root.parentElement;
+    if (!stage) return () => visibility.disconnect();
+
     const ctx = gsap.context(() => {
       const state = { progress: 0 };
       gsap.to(state, {
@@ -41,10 +42,12 @@ export function useScrubbedScene(rootRef: RefObject<HTMLElement | null>, options
         ease: "none",
         onUpdate: () => render(state.progress),
         scrollTrigger: {
-          trigger: root,
+          // O palco tem (telas + 1) viewports: o progresso vai de 0 a 1 enquanto a cena fica colada.
+          trigger: stage,
           start: "top top",
-          end: () => `+=${window.innerHeight * screens}`,
-          pin: true,
+          // O palco tem (telas + 1) viewports, mais 1 se outra cena sobe por cima: nesse caso o progresso termina
+          // uma tela antes e o último quadro fica inteiro à vista até a próxima cena cobri-lo.
+          end: () => `+=${stage.offsetHeight - window.innerHeight * (stage.dataset.covered === "true" ? 2 : 1)}`,
           scrub: 0.6,
           invalidateOnRefresh: true,
         },
@@ -52,11 +55,11 @@ export function useScrubbedScene(rootRef: RefObject<HTMLElement | null>, options
       render(0);
     }, root);
 
-    // Fontes e ilustrações alteram alturas após a hidratação; recalcula os pontos de pin.
+    // Fontes e ilustrações alteram alturas após a hidratação; recalcula os pontos de início e fim.
     ScrollTrigger.refresh();
     return () => {
       ctx.revert();
       visibility.disconnect();
     };
-  }, [rootRef, enabled, screens, setup, staticProgress]);
+  }, [rootRef, enabled, setup, staticProgress]);
 }

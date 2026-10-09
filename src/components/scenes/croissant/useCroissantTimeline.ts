@@ -1,5 +1,4 @@
 import { useCallback, type RefObject } from "react";
-import { CROISSANT_SCREENS } from "@/config/croissant";
 import { useScrubbedScene } from "@/hooks/useScrubbedScene";
 import { computeCroissantFrame } from "./camera";
 
@@ -47,5 +46,5 @@ export function useCroissantTimeline(
     [progressRef],
   );
 
-  useScrubbedScene(rootRef, { enabled, screens: CROISSANT_SCREENS, setup, staticProgress: STATIC_PROGRESS });
+  useScrubbedScene(rootRef, { enabled, setup, staticProgress: STATIC_PROGRESS });
 }

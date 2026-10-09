@@ -9,6 +9,7 @@ import { BaguetteArt, SourdoughArt } from "./illustrations/Breads";
 import { CinnamonRollArt, CroissantArt, PainAuChocolatArt } from "./illustrations/Pastries";
 import { ProductDialog } from "./ProductDialog";
 import { ProductStage } from "./ProductStage";
+import { useReducedMotion } from "@/hooks/useMediaQuery";
 import { useFlavorsScroll } from "./useFlavorsScroll";
 
 const ART: Record<ProductId, ComponentType> = {
@@ -67,6 +68,7 @@ function ProductCard({ product, index, onOpen }: { product: Product; index: numb
 export function Scene04Flavors() {
   const rootRef = useRef<HTMLElement>(null);
   const [selected, setSelected] = useState<Product | null>(null);
+  const reduced = useReducedMotion();
   useFlavorsScroll(rootRef);
 
   return (
@@ -74,7 +76,7 @@ export function Scene04Flavors() {
       ref={rootRef}
       data-scene="flavors"
       aria-labelledby="sabores"
-      className="relative overflow-hidden bg-butter px-6 pb-40 pt-32 sm:px-12 lg:px-[6vw]"
+      className={`relative overflow-hidden bg-butter px-6 pb-40 pt-32 sm:px-12 lg:px-[6vw] ${reduced ? "" : "z-[4] -mt-[100svh] pt-[calc(100svh+8rem)]"}`}
     >
       <div aria-hidden className="pointer-events-none absolute -right-32 top-40 size-[34rem] rounded-full bg-olive/10" />
       <div aria-hidden className="pointer-events-none absolute -left-40 bottom-24 size-[28rem] rounded-full bg-caramel/10" />

@@ -8,6 +8,9 @@ export const CAMERA_ORIGIN = { x: 1040, y: 580 } as const;
 /** Distância de scroll (em alturas de viewport) que a cena ocupa fixada na tela. */
 export const SCROLL_SCREENS = 4;
 
+/** Telas de scroll da Cena 06 (o recuo da câmera termina antes; o resto é pausa para ler e agir). */
+export const RETURN_SCREENS = 5;
+
 /** Deslocamento vertical inicial (unidades do viewBox) que abre espaço de céu para o título; some com o dolly. */
 export const OPENING_LIFT = 125;
 

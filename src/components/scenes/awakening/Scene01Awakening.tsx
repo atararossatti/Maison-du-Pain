@@ -1,8 +1,10 @@
 "use client";
 
+import { ScrubStage, stageClass } from "@/components/ui/ScrubStage";
 import { useEffect, useRef } from "react";
 import { SplitWords } from "@/components/ui/SplitWords";
 import { Grain } from "@/components/ui/Grain";
+import { SCROLL_SCREENS } from "@/config/awakening";
 import { useFinePointer, useReducedMotion } from "@/hooks/useMediaQuery";
 import { useDeviceTier } from "@/hooks/useDeviceTier";
 import { gsap } from "@/lib/gsap";
@@ -35,12 +37,13 @@ export function Scene01Awakening({ ready }: { ready: boolean }) {
   }, [ready, reduced]);
 
   return (
+    <ScrubStage screens={SCROLL_SCREENS} covered layer={1} reduced={reduced}>
     <section
       ref={rootRef}
       data-scene="awakening"
       data-ready={ready}
       aria-labelledby="abertura"
-      className="relative h-svh w-full overflow-hidden bg-butter"
+      className={`${stageClass(reduced)} h-svh w-full overflow-hidden bg-butter`}
     >
       <Illustration />
       <Grain />
@@ -77,5 +80,6 @@ export function Scene01Awakening({ ready }: { ready: boolean }) {
         </p>
       </div>
     </section>
+    </ScrubStage>
   );
 }

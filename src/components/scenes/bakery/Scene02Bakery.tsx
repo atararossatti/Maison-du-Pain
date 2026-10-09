@@ -1,7 +1,9 @@
 "use client";
 
+import { ScrubStage, stageClass } from "@/components/ui/ScrubStage";
 import { useRef } from "react";
 import { Grain } from "@/components/ui/Grain";
+import { BAKERY_SCREENS } from "@/config/bakery";
 import { useReducedMotion } from "@/hooks/useMediaQuery";
 import { Interior } from "./Interior";
 import { useBakeryTimeline } from "./useBakeryTimeline";
@@ -12,7 +14,8 @@ export function Scene02Bakery() {
   useBakeryTimeline(rootRef, !reduced);
 
   return (
-    <section ref={rootRef} data-scene="bakery" aria-labelledby="interior" className="relative h-svh w-full overflow-hidden bg-butter">
+    <ScrubStage screens={BAKERY_SCREENS} overlap covered layer={2} reduced={reduced}>
+    <section ref={rootRef} data-scene="bakery" aria-labelledby="interior" className={`${stageClass(reduced)} h-svh w-full overflow-hidden bg-butter`}>
       <Interior />
       <Grain />
 
@@ -37,5 +40,6 @@ export function Scene02Bakery() {
         aria-hidden
       />
     </section>
+    </ScrubStage>
   );
 }

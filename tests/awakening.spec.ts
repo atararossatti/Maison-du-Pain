@@ -8,10 +8,22 @@ async function reveal(page: Page, name: string) {
   await page.waitForSelector(`[data-scene="${name}"]`, { timeout: 15_000 });
 }
 
+/** Rola até um ponto (0–1) do percurso de uma cena; o palco é o pai da seção e tem (telas + 1) viewports. */
+async function scrollStage(page: Page, name: string, progress: number, screens: number) {
+  await page.evaluate(
+    ([scene, p, total]) => {
+      const stage = document.querySelector(`[data-scene="${scene}"]`)?.parentElement;
+      if (!stage) throw new Error(`Cena ${scene} não encontrada`);
+      window.scrollTo(0, stage.getBoundingClientRect().top + window.scrollY + Number(p) * Number(total) * window.innerHeight);
+    },
+    [name, progress, screens] as const,
+  );
+}
+
 async function skipLoader(page: Page) {
   await page.goto("/");
   await page.getByRole("button", { name: "Pular introdução" }).click();
-  await expect(page.getByRole("status")).toHaveCount(0, { timeout: 5_000 });
+  await expect(page.getByRole("status")).toHaveCount(0, { timeout: 20_000 });
 }
 
 /** Rola até uma fração do pin da Cena 01 (0–1) e aguarda o scrub assentar. */
@@ -77,8 +89,7 @@ test("cena 02: sova sincronizada ao scroll e mergulho na massa", async ({ page }
   const frames: Record<string, string | null> = {};
 
   for (const progress of [0.05, 0.2, 0.4, 0.55, 0.75, 0.93, 0.995]) {
-    // Cena 02 começa após a Cena 01 (1 tela + 4 de pin).
-    await page.evaluate((p) => window.scrollTo(0, (5 + p * 6) * window.innerHeight), progress);
+    await scrollStage(page, "bakery", progress, 6);
     await page.waitForTimeout(1_200);
     frames[progress] = await arm();
     await page.screenshot({ path: `${SHOTS}/bakery-${Math.round(progress * 100)}.png` });
@@ -87,7 +98,7 @@ test("cena 02: sova sincronizada ao scroll e mergulho na massa", async ({ page }
   // Sova ligada ao scroll: dois pontos diferentes da fase de sova geram braços diferentes.
   expect(frames[0.4]).not.toBe(frames[0.55]);
 
-  await page.evaluate(() => window.scrollTo(0, 5.05 * window.innerHeight));
+  await scrollStage(page, "bakery", 0.008, 6);
   await page.waitForTimeout(1_500);
   expect(await arm()).toBe(frames[0.05]);
   expect(errors).toEqual([]);
@@ -103,8 +114,7 @@ test("cena 03: croissant 3D acompanha o scroll e reverte", async ({ page }) => {
   await skipLoader(page);
   await reveal(page, "croissant");
   const goTo = async (progress: number) => {
-    // Cada cena ocupa 1 tela + as telas de pin: Cena 03 começa em 5 + 7 = 12.
-    await page.evaluate((p) => window.scrollTo(0, (12 + p * 6) * window.innerHeight), progress);
+    await scrollStage(page, "croissant", progress, 6);
     await page.waitForTimeout(1_800);
   };
 
@@ -202,7 +212,7 @@ test("cena 05: do trigo ao pão, reversível e sem erros", async ({ page }) => {
   const goTo = async (progress: number) => {
     await page.evaluate((p) => {
       const section = document.querySelector("[data-scene='process']");
-      const spacer = section?.closest(".pin-spacer") ?? section;
+      const spacer = section?.parentElement;
       if (!spacer) throw new Error("Cena 05 não encontrada");
       const top = spacer.getBoundingClientRect().top + window.scrollY;
       window.scrollTo(0, top + p * 8 * window.innerHeight);
@@ -239,7 +249,7 @@ test("cena 06: recuo ao entardecer e botões com ações reais", async ({ page }
   const goTo = async (progress: number) => {
     await page.evaluate((p) => {
       const section = document.querySelector("[data-scene='return']");
-      const spacer = section?.closest(".pin-spacer") ?? section;
+      const spacer = section?.parentElement;
       if (!spacer) throw new Error("Cena 06 não encontrada");
       window.scrollTo(0, spacer.getBoundingClientRect().top + window.scrollY + p * 5 * window.innerHeight);
     }, progress);
@@ -281,12 +291,13 @@ test("cena 06: recuo ao entardecer e botões com ações reais", async ({ page }
 });
 
 test.describe("acessibilidade e preferências", () => {
-  test("movimento reduzido: sem pins, conteúdo visível e loader dispensado sozinho", async ({ browser }) => {
-    const context = await browser.newContext({ reducedMotion: "reduce", viewport: { width: 1280, height: 720 } });
+  test("modo estático escolhido: sem palcos fixos, conteúdo visível e loader dispensado sozinho", async ({ browser }) => {
+    const context = await browser.newContext({ viewport: { width: 1280, height: 720 } });
     const page = await context.newPage();
+    await page.addInitScript(() => window.localStorage.setItem("mdp-static-mode", "1"));
     await page.goto("/");
     await expect(page.getByRole("status")).toHaveCount(0, { timeout: 10_000 });
-    expect(await page.locator(".pin-spacer").count()).toBe(0);
+    expect(await page.locator("[data-scene='awakening']").evaluate((el) => getComputedStyle(el).position)).toBe("relative");
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
     await reveal(page, "return");
     await page.evaluate(() => document.querySelector("[data-scene='return']")?.scrollIntoView());
@@ -328,7 +339,7 @@ test("cena 01 e 06 em retrato mostram a fachada inteira", async ({ browser }) =>
   await reveal(page, "return");
   await page.evaluate(() => {
     const section = document.querySelector("[data-scene='return']");
-    const spacer = section?.closest(".pin-spacer") ?? section;
+    const spacer = section?.parentElement;
     if (!spacer) throw new Error("Cena 06 não encontrada");
     window.scrollTo(0, spacer.getBoundingClientRect().top + window.scrollY + 4.9 * window.innerHeight);
   });
@@ -352,21 +363,32 @@ test("cenas sob demanda preservam a altura total do scroll", async ({ page }) =>
   expect(Math.abs(after - before) / before).toBeLessThan(0.03);
 });
 
-test("movimento reduzido: aviso oferece a experiência completa", async ({ browser }) => {
+test("sistema com movimento reduzido ainda recebe a experiência completa, sem botão nem corte", async ({ browser }) => {
   const context = await browser.newContext({ reducedMotion: "reduce", viewport: { width: 1280, height: 720 } });
   const page = await context.newPage();
   await page.goto("/");
+  await page.getByRole("button", { name: "Pular introdução" }).click();
   await expect(page.getByRole("status")).toHaveCount(0, { timeout: 10_000 });
-  expect(await page.locator(".pin-spacer").count()).toBe(0);
-  const notice = page.getByRole("region", { name: "Aviso sobre animações" });
-  await expect(notice).toBeVisible();
-  await notice.getByRole("button", { name: "Ver a experiência completa" }).click();
-  await expect(notice).toBeHidden();
-  // Com a experiência completa, a Cena 01 passa a ser fixada e a câmera responde ao scroll.
-  await expect(page.locator(".pin-spacer").first()).toBeAttached({ timeout: 5_000 });
+  await expect(page.getByRole("region", { name: "Aviso sobre animações" })).toHaveCount(0);
+  expect(await page.locator("[data-scene='awakening']").evaluate((el) => getComputedStyle(el).position)).toBe("sticky");
   await page.evaluate(() => window.scrollTo(0, 400));
   await page.waitForTimeout(1_500);
   const scale = await page.locator("[data-scene='awakening'] [data-layer='facade']").getAttribute("transform");
   expect(Number(scale?.match(/scale\(([\d.]+)\)/)?.[1])).toBeGreaterThan(1.2);
   await context.close();
+});
+
+test("botão Modo estático troca de versão recarregando a página, nunca no meio da navegação", async ({ page }) => {
+  await skipLoader(page);
+  expect(await page.evaluate(() => document.documentElement.dataset.motion)).toBe("full");
+  await Promise.all([
+    page.waitForEvent("load"),
+    page.getByRole("button", { name: /Modo estático/ }).click(),
+  ]);
+  await expect(page.getByRole("status")).toHaveCount(0, { timeout: 20_000 });
+  await expect.poll(() => page.evaluate(() => document.documentElement.dataset.motion)).toBe("static");
+  expect(await page.locator("[data-scene='awakening']").evaluate((el) => getComputedStyle(el).position)).toBe("relative");
+  await page.getByRole("button", { name: /Modo estático/ }).click();
+  await page.waitForLoadState("load");
+  await expect.poll(() => page.evaluate(() => document.documentElement.dataset.motion)).toBe("full");
 });

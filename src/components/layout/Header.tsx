@@ -2,12 +2,14 @@
 
 import { useEffect, useRef } from "react";
 import { useSound } from "@/components/animations/SoundProvider";
+import { setStaticMode, useStaticMode } from "@/hooks/motionPreference";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 
 export function Header() {
   const barRef = useRef<HTMLSpanElement>(null);
   const headerRef = useRef<HTMLElement>(null);
   const { enabled, toggle } = useSound();
+  const staticMode = useStaticMode();
 
   useEffect(() => {
     const bar = barRef.current;
@@ -57,6 +59,15 @@ export function Header() {
           <p className="font-hand text-xl text-chocolate/80 transition-colors group-data-[tone=light]:text-cream/80 max-sm:hidden" lang="fr">
             Le bonheur se savoure
           </p>
+          <button
+            type="button"
+            onClick={() => setStaticMode(!staticMode)}
+            aria-pressed={staticMode}
+            title="Alterna entre a experiência animada e uma versão estática (recarrega a página)"
+            className="rounded-full border border-current px-3 py-1 text-[0.7rem] uppercase tracking-[0.2em] text-chocolate transition-colors group-data-[tone=light]:text-cream max-sm:hidden"
+          >
+            Modo estático {staticMode ? "ligado" : "desligado"}
+          </button>
           <button
             type="button"
             onClick={toggle}
