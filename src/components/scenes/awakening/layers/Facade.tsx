@@ -14,7 +14,7 @@ function Dormer({ x }: { x: number }) {
     <g>
       <polygon points={`${x - 40},228 ${x},194 ${x + 40},228`} fill="var(--color-chocolate)" />
       <rect x={x - 28} y="226" width="56" height="58" fill="var(--color-butter)" stroke="var(--color-chocolate)" strokeWidth="3" />
-      <rect className="amb-flicker" x={x - 20} y="234" width="40" height="42" fill="var(--color-gold)" opacity="0.85" style={{ ["--delay" as string]: `${x % 5}s` }} />
+      <rect x={x - 20} y="234" width="40" height="42" fill="var(--color-gold)" opacity="0.85" />
       <path d={`M${x} 234V276M${x - 20} 255H${x + 20}`} stroke="var(--color-chocolate)" strokeWidth="2.5" />
     </g>
   );
@@ -38,7 +38,7 @@ function Neighbor({ x, tone }: { x: number; tone: string }) {
 function Lantern({ x }: { x: number }) {
   return (
     <g>
-      <circle className="amb-flicker" cx={x} cy="466" r="46" fill="url(#lampGlow)" opacity="0.8" />
+      <circle cx={x} cy="466" r="46" fill="url(#lampGlow)" opacity="0.8" />
       <path d={`M${x} 440V452`} stroke="var(--color-chocolate)" strokeWidth="3" />
       <rect x={x - 8} y="452" width="16" height="28" rx="3" fill="var(--color-gold)" stroke="var(--color-chocolate)" strokeWidth="3" />
     </g>
@@ -72,7 +72,7 @@ function ShopInterior() {
         </radialGradient>
       </defs>
       <rect x="690" y="350" width="220" height="260" fill="url(#interiorWall)" />
-      <circle className="amb-flicker" cx="800" cy="410" r="95" fill="url(#lampGlow)" />
+      <circle cx="800" cy="410" r="95" fill="url(#lampGlow)" />
       <path d="M800 350V398" stroke="var(--color-chocolate)" strokeWidth="2.5" />
       <path d="M786 410L792 398H808L814 410Z" fill="var(--color-chocolate)" />
       {[432, 492].map((y) => (
@@ -85,7 +85,7 @@ function ShopInterior() {
         <ellipse key={x} cx={x} cy="484" rx="14" ry="8" fill="var(--color-caramel)" stroke="var(--color-chocolate)" strokeWidth="1.5" />
       ))}
       <path d="M840 600V540A32 32 0 0 1 904 540V600Z" fill="var(--color-brick)" />
-      <path className="amb-flicker" d="M852 600V546A20 20 0 0 1 892 546V600Z" fill="var(--color-gold)" />
+      <path d="M852 600V546A20 20 0 0 1 892 546V600Z" fill="var(--color-gold)" />
       <rect x="690" y="562" width="220" height="48" fill="var(--color-chocolate)" />
       <rect x="690" y="558" width="220" height="7" fill="var(--color-crust)" />
       <ellipse cx="750" cy="553" rx="26" ry="8" fill="var(--color-cream)" />
@@ -109,7 +109,7 @@ function Lights() {
   return (
     <g data-fx="lights" style={{ opacity: 0 }}>
       {LIGHTS.map((light) => (
-        <circle key={`${light.x}-${light.y}`} className="amb-flicker" cx={light.x} cy={light.y} r={light.r} fill="url(#lampGlow)" />
+        <circle key={`${light.x}-${light.y}`} cx={light.x} cy={light.y} r={light.r} fill="url(#lampGlow)" />
       ))}
     </g>
   );
@@ -126,7 +126,7 @@ function DoorInterior() {
         </linearGradient>
       </defs>
       <rect x="995" y="440" width="90" height="280" fill="url(#doorWall)" />
-      <circle className="amb-flicker" cx="1040" cy="520" r="70" fill="url(#lampGlow)" />
+      <circle cx="1040" cy="520" r="70" fill="url(#lampGlow)" />
       <path d="M1040 440V500" stroke="var(--color-chocolate)" strokeWidth="1.5" />
       <path d="M1032 508L1036 500H1044L1048 508Z" fill="var(--color-chocolate)" />
       <rect x="995" y="602" width="90" height="118" fill="var(--color-chocolate)" />

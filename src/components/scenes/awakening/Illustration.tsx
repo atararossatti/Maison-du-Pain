@@ -7,14 +7,12 @@ import { Props, Street } from "./layers/Street";
 import type { ReactNode } from "react";
 
 /**
- * Cada camada tem dois grupos: o interno recebe a transformação do scroll (atributo `transform`),
- * o externo recebe o deslocamento do ponteiro. Separados, nunca disputam a mesma propriedade.
+ * Cada camada recebe a transformação do scroll no atributo `transform`. O deslocamento do ponteiro NÃO é
+ * aplicado aqui: é um único translate no elemento `<svg>` (ver `usePointerParallax`), para não invalidar a pintura.
  */
 function Layer({ id, children }: { id: LayerId; children: ReactNode }) {
   return (
-    <g data-pointer={id}>
-      <g data-layer={id}>{children}</g>
-    </g>
+    <g data-layer={id}>{children}</g>
   );
 }
 
@@ -27,7 +25,11 @@ export function Illustration({ dusk = false }: { dusk?: boolean }) {
     <svg
       viewBox={`${box.x} ${box.y} ${box.width} ${box.height}`}
       preserveAspectRatio="xMidYMid slice"
-      className="absolute inset-0 h-full w-full"
+      data-pointer-root
+      // Um pouco maior que a seção: o deslocamento do ponteiro nunca deixa uma borda vazia à mostra.
+      // Sem `will-change`/transform 3D de propósito: um <svg> promovido a camada própria com filhos animados
+      // deixa o Chrome com a rasterização pela metade (parede, copas e telhado somem até a próxima repintura).
+      className="absolute -inset-6 h-[calc(100%+3rem)] w-[calc(100%+3rem)]"
       role="img"
       aria-label={dusk ? "Ilustração da fachada da Maison du Pain ao entardecer: janelas acesas, rua de paralelepípedos dourada e mesas na calçada." : "Ilustração da fachada da Maison du Pain ao amanhecer: sobrado francês com flores nas janelas, mesas na calçada, árvores e uma chaminé soltando fumaça."}
     >
@@ -47,7 +49,7 @@ export function Illustration({ dusk = false }: { dusk?: boolean }) {
       <Layer id="props"><Props /></Layer>
       <Layer id="foreground"><Foreground /></Layer>
 
-      <rect data-fx="dawnTint" x={box.x} y={box.y} width={box.width} height={box.height} fill={dusk ? "var(--color-dusk)" : "var(--color-rose)"} style={{ opacity: dusk ? 0 : 0.38, mixBlendMode: "multiply" }} />
+      <rect data-fx="dawnTint" x={box.x} y={box.y} width={box.width} height={box.height} fill={dusk ? "var(--color-dusk)" : "var(--color-rose)"} style={{ opacity: dusk ? 0 : 0.2 }} />
       <rect x={box.x} y={box.y} width={box.width} height={box.height} fill="url(#vignette)" />
     </svg>
   );

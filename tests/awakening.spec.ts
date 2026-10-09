@@ -290,6 +290,24 @@ test("cena 06: recuo ao entardecer e botões com ações reais", async ({ page }
   expect(errors).toEqual([]);
 });
 
+test("cena 06: o desenho não vira camada composta ao mover o mouse (raster pela metade no Chrome)", async ({ page }) => {
+  await skipLoader(page);
+  await reveal(page, "return");
+  await scrollStage(page, "return", 0.98, 5);
+  await page.waitForTimeout(1_300);
+  for (let i = 0; i < 14; i++) await page.mouse.move(280 + i * 90, 180 + (i % 4) * 130);
+  await page.waitForTimeout(1_200);
+  const svg = await page.evaluate(() => {
+    const el = document.querySelector<SVGSVGElement>("[data-scene='return'] svg[data-pointer-root]");
+    if (!el) throw new Error("SVG da Cena 06 não encontrado");
+    return { willChange: getComputedStyle(el).willChange, transform: el.style.transform };
+  });
+  // Com `will-change` ou `translate3d`, o <svg> (que tem filhos animados) é promovido a camada própria e o
+  // Chrome deixa parede, copas e telhado sem rasterizar até a próxima repintura.
+  expect(svg.willChange).toBe("auto");
+  expect(svg.transform).not.toContain("3d");
+});
+
 test.describe("acessibilidade e preferências", () => {
   test("modo estático escolhido: sem palcos fixos, conteúdo visível e loader dispensado sozinho", async ({ browser }) => {
     const context = await browser.newContext({ viewport: { width: 1280, height: 720 } });

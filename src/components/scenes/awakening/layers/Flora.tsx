@@ -43,7 +43,7 @@ function Tree({ x, flip = 1, size = 1 }: { x: number; flip?: number; size?: numb
   return (
     <g transform={`translate(${x} 735) scale(${flip * size} ${size})`}>
       <path d="M-14 0Q-10 -150 -4 -250H8Q14 -130 18 0Z" fill="var(--color-chocolate)" opacity="0.92" />
-      <g className="amb-sway" style={{ ["--dur" as string]: "7s" }}>
+      <g>
         <circle cx="-60" cy="-300" r="82" fill="var(--color-moss)" />
         <circle cx="70" cy="-320" r="88" fill="var(--color-olive)" />
         <circle cx="0" cy="-390" r="92" fill="var(--color-olive)" />
@@ -76,7 +76,7 @@ export function Foreground() {
         <path d="M1640 920Q1540 660 1400 590Q1450 720 1350 770Q1470 800 1490 920Z" />
         <path d="M1640 920Q1610 770 1640 660Q1510 720 1510 830Z" fill="var(--color-olive)" />
       </g>
-      <g className="amb-sway" style={{ ["--dur" as string]: "6s" }}>
+      <g>
         <path d="M-20 -20Q200 20 360 -10Q220 60 150 90Q90 40 -20 70Z" fill="var(--color-moss)" />
         <g fill="var(--color-cream)">
           <circle cx="220" cy="42" r="13" />

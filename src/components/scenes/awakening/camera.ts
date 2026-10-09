@@ -33,7 +33,7 @@ export function computeFrame(progress: number): CameraFrame {
   return {
     layerScale,
     lift: OPENING_LIFT * (1 - dolly),
-    dawnTint: 0.38 * (1 - smoothstep(0, 0.5, p)),
+    dawnTint: 0.2 * (1 - smoothstep(0, 0.5, p)),
     windowGlow: smoothstep(0.12, 0.7, p),
     door: smoothstep(0.1, 0.5, p),
     glassAlpha: 1 - 0.85 * smoothstep(0.6, 0.86, p),

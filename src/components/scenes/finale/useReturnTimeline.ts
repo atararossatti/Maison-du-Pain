@@ -29,7 +29,7 @@ function setupReturn(root: HTMLElement) {
     setOpacity(nodes.frame, frame.frameAlpha);
     setOpacity(nodes.glow, smoothstep(0.1, 0.7, q));
     setOpacity(nodes.lights, smoothstep(0.35, 0.8, q));
-    setOpacity(nodes.tint, 0.5 * smoothstep(0.15, 0.8, q));
+    setOpacity(nodes.tint, 0.3 * smoothstep(0.15, 0.8, q));
     setOpacity(parts.wash, 1 - smoothstep(0, 0.08, q));
 
     const headline = smoothstep(0.68, 0.82, q);

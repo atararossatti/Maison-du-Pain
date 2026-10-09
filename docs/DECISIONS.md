@@ -68,3 +68,8 @@ Next.js 16 (App Router) + TS estrito + Tailwind 4. GSAP + ScrollTrigger + Lenis 
 - Antes, `prefers-reduced-motion` do sistema deixava o site estático e um botão "Ver a experiência completa" trocava de modo no meio da página (um corte brusco). Agora a experiência cinematográfica é o padrão em qualquer navegador; só quem escolhe "Modo estático" no cabeçalho a desliga (recarrega a página).
 - Pins do ScrollTrigger e Lenis foram trocados por palcos `position: sticky` (`ScrubStage`) com scroll nativo: sem o salto de ~115 px que o pin dava ao engatar e sem scroll por JavaScript.
 - Cenas se encaixam por sobreposição (`overlap`/`covered`): a próxima sobe por cima do último quadro parado da anterior, na mesma cor de passagem.
+
+## Decisão: o `<svg>` das Cenas 01/06 nunca vira camada própria
+- Sintoma (Cena 06, ao chegar ao fim ou mexer o mouse): desenho "fragmentado" e piscando, árvores só com o tronco, parede e telhado sumidos, nuvens cortadas em linha reta. Ficava assim até a próxima repintura.
+- Causa, reproduzida de forma determinística (comparando a tela com uma repintura forçada): `will-change: transform` no `<svg>` (e o `translate3d` que o GSAP usa) promovem o SVG a camada composta; com filhos animados por CSS (`amb-*`) o Chrome deixa essa camada rasterizada pela metade. Sem o `will-change` (ou sem as animações) 0 falhas em 12 tentativas; antes, 12 de 12.
+- Regras: nada de `will-change`/`translate3d` no `<svg>`; o paralaxe do ponteiro escreve `translate(x, y)` 2D (ver `usePointerParallax`); sem `mix-blend-mode` nem deslocamento por camada interna. O teste "o desenho não vira camada composta" protege isso.

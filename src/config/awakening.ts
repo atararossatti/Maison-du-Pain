@@ -31,14 +31,3 @@ export const LAYER_SCALE = {
 
 export type LayerId = keyof typeof LAYER_SCALE;
 export const LAYER_IDS = Object.keys(LAYER_SCALE) as LayerId[];
-
-/** Intensidade do deslocamento por ponteiro (unidades do viewBox) em cada camada. */
-export const POINTER_DEPTH: Partial<Record<LayerId, number>> = {
-  sky: 4,
-  clouds: 8,
-  town: 12,
-  facade: 20,
-  trees: 28,
-  props: 34,
-  foreground: 46,
-};
