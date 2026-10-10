@@ -148,13 +148,12 @@ test.describe("cena 04: universo dos sabores", () => {
     await page.screenshot({ path: `${SHOTS}/flavors-top.png` });
 
     const stages = page.getByRole("slider");
-    await expect(stages).toHaveCount(6);
-    const names = ["croissant", "chocolate", "baguete", "pão", "rolinho", "xícara"];
-    expect(names.length).toBe(6);
+    await expect(stages).toHaveCount(12);
 
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 12; i++) {
       const stage = stages.nth(i);
-      await stage.scrollIntoViewIfNeeded();
+      await stage.evaluate((el) => el.scrollIntoView({ block: "center" }));
+      await page.waitForTimeout(300);
       const box = await stage.boundingBox();
       if (!box) throw new Error(`Produto ${i} sem caixa de layout`);
       const readValue = () => stage.evaluate((el) => el.style.getPropertyValue("--v"));
@@ -401,12 +400,12 @@ test("botão Modo estático troca de versão recarregando a página, nunca no me
   expect(await page.evaluate(() => document.documentElement.dataset.motion)).toBe("full");
   await Promise.all([
     page.waitForEvent("load"),
-    page.getByRole("button", { name: /Modo estático/ }).click(),
+    page.getByRole("button", { name: /Modo estático/ }).first().click(),
   ]);
   await expect(page.getByRole("status")).toHaveCount(0, { timeout: 20_000 });
   await expect.poll(() => page.evaluate(() => document.documentElement.dataset.motion)).toBe("static");
   expect(await page.locator("[data-scene='awakening']").evaluate((el) => getComputedStyle(el).position)).toBe("relative");
-  await page.getByRole("button", { name: /Modo estático/ }).click();
+  await page.getByRole("button", { name: /Modo estático/ }).first().click();
   await page.waitForLoadState("load");
   await expect.poll(() => page.evaluate(() => document.documentElement.dataset.motion)).toBe("full");
 });

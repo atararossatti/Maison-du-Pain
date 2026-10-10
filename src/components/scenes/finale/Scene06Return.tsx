@@ -32,12 +32,12 @@ export function Scene06Return() {
   const close = () => setOpen(null);
 
   return (
-    <ScrubStage screens={RETURN_SCREENS} overlap layer={6} reduced={reduced}>
+    <ScrubStage screens={RETURN_SCREENS} overlap layer={6} navId="visite" headerTone="light" reduced={reduced}>
     <section ref={rootRef} data-scene="return" aria-labelledby="retorno" className={`${stageClass(reduced)} h-svh w-full overflow-hidden bg-chocolate`}>
       <Illustration dusk />
       <Grain />
 
-      <div data-ui="headline" className="pointer-events-none absolute inset-x-0 top-[9svh] z-10 px-6 text-center will-change-transform" style={{ opacity: reduced ? 1 : 0 }}>
+      <div data-ui="headline" className="pointer-events-none absolute inset-x-0 top-[13svh] z-10 px-6 text-center will-change-transform" style={{ opacity: reduced ? 1 : 0 }}>
         <h2
           id="retorno"
           className="mx-auto max-w-[20ch] font-display text-[clamp(2rem,5vw,4.4rem)] font-light leading-[1.02] text-cream"

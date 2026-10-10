@@ -1,0 +1,62 @@
+{
+  "croissants": {
+    "width": 742,
+    "height": 974,
+    "blur": "data:image/webp;base64,UklGRnYAAABXRUJQVlA4IGoAAADQAwCdASoOABIAPsFOoEqnpCMhsAgA8BgJZgCdMoAC22MfIfDdP2AA/sKUl267QzoD5/8rxfCD+F+WmpcSISrU1YoznCygI8XPwHS0oUUOMSyxKxqNhKPVMIOkVGJPwJFxy9KVIxEGPwAA",
+    "color": "#080808"
+  },
+  "pains": {
+    "width": 735,
+    "height": 980,
+    "blur": "data:image/webp;base64,UklGRoQAAABXRUJQVlA4IHgAAABwBACdASoOABMAPsFOoUqnpCMhsAgA8BgJaACdMoRwACk4rHFqfQnervet0AD+QTRwz4Vn6eqoZz9JeTyE/Vi34vgb/d1ug3sLAUmhx/Z7aNTG4J4+vxaYbmS2iYdWkCMo8VEbNTI9buFD6wbB9fj0wAxBhDVAAAA=",
+    "color": "#b86808"
+  },
+  "sonho": {
+    "width": 1280,
+    "height": 853,
+    "blur": "data:image/webp;base64,UklGRkIAAABXRUJQVlA4IDYAAACwAQCdASoOAAkAAsBIJagAAo84A/MMAP5mDL9wO+FzzExm4rmLXM42u4vIY9yZfL3vPPQUwgA=",
+    "color": "#d8e8f8"
+  },
+  "gateau-chocolat": {
+    "width": 687,
+    "height": 1031,
+    "blur": "data:image/webp;base64,UklGRnoAAABXRUJQVlA4IG4AAAAQBACdASoOABUAPsFOoUqnpCMhsAgA8BgJagCdMoRwACfrRZDLvkQswAD+49/V9lBenHDeQVCc0gHnmMIkPUu92SfafBDeOxEm3RmtHmhbDTwZ6O6kynEQM7jDOBvVEgMMerFRyrJkk5Smqq0gAA==",
+    "color": "#783808"
+  },
+  "gateau-moelleux": {
+    "width": 1280,
+    "height": 853,
+    "blur": "data:image/webp;base64,UklGRkQAAABXRUJQVlA4IDgAAACwAQCdASoOAAkAAsBIJYgCdACAmRQAAP6pK7a+aszZtF6npiE91LRME3JAH2FyQCb1RwTlwQAAAA==",
+    "color": "#b8a888"
+  },
+  "muffins": {
+    "width": 1280,
+    "height": 853,
+    "blur": "data:image/webp;base64,UklGRkYAAABXRUJQVlA4IDoAAADQAQCdASoOAAkAAsBIJQBOgB6WNWcGkAD+7Qigz2SHxUdomBKpuNyoRmQYnm5sbLfgdcDQ8CPY2wAA",
+    "color": "#180808"
+  },
+  "biscuits": {
+    "width": 706,
+    "height": 1010,
+    "blur": "data:image/webp;base64,UklGRmwAAABXRUJQVlA4IGAAAABQBACdASoOABQAPsFOoUqnpCMhsAgA8BgJQBOmUI4AA9aGrC+jCMtox+uAAP7B6N9Q2BvQiv3CtYjIXc5HuNwmuEcBkeHqYjDJkshJ9/jmnpN0dxzkCR40+ChwUC6j5AA=",
+    "color": "#582808"
+  },
+  "vitrine": {
+    "width": 687,
+    "height": 1031,
+    "blur": "data:image/webp;base64,UklGRnoAAABXRUJQVlA4IG4AAAAwBACdASoOABUAPsFOoEqnpCMhsAgA8BgJQBOl4AA96qXG6Z6ba4XN+AAA/tYmpxCqzud33nUnyqZkqjHBj4+8i7R5zA75vN/CLI5ipNedIhJpI/RkFEUYHVxtmhnaZJznY750C0qDLdicqIAAAA==",
+    "color": "#987858"
+  },
+  "burger-maison": {
+    "width": 1470,
+    "height": 980,
+    "blur": "data:image/webp;base64,UklGRk4AAABXRUJQVlA4IEIAAADQAQCdASoOAAkAAsBIJbACdADcNu8goAD++xYUdTsOzqj6jfxiJdxu00w+ya79Vxa7uUzO6I9f9KuGPTYs+LStAAA=",
+    "color": "#080808"
+  },
+  "burger-rustique": {
+    "width": 687,
+    "height": 1031,
+    "blur": "data:image/webp;base64,UklGRnoAAABXRUJQVlA4IG4AAAAwBACdASoOABUAPsFOoUqnpCMhsAgA8BgJQBYdhEPeEIXKIf1OnYZfbYAA/vM7L5iK3eMz8x5H2AMsn57Gj6z66Bhdf4EzuhniCUh+fGT/PJ078rrr3X5J61yvRYt29Ho0ItOAy82n/ZZr7g4AAA==",
+    "color": "#080808"
+  }
+}

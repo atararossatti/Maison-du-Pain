@@ -9,6 +9,10 @@ interface ScrubStageProps {
   covered?: boolean;
   /** Ordem de empilhamento: cenas seguintes cobrem as anteriores. */
   layer: number;
+  /** Marca o início da seção para o menu de navegação (`data-nav`). */
+  navId?: string;
+  /** Cabeçalho claro sobre esta cena (cena escura). */
+  headerTone?: "light";
   reduced: boolean;
   children: ReactNode;
 }
@@ -21,11 +25,14 @@ export const stageClass = (reduced: boolean) => (reduced ? "relative" : "sticky 
  * Substitui o pin do ScrollTrigger: `position: sticky` roda na thread do compositor, então não há
  * o salto de um quadro que o pin por JavaScript tinha ao engatar e soltar.
  */
-export function ScrubStage({ screens, overlap = false, covered = false, layer, reduced, children }: ScrubStageProps) {
+export function ScrubStage({ screens, overlap = false, covered = false, layer, navId, headerTone, reduced, children }: ScrubStageProps) {
   return (
     <div
       data-stage
       data-covered={covered}
+      data-nav={navId}
+      data-header-tone={headerTone}
+      id={navId}
       className="relative"
       style={reduced ? undefined : { height: `${(screens + 1 + (covered ? 1 : 0)) * 100}svh`, marginTop: overlap ? "-100svh" : undefined, zIndex: layer }}
     >

@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode, type Ref } from "react";
 import { useReducedMotion } from "@/hooks/useMediaQuery";
 
-interface LazySceneProps {
+export interface SceneReserveProps {
   /** Nome da cena, usado por testes e leitores de tela. */
   name: string;
   title: string;
@@ -11,7 +11,23 @@ interface LazySceneProps {
   reserve: string;
   /** Altura da cena montada com movimento reduzido (sem pin); padrão: a mesma de `reserve`. */
   reserveReduced?: string;
+}
+
+interface LazySceneProps extends SceneReserveProps {
   children: ReactNode;
+}
+
+/**
+ * Espaço com a altura da cena. Também é o `loading` do `next/dynamic`: enquanto o código da cena baixa, a página não
+ * pode perder essa altura (o scroll daria um salto).
+ */
+export function SceneReserve({ name, title, reserve, reserveReduced = reserve, innerRef }: SceneReserveProps & { innerRef?: Ref<HTMLDivElement> }) {
+  const reduced = useReducedMotion();
+  return (
+    <div ref={innerRef} data-lazy={name} className={`bg-butter ${reduced ? reserveReduced : reserve}`}>
+      <h2 className="sr-only">{title}</h2>
+    </div>
+  );
 }
 
 /**
@@ -20,8 +36,7 @@ interface LazySceneProps {
  * placeholder ocupa a mesma altura, então a barra de scroll e as posições dos pins não mudam.
  * O título fica em texto oculto para a navegação por títulos de leitores de tela.
  */
-export function LazyScene({ name, title, reserve, reserveReduced = reserve, children }: LazySceneProps) {
-  const reduced = useReducedMotion();
+export function LazyScene({ children, ...reserveProps }: LazySceneProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [mounted, setMounted] = useState(false);
 
@@ -39,9 +54,5 @@ export function LazyScene({ name, title, reserve, reserveReduced = reserve, chil
   }, [mounted]);
 
   if (mounted) return <>{children}</>;
-  return (
-    <div ref={ref} data-lazy={name} className={`bg-butter ${reduced ? reserveReduced : reserve}`}>
-      <h2 className="sr-only">{title}</h2>
-    </div>
-  );
+  return <SceneReserve {...reserveProps} innerRef={ref} />;
 }
