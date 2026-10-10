@@ -1,6 +1,6 @@
 # Contribuindo
 
-Obrigado pelo interesse na Maison du Pain! Este é um projeto de portfólio, mas melhorias são bem-vindas.
+Este é um projeto autoral e proprietário de Atara Rossatti (todos os direitos reservados, veja [LICENSE](LICENSE)). Não aceita contribuições externas sem autorização prévia e expressa da autora; as convenções abaixo valem para quem trabalha no projeto com essa autorização.
 
 ## Ambiente
 
@@ -10,7 +10,7 @@ npx playwright install chromium
 npm run dev
 ```
 
-## Antes de abrir um PR
+## Antes de entregar uma alteração
 
 ```bash
 npm run typecheck && npm run lint && npm test && npm run build

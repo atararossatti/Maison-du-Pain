@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "description": "Maison du Pain: experiência imersiva de scrollytelling sobre uma padaria francesa fictícia.",
-  "license": "MIT",
-  "author": "atararossatti",
+  "license": "UNLICENSED",
+  "author": "Atara Rossatti",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/atararossatti/Maison-du-Pain.git"

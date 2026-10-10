@@ -9,6 +9,8 @@
 
 **[Ver a demonstração online](https://maison-du-pain-two.vercel.app)**
 
+© 2026 Atara Rossatti. Todos os direitos reservados.
+
 </div>
 
 ![Percurso da experiência: loader, cenas 01 a 06 e pedido de demonstração](docs/demo.gif)
@@ -16,6 +18,8 @@
 *Gravação real do site em produção local (720×405): o loader, as seis cenas guiadas pelo scroll, a interação com o croissant e a baguete e o pedido de demonstração. Os quadros foram capturados em passos de scroll, então o ritmo é ilustrativo, não a fluidez real.*
 
 ## Apresentação
+
+> **Projeto autoral e proprietário.** Maison du Pain é de autoria de **Atara Rossatti**. O código-fonte é publicado para consulta e demonstração de portfólio; **não é software de código aberto** e não há permissão para copiar, modificar, distribuir, sublicenciar ou usar comercialmente sem autorização prévia e expressa da autora. Veja o arquivo [LICENSE](LICENSE).
 
 Maison du Pain é uma padaria artesanal francesa **fictícia** e, ao mesmo tempo, um projeto de portfólio de *creative development*: um site de scrollytelling em que o visitante controla a história rolando a página. A câmera atravessa uma janela, uma massa vira um croissant em 3D, seis produtos respondem ao ponteiro e a noite cai sobre a rua.
 
@@ -168,7 +172,9 @@ O que ainda pesa: o TBT mobile continua alto (≈ 2,7 s sob CPU 4× mais lenta) 
 
 ## Créditos e licenças
 
-- Código e ilustrações: originais deste repositório, sob licença [MIT](LICENSE). Nenhum asset de terceiros além das fontes.
+- Código e ilustrações: originais, de autoria de Atara Rossatti, **todos os direitos reservados** (veja [LICENSE](LICENSE)).
+- Fotografias (`imagens/` e `public/fotos/`): fornecidas pela autora do projeto. A procedência e os direitos de uso das fotos são de responsabilidade dela e não são cobertos pelas licenças de terceiros abaixo.
+- Os itens a seguir **mantêm as licenças de origem**; este projeto não os relicencia.
 - Fontes **Fraunces**, **Instrument Sans** e **Caveat**: SIL Open Font License (Google Fonts).
 - Bibliotecas: Next.js, React, Tailwind CSS, Three.js, React Three Fiber e Playwright sob MIT/Apache; **GSAP** segue a [licença própria da GreenSock](https://gsap.com/standard-license), que deve ser conferida antes de uso comercial.
 - Marca "Maison du Pain", personagens e produtos: fictícios, sem relação com empresas reais.
