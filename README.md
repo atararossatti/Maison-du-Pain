@@ -35,7 +35,7 @@ Um livro ilustrado que ganha profundidade. A narrativa é guiada pela **luz**: a
 | 01 · Despertar | Fachada ao amanhecer; a câmera avança e atravessa a janela | Dolly exponencial em 8 camadas SVG |
 | 02 · Interior | Farinha cai, ingredientes se aproximam, a padeira sova (braços ligados ao scroll) e a massa cresce | Função pura progresso → quadro |
 | 03 · Croissant | A massa vira um croissant 3D que gira e abre as camadas em leque | React Three Fiber, geometria procedural |
-| 04 · Atelier | Cena fixa com fotografias que acompanham cada etapa da fornada | Scroll + ScrollTrigger |
+| 04 · Sabores | Quatro produtos ilustrados em composição editorial, cada um com interação própria | Variáveis CSS + ScrollTrigger |
 | 05 · Processo | Trigo → grão → farinha → massa → fermentação → forno → pão | Uma única timeline, partículas SVG |
 | 06 · Retorno | A câmera recua até a rua ao entardecer; três ações reais | Reuso da câmera da Cena 01 |
 
@@ -45,9 +45,9 @@ Um livro ilustrado que ganha profundidade. A narrativa é guiada pela **luz**: a
 | --- | --- | --- |
 | ![Loader](docs/screenshots/01-loader.jpg) | ![Padaria](docs/screenshots/03-padaria.jpg) | ![Croissant](docs/screenshots/04-croissant-camadas.jpg) |
 
-| Processo | Retorno |
-| --- | --- |
-| ![Processo](docs/screenshots/06-processo.jpg) | ![Retorno](docs/screenshots/07-retorno.jpg) |
+| Sabores | Processo | Retorno |
+| --- | --- | --- |
+| ![Sabores](docs/screenshots/05-sabores.jpg) | ![Processo](docs/screenshots/06-processo.jpg) | ![Retorno](docs/screenshots/07-retorno.jpg) |
 
 Em telas verticais (390×844), a fachada aparece inteira:
 
@@ -72,7 +72,7 @@ Não usados, de propósito: Rive e Spline (sem integração verificada; SVG + GS
 - Loader cinematográfico com **progresso real** (fontes, `load` e imagens críticas), tratamento de falha/timeout, versão simplificada para dispositivos fracos, botão "Pular introdução".
 - Seis cenas controladas pelo scroll, **reversíveis**: cada cena é uma função pura do progresso, então rolar rápido, voltar ou redimensionar sempre reproduz o mesmo quadro.
 - Croissant 3D procedural (sem arquivo GLB): cristas em barril, texturas geradas em canvas, partículas de farinha, leque com corte em espiral.
-- Galerie com fotografias ampliáveis (lightbox) e mega menu de produtos que leva até ela.
+- Quatro produtos ilustrados e interativos que funcionam por ponteiro, toque e **teclado** (cada um é um slider acessível), com painel de detalhes em `<dialog>` nativo.
 - Botões magnéticos, paralaxe por ponteiro, indicador de progresso, cabeçalho que se adapta a fundos escuros.
 - Efeitos sonoros opcionais, sintetizados em código, **desligados por padrão** (o áudio só é inicializado quando o usuário liga).
 - A experiência cinematográfica roda **por padrão em qualquer navegador**, sem botão de ativação e mesmo com "reduzir movimento" no sistema (decisão de produto). Quem prefere uma versão estática a escolhe em "Modo estático" no cabeçalho (a página recarrega; nunca há troca de modo no meio da navegação). Limitação de acessibilidade assumida: a preferência do sistema não é aplicada automaticamente.
@@ -125,7 +125,7 @@ npx playwright install chromium   # uma vez
 npm test                          # 11 testes; salva capturas em test-results/shots
 ```
 
-Os testes cobrem: loader, scroll progressivo/reverso/rápido da Cena 01, sova sincronizada da Cena 02, croissant 3D, navegação e mega menu, layout mobile (390 px) sem rolagem horizontal, o percurso completo da Cena 05, as três ações finais, modo estático, experiência completa com movimento reduzido no sistema, som desligado por padrão e landmarks/títulos.
+Os testes cobrem: loader, scroll progressivo/reverso/rápido da Cena 01, sova sincronizada da Cena 02, croissant 3D, interações e diálogos dos produtos, layout mobile (390 px) sem rolagem horizontal, o percurso completo da Cena 05, as três ações finais, modo estático, experiência completa com movimento reduzido no sistema, som desligado por padrão e landmarks/títulos.
 
 Limitações conhecidas dos testes: rodam em Chromium sobre WebGL por software (lento) e emulam o celular só por viewport; não há testes em dispositivos reais, Safari ou Firefox.
 
@@ -166,6 +166,7 @@ O que ainda pesa: o TBT mobile continua alto (≈ 2,7 s sob CPU 4× mais lenta) 
 
 - Testes em celulares reais (a Cena 01 e a 06 já têm enquadramento próprio em retrato; as cenas 02 e 05 ainda cortam as laterais em telas verticais).
 - Transições ainda por cor (não por movimento contínuo): Cena 04 → 05 (entra pela cor do fundo) e Cena 01 → 02 (íris âmbar com recuo da câmera, mas sem o interior real da vitrine).
+- Mais refinamento de arte: o croissant 2D da Cena 04 ainda é estilizado e simples.
 - Reduzir o custo de pintura da ilustração de abertura (menos nós SVG/camadas), encurtar o loader no mobile para melhorar o LCP e medir em GPU/celular reais.
 - Domínio próprio para a demonstração (hoje em `*.vercel.app`).
 

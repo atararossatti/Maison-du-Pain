@@ -3,9 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 import { Photo } from "@/components/ui/Photo";
 import { NAV, type NavId } from "@/config/nav";
-import { CATEGORIES } from "@/config/products";
+import { CATEGORIES, PRODUCTS } from "@/config/products";
 import { gsap } from "@/lib/gsap";
-import { navigateTo } from "@/lib/navigate";
+import { navigateTo, navigateToProduct } from "@/lib/navigate";
 
 interface MobileMenuProps {
   open: boolean;
@@ -100,13 +100,14 @@ export function MobileMenu({ open, onClose, active, sound, staticMode }: MobileM
                     <div id="mobile-produtos" hidden={!productsOpen} className="pb-5">
                       <ul className="grid grid-cols-2 gap-3">
                         {CATEGORIES.map((cat) => {
+                          const first = PRODUCTS.find((product) => product.category === cat.id);
                           return (
                             <li key={cat.id}>
                               <a
-                                href="#galerie"
+                                href={first ? `#produto-${first.id}` : "#produtos"}
                                 onClick={(event) => {
                                   event.preventDefault();
-                                  leave(() => navigateTo("galerie"));
+                                  leave(() => (first ? navigateToProduct(first.id) : navigateTo("produtos")));
                                 }}
                                 className="group relative block aspect-[4/5] overflow-hidden"
                               >

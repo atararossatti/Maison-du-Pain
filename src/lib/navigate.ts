@@ -20,7 +20,9 @@ export function navTop(item: NavItem): { top: number; mounted: boolean } | null 
   }
   const placeholder = item.lazy ? find(`[data-lazy="${item.lazy}"]`) : null;
   if (!placeholder) return null;
-  return { top: documentTop(placeholder), mounted: false };
+  // Os produtos começam um pouco abaixo do topo da seção (ela sobe por baixo da cena anterior).
+  const shift = item.id === "produtos" ? window.innerHeight + 128 : 0;
+  return { top: documentTop(placeholder) + shift, mounted: false };
 }
 
 /** Onde o scroll deve pousar para mostrar o item (px). */
@@ -106,9 +108,48 @@ export function navigateTo(id: NavId, options: NavigateOptions = {}) {
   });
 }
 
-/** Resolve um `#hash` de URL para navegação (`#galerie`; links antigos `#produto-*` levam à Galerie). */
+/** Rola até um produto específico (`#produto-<id>`), com o mesmo véu/rolagem de `navigateTo`. */
+export function navigateToProduct(productId: string, options: NavigateOptions = {}) {
+  const produtos = NAV.find((entry) => entry.id === "produtos");
+  if (!produtos) return;
+  const landOnProduct = () => {
+    const el = document.getElementById(`produto-${productId}`)?.closest<HTMLElement>("article");
+    return el ? Math.max(0, Math.round(documentTop(el) - HEADER_GAP - 40)) : null;
+  };
+  const first = landOnProduct() ?? landingY(produtos);
+  if (first === null) return;
+  history.replaceState(null, "", `#produto-${productId}`);
+  const cover = veil();
+  const go = () => {
+    window.scrollTo({ top: first, behavior: "instant" });
+    let frames = 600;
+    let stable = 0;
+    const step = () => {
+      const wanted = landOnProduct();
+      if (wanted !== null) {
+        if (Math.abs(window.scrollY - wanted) > 3) {
+          window.scrollTo({ top: wanted, behavior: "instant" });
+          stable = 0;
+        } else stable += 1;
+        if (stable >= 20) return;
+      }
+      if (frames-- > 0) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  };
+  const distance = Math.abs(first - window.scrollY) / window.innerHeight;
+  if (options.instant || prefersReducedMotion() || !cover) return go();
+  if (distance < VEIL_DISTANCE) {
+    window.scrollTo({ top: first, behavior: "smooth" });
+    return;
+  }
+  gsap.killTweensOf(cover);
+  gsap.to(cover, { opacity: 1, duration: 0.28, ease: "power2.in", onComplete: () => { go(); gsap.to(cover, { opacity: 0, duration: 0.7, delay: 0.25, ease: "power2.out" }); } });
+}
+
+/** Resolve um `#hash` de URL para navegação (`#galerie`, `#produto-croissant`). */
 export function navigateToHash(hash: string, options: NavigateOptions = {}) {
   const value = hash.replace(/^#/, "");
   if (isNavId(value)) navigateTo(value, options);
-  else if (value.startsWith("produto-")) navigateTo("galerie", options);
+  else if (value.startsWith("produto-")) navigateToProduct(value.slice("produto-".length), options);
 }

@@ -18,17 +18,19 @@ import { Header } from "./Header";
 // Cenas abaixo da dobra: chunk próprio, montado só quando a cena se aproxima (ver LazyScene).
 const loadBakery = () => import("@/components/scenes/bakery/Scene02Bakery").then((m) => m.Scene02Bakery);
 const loadCroissant = () => import("@/components/scenes/croissant/Scene03Croissant").then((m) => m.Scene03Croissant);
+const loadFlavors = () => import("@/components/scenes/flavors/Scene04Flavors").then((m) => m.Scene04Flavors);
 const loadProcess = () => import("@/components/scenes/process/Scene05Process").then((m) => m.Scene05Process);
 const loadReturn = () => import("@/components/scenes/finale/Scene06Return").then((m) => m.Scene06Return);
 
 /**
  * Alturas reservadas = telas de scroll + 1 (palco sticky) + 1 se outra cena sobe por cima do último quadro
- * e, nas cenas que se sobrepõem à anterior, menos 1 tela (margem negativa).
+ * e, nas cenas que se sobrepõem à anterior, menos 1 tela (margem negativa). A Cena 04 usa a altura natural medida.
  * O mesmo espaço é o `loading` do `next/dynamic`: a página nunca perde altura enquanto o código de uma cena baixa.
  */
 const RESERVES = {
   bakery: { name: "bakery", title: "O interior da padaria", reserve: "min-h-[800svh] -mt-[100svh]", reserveReduced: "min-h-svh" },
-  croissant: { name: "croissant", title: "Uma obra de arte em cada camada", reserve: "min-h-[700svh] -mt-[100svh]", reserveReduced: "min-h-svh" },
+  croissant: { name: "croissant", title: "Uma obra de arte em cada camada", reserve: "min-h-[800svh] -mt-[100svh]", reserveReduced: "min-h-svh" },
+  flavors: { name: "flavors", title: "O universo dos sabores", reserve: "min-h-[327svh] max-lg:min-h-[391svh] -mt-[100svh]", reserveReduced: "min-h-[227svh] max-lg:min-h-[291svh]" },
   process: { name: "process", title: "A arte do processo", reserve: "min-h-[1000svh]", reserveReduced: "min-h-svh" },
   return: { name: "return", title: "Algumas histórias merecem ser saboreadas", reserve: "min-h-[600svh] -mt-[100svh]", reserveReduced: "min-h-svh" },
 } satisfies Record<string, SceneReserveProps>;
@@ -37,6 +39,7 @@ const reserveFor = (props: SceneReserveProps) => function Reserve() { return <Sc
 
 const Scene02Bakery = dynamic(loadBakery, { ssr: false, loading: reserveFor(RESERVES.bakery) });
 const Scene03Croissant = dynamic(loadCroissant, { ssr: false, loading: reserveFor(RESERVES.croissant) });
+const Scene04Flavors = dynamic(loadFlavors, { ssr: false, loading: reserveFor(RESERVES.flavors) });
 const Scene05Process = dynamic(loadProcess, { ssr: false, loading: reserveFor(RESERVES.process) });
 const Scene06Return = dynamic(loadReturn, { ssr: false, loading: reserveFor(RESERVES.return) });
 
@@ -55,12 +58,12 @@ export function Experience() {
   useEffect(() => {
     if (!revealed) return;
     const timer = window.setTimeout(() => {
-      [loadBakery, loadCroissant, loadProcess, loadReturn].forEach((load) => void load());
+      [loadBakery, loadCroissant, loadFlavors, loadProcess, loadReturn].forEach((load) => void load());
     }, 1_500);
     return () => window.clearTimeout(timer);
   }, [revealed]);
 
-  // Abrir a página com `#galerie`  leva à seção assim que a abertura termina.
+  // Abrir a página com `#galerie` (ou `#produto-croissant`) leva à seção assim que a abertura termina.
   useEffect(() => {
     if (!revealed || !window.location.hash) return;
     const timer = window.setTimeout(() => navigateToHash(window.location.hash, { instant: true, updateHash: false }), 300);
@@ -80,6 +83,9 @@ export function Experience() {
             </LazyScene>
             <LazyScene {...RESERVES.croissant}>
               <Scene03Croissant />
+            </LazyScene>
+            <LazyScene {...RESERVES.flavors}>
+              <Scene04Flavors />
             </LazyScene>
             <SceneAtelier />
             <LazyScene {...RESERVES.process}>

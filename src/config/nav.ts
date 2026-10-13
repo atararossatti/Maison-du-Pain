@@ -17,8 +17,7 @@ export interface NavItem {
 
 export const NAV: readonly NavItem[] = [
   { id: "inicio", label: "Início", french: "bienvenue", selector: "[data-scene='awakening']", lead: 0 },
-  // Os produtos agora vivem na Galerie: o item abre o mesmo destino (e o mega menu leva a ela).
-  { id: "produtos", label: "Nossos Produtos", french: "nos créations", selector: "[data-nav='galerie']", lead: 0.5 },
+  { id: "produtos", label: "Nossos Produtos", french: "nos créations", selector: "[data-nav='produtos']", lazy: "flavors", lead: 0.85 },
   { id: "atelier", label: "Nosso Atelier", french: "notre atelier", selector: "[data-nav='atelier']", lead: 0.1 },
   { id: "galerie", label: "Galerie", french: "la galerie", selector: "[data-nav='galerie']", lead: 0.5 },
   { id: "visite", label: "Visite-nos", french: "venez nous voir", selector: "[data-nav='visite']", lazy: "return", land: 4.9, lead: 0 },

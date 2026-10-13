@@ -47,12 +47,12 @@ test.describe("navegação desktop", () => {
     await expect.poll(() => page.evaluate(() => window.scrollY), { timeout: 8_000 }).toBeLessThan(40);
 
     await nav.getByRole("button", { name: /Nossos Produtos/ }).click();
-    await page.getByRole("link", { name: "Croissant artesanal" }).click();
-    await expect.poll(() => topOf(page, "[data-nav='galerie']"), { timeout: 10_000 }).toBeLessThan(140);
+    await page.getByRole("link", { name: "Pain au chocolat" }).click();
+    await expect(page.locator("#item-pain-au-chocolat")).toBeInViewport({ timeout: 10_000 });
     expect(errors.filter((e) => !/THREE|WebGL/i.test(e))).toEqual([]);
   });
 
-  test("mega menu: categorias trocam a fotografia, Esc fecha e devolve o foco, produto leva à Galerie", async ({ page }) => {
+  test("mega menu: categorias trocam a fotografia, Esc fecha e devolve o foco, produto leva à seção", async ({ page }) => {
     await skipLoader(page);
     const trigger = page.locator("[data-mega-trigger]");
     await trigger.click();
@@ -72,8 +72,8 @@ test.describe("navegação desktop", () => {
     await trigger.press("ArrowDown");
     await expect(panel.locator("[data-category]").first()).toBeFocused();
     await panel.getByRole("link", { name: "Sonho de creme" }).click();
-    await expect.poll(() => topOf(page, "[data-nav='galerie']"), { timeout: 10_000 }).toBeLessThan(140);
-    await expect(page).toHaveURL(/#galerie$/);
+    await expect(page.locator("[data-scene='flavors']")).toBeInViewport({ timeout: 10_000 });
+    await expect(page).toHaveURL(/#produto-sonho$/);
     await expect(trigger).toHaveAttribute("aria-expanded", "false");
   });
 
@@ -168,7 +168,7 @@ test.describe("navegação no celular", () => {
     await page.getByRole("button", { name: "Abrir menu" }).click();
     await menu.getByRole("button", { name: /Nossos Produtos/ }).click();
     await menu.getByRole("link", { name: /Pains/ }).click();
-    await expect.poll(() => topOf(page, "[data-nav='galerie']"), { timeout: 10_000 }).toBeLessThan(140);
+    await expect(page.locator("[data-scene='flavors']")).toBeInViewport({ timeout: 10_000 });
 
     await page.getByRole("button", { name: "Abrir menu" }).click();
     await menu.getByRole("link", { name: /Galerie/ }).click();

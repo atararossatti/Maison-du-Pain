@@ -4,7 +4,6 @@ import { useState } from "react";
 import { Dialog, DialogCloseButton } from "@/components/ui/Dialog";
 import { SHARE, VISIT_INFO } from "@/config/contact";
 import { PRODUCTS, type ProductId } from "@/config/products";
-import { navigateTo } from "@/lib/navigate";
 
 interface DialogProps {
   open: boolean;
@@ -14,9 +13,9 @@ interface DialogProps {
 const NOTICE = "text-xs text-chocolate/60";
 
 export function MenuDialog({ open, onClose }: DialogProps) {
-  const openGalerie = () => {
+  const exploreFlavors = () => {
     onClose();
-    navigateTo("galerie");
+    document.getElementById("sabores")?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
@@ -33,8 +32,8 @@ export function MenuDialog({ open, onClose }: DialogProps) {
       <p className={`mt-5 ${NOTICE}`}>Cardápio ilustrativo de uma marca fictícia; sem preços nem disponibilidade.</p>
       <div className="flex flex-wrap gap-3">
         <DialogCloseButton onClose={onClose} />
-        <button type="button" onClick={openGalerie} className="mt-6 rounded-full border border-chocolate/40 px-6 py-2.5 text-sm transition hover:bg-chocolate hover:text-cream">
-          Ver a galerie
+        <button type="button" onClick={exploreFlavors} className="mt-6 rounded-full border border-chocolate/40 px-6 py-2.5 text-sm transition hover:bg-chocolate hover:text-cream">
+          Explorar os sabores
         </button>
       </div>
     </Dialog>
