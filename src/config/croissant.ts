@@ -13,7 +13,7 @@ export const CROISSANT_PHASE = {
   burstExplode: [0.64, 0.92],
   captionA: [0.6, 0.68, 0.86, 0.9],
   captionB: [0.9, 0.96],
-  /** Saída: o fundo vira o creme liso da Cena 04 e o croissant se dissolve. */
+  /** Saída: o fundo vira o creme liso em que o Nosso Atelier começa e o croissant se dissolve. */
   exit: [0.95, 1],
 } as const;
 

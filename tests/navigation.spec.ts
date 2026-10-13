@@ -19,7 +19,6 @@ async function topOf(page: Page, selector: string) {
 }
 
 const SECTIONS = [
-  { name: "Nossa História", id: "historia", selector: "[data-nav='historia']" },
   { name: "Nosso Atelier", id: "atelier", selector: "[data-nav='atelier']" },
   { name: "Galerie", id: "galerie", selector: "[data-nav='galerie']" },
   { name: "Visite-nos", id: "visite", selector: "[data-nav='visite']" },
@@ -49,11 +48,11 @@ test.describe("navegação desktop", () => {
 
     await nav.getByRole("button", { name: /Nossos Produtos/ }).click();
     await page.getByRole("link", { name: "Croissant artesanal" }).click();
-    await expect(page.locator("#item-croissant")).toBeInViewport({ timeout: 10_000 });
+    await expect.poll(() => topOf(page, "[data-nav='galerie']"), { timeout: 10_000 }).toBeLessThan(140);
     expect(errors.filter((e) => !/THREE|WebGL/i.test(e))).toEqual([]);
   });
 
-  test("mega menu: categorias trocam a fotografia, Esc fecha e devolve o foco, produto leva à seção", async ({ page }) => {
+  test("mega menu: categorias trocam a fotografia, Esc fecha e devolve o foco, produto leva à Galerie", async ({ page }) => {
     await skipLoader(page);
     const trigger = page.locator("[data-mega-trigger]");
     await trigger.click();
@@ -73,8 +72,8 @@ test.describe("navegação desktop", () => {
     await trigger.press("ArrowDown");
     await expect(panel.locator("[data-category]").first()).toBeFocused();
     await panel.getByRole("link", { name: "Sonho de creme" }).click();
-    await expect(page.locator("#item-sonho")).toBeInViewport({ timeout: 10_000 });
-    await expect(page).toHaveURL(/#produto-sonho$/);
+    await expect.poll(() => topOf(page, "[data-nav='galerie']"), { timeout: 10_000 }).toBeLessThan(140);
+    await expect(page).toHaveURL(/#galerie$/);
     await expect(trigger).toHaveAttribute("aria-expanded", "false");
   });
 
@@ -95,12 +94,12 @@ test.describe("navegação desktop", () => {
 });
 
 test.describe("seções com fotografias", () => {
-  test("história, atelier e galeria carregam as imagens, sem erros no console", async ({ page }) => {
+  test("atelier e galeria carregam as imagens, sem erros no console", async ({ page }) => {
     test.setTimeout(120_000);
     const errors = watchErrors(page);
     await skipLoader(page);
     const nav = page.getByRole("navigation", { name: "Principal" });
-    for (const name of ["Nossa História", "Nosso Atelier", "Galerie"]) {
+    for (const name of ["Nosso Atelier", "Galerie"]) {
       await nav.getByRole("link", { name }).click();
       await page.waitForTimeout(2_000);
     }
@@ -169,7 +168,7 @@ test.describe("navegação no celular", () => {
     await page.getByRole("button", { name: "Abrir menu" }).click();
     await menu.getByRole("button", { name: /Nossos Produtos/ }).click();
     await menu.getByRole("link", { name: /Pains/ }).click();
-    await expect(page.locator("#item-baguette")).toBeInViewport({ timeout: 10_000 });
+    await expect.poll(() => topOf(page, "[data-nav='galerie']"), { timeout: 10_000 }).toBeLessThan(140);
 
     await page.getByRole("button", { name: "Abrir menu" }).click();
     await menu.getByRole("link", { name: /Galerie/ }).click();

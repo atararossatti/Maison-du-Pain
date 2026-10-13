@@ -6,7 +6,7 @@ import { CATEGORIES, PRODUCTS, type CategoryId, type Product } from "@/config/pr
 import { PHOTOS, type PhotoId } from "@/config/photos";
 import { growPhoto } from "@/lib/growPhoto";
 import { gsap } from "@/lib/gsap";
-import { navigateToProduct } from "@/lib/navigate";
+import { navigateTo } from "@/lib/navigate";
 
 interface MegaMenuProps {
   id: string;
@@ -18,7 +18,7 @@ interface MegaMenuProps {
 function previewOf(category: CategoryId, product: Product | null): { photo: PhotoId; title: string; french: string; note?: string } {
   const cat = CATEGORIES.find((entry) => entry.id === category) ?? CATEGORIES[0]!;
   if (product?.photo) return { photo: product.photo, title: product.name, french: product.french };
-  return { photo: cat.cover, title: product?.name ?? cat.name, french: product?.french ?? cat.french, note: product ? cat.coverNote ?? "Veja a ilustração na vitrine" : cat.coverNote };
+  return { photo: cat.cover, title: product?.name ?? cat.name, french: product?.french ?? cat.french, note: product ? cat.coverNote ?? "Veja a galerie" : cat.coverNote };
 }
 
 export function MegaMenu({ id, open, onClose }: MegaMenuProps) {
@@ -92,10 +92,10 @@ export function MegaMenu({ id, open, onClose }: MegaMenuProps) {
     if (frame) {
       const { grown, reveal } = growPhoto(frame.getBoundingClientRect(), target.photo);
       await grown;
-      navigateToProduct(product.id, { instant: true });
+      navigateTo("galerie", { instant: true });
       await new Promise((resolve) => window.setTimeout(resolve, 500));
       await reveal();
-    } else navigateToProduct(product.id);
+    } else navigateTo("galerie");
     busy.current = false;
   };
 
@@ -160,7 +160,7 @@ export function MegaMenu({ id, open, onClose }: MegaMenuProps) {
               {productsOf(category).map((product) => (
                 <li key={product.id}>
                   <a
-                    href={`#produto-${product.id}`}
+                    href="#galerie"
                     onPointerEnter={() => setHovered(product)}
                     onPointerLeave={() => setHovered(null)}
                     onFocus={() => setHovered(product)}
@@ -178,7 +178,7 @@ export function MegaMenu({ id, open, onClose }: MegaMenuProps) {
             </ul>
           </div>
           <p data-menu-in className="mt-6 max-w-[34ch] text-xs leading-relaxed text-chocolate/60">
-            Escolha uma criação: a fotografia cresce e leva você até a vitrine. Produtos fictícios, sem preços ou pedidos.
+            Escolha uma criação: a fotografia cresce e leva você até a galerie. Produtos fictícios, sem preços ou pedidos.
           </p>
         </div>
 

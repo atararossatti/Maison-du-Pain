@@ -53,7 +53,7 @@ export function Scene03Croissant() {
   useCroissantTimeline(rootRef, !reduced, progressRef);
 
   return (
-    <ScrubStage screens={CROISSANT_SCREENS} overlap covered layer={3} reduced={reduced}>
+    <ScrubStage screens={CROISSANT_SCREENS} overlap layer={3} reduced={reduced}>
     <section
       ref={rootRef}
       data-scene="croissant"

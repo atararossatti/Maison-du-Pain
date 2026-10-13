@@ -45,7 +45,7 @@
 2. Cena 01: fachada → dolly → janela → atravessa o vidro (timeline única pinned). ✅
 3. Cena 02: interior; farinha→massa→cresce→zoom.
 4. Cena 03: massa vira croissant 3D; camadas se separam.
-5. Cena 04: composição editorial de 6 produtos com interações próprias.
+5. (removida) Cena 04 "Sabores": a sequência de produtos e a seção "Nossa História" saíram da página; os produtos ficam no mega menu e na Galerie.
 6. Cena 05: trigo→grão→farinha→massa→forno→pão.
 7. Cena 06: exterior ao entardecer; CTAs (demo honesta, sem endereço/telefone).
 
@@ -78,4 +78,4 @@ Next.js 16 (App Router) + TS estrito + Tailwind 4. GSAP + ScrollTrigger + Lenis 
 - Fotos: `imagens/` (originais) → `npm`-free `node scripts/optimize-photos.mjs` gera `public/fotos/*.webp` e `src/config/photos.generated.json` (dimensões, cor média e miniatura borrada). `config/photos.ts` junta alt e legenda; `ui/Photo` e `ui/PhotoFrame` usam `next/image` com `placeholder="blur"`. As fotos têm 687–1470 px: as verticais nunca ocupam a tela inteira (janela ao lado do texto, fundo = a própria foto borrada); só as horizontais de 1280/1470 px vão de ponta a ponta.
 - Menu: `config/nav.ts` (itens e alvos `data-nav`), `lib/navigate.ts` (rolagem suave se perto, véu + salto se longe, correção depois que cenas sob demanda montam), `Header` + `MegaMenu` (desktop) + `MobileMenu` (`<dialog>` de tela cheia). Seção ativa = última cujo início já passou. A lista de produtos do mega menu fica em posição fixa (sem expandir por hover) para não haver oscilação sob o ponteiro.
 - `LazyScene`: o espaço reservado também é o `loading` do `next/dynamic` (`SceneReserve`), então a página não perde altura enquanto o código de uma cena baixa.
-- Ordem na página: Cenas 01–04 → Nossa História → Nosso Atelier (cena fixa com fotos) → Cena 05 → Galerie (sobe por cima do último quadro dourado da 05 e termina dourado, cor em que a 06 começa) → Cena 06.
+- Ordem na página: Cenas 01–03 → Nosso Atelier (cena fixa com fotos) → Cena 05 → Galerie (sobe por cima do último quadro dourado da 05 e termina dourado, cor em que a 06 começa) → Cena 06.

@@ -40,9 +40,9 @@ Cada cena é um **palco**: um contêiner alto (`ui/ScrubStage.tsx`) cujo filho (
 | --- | --- | --- | --- |
 | 01 Despertar | 4 | — | sim |
 | 02 Interior | 6 | sim | sim |
-| 03 Croissant | 6 | sim | sim (a 04 é uma seção normal com margem negativa) |
-| 04 Sabores | altura natural | sim | não |
-| 05 Processo | 8 | não (entra deslizando, a partir da cor de fundo da 04) | sim |
+| 03 Croissant | 6 | sim | não (o Nosso Atelier vem logo depois, na mesma cor creme) |
+| 04 Nosso Atelier | seção própria | — | não |
+| 05 Processo | 8 | não (entra deslizando, a partir da cor de fundo do Atelier) | sim |
 | 06 Retorno | 5 | sim | não (o rodapé vem depois) |
 
 Os testes localizam o percurso de uma cena por `[data-scene]` → `parentElement` (o palco) em vez de assumir offsets.
@@ -80,15 +80,12 @@ A Cena 01 é renderizada no servidor. As Cenas 02–06 ficam atrás de `ui/LazyS
 
 ## Como adicionar um produto
 
-1. Inclua o item em `PRODUCTS` (`src/config/products.ts`): `id`, textos, `rest` e `details` (dados fictícios).
-2. Estenda `ProductId` e crie a ilustração em `scenes/flavors/illustrations/`, reagindo às variáveis CSS `--v` (0–1 no eixo horizontal), `--px` e `--py` (−1 a 1).
-3. Registre-a em `ART` e `LAYOUT` (`Scene04Flavors.tsx`: encaixe na grade, proporção e velocidade de paralaxe).
+Inclua o item em `PRODUCTS` (`src/config/products.ts`): `id`, textos e dados fictícios. Ele aparece no mega menu, no cardápio e no pedido de demonstração; a apresentação visual dos produtos é a Galerie.
 
 ## Decisões relevantes
 
 - **SVG em vez de Rive/Spline**: leve, nítido, acessível e sem integração externa a verificar.
 - **Procedural em vez de GLB**: não há modelo licenciado disponível e nenhum modelo é "fingido".
-- **Variáveis CSS nas interações de produto**: a pose é escrita direto no elemento (sem React), e o SVG reage por `calc(var(--v) …)`.
 - **Dados fictícios explícitos** (`config/contact.ts` com `null`): a interface trata "sem dados" como estado normal.
 
 ## Testes
