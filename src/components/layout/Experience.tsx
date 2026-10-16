@@ -6,7 +6,6 @@ import { ScrollLock } from "@/components/animations/ScrollLock";
 import { SoundProvider } from "@/components/animations/SoundProvider";
 import { Scene01Awakening } from "@/components/scenes/awakening/Scene01Awakening";
 import { Galerie } from "@/components/sections/Galerie";
-import { Historia } from "@/components/sections/Historia";
 import { SceneAtelier } from "@/components/scenes/atelier/SceneAtelier";
 import { LazyScene, SceneReserve, type SceneReserveProps } from "@/components/ui/LazyScene";
 import { Loader } from "@/components/ui/Loader";
@@ -31,7 +30,7 @@ const loadReturn = () => import("@/components/scenes/finale/Scene06Return").then
 const RESERVES = {
   bakery: { name: "bakery", title: "O interior da padaria", reserve: "min-h-[800svh] -mt-[100svh]", reserveReduced: "min-h-svh" },
   croissant: { name: "croissant", title: "Uma obra de arte em cada camada", reserve: "min-h-[800svh] -mt-[100svh]", reserveReduced: "min-h-svh" },
-  flavors: { name: "flavors", title: "O universo dos sabores", reserve: "min-h-[860svh] max-lg:min-h-[932svh] -mt-[100svh]", reserveReduced: "min-h-[763svh] max-lg:min-h-[832svh]" },
+  flavors: { name: "flavors", title: "O universo dos sabores", reserve: "min-h-[327svh] max-lg:min-h-[391svh] -mt-[100svh]", reserveReduced: "min-h-[227svh] max-lg:min-h-[291svh]" },
   process: { name: "process", title: "A arte do processo", reserve: "min-h-[1000svh]", reserveReduced: "min-h-svh" },
   return: { name: "return", title: "Algumas histórias merecem ser saboreadas", reserve: "min-h-[600svh] -mt-[100svh]", reserveReduced: "min-h-svh" },
 } satisfies Record<string, SceneReserveProps>;
@@ -88,7 +87,6 @@ export function Experience() {
             <LazyScene {...RESERVES.flavors}>
               <Scene04Flavors />
             </LazyScene>
-            <Historia />
             <SceneAtelier />
             <LazyScene {...RESERVES.process}>
               <Scene05Process />

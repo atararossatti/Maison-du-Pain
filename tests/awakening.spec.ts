@@ -148,9 +148,9 @@ test.describe("cena 04: universo dos sabores", () => {
     await page.screenshot({ path: `${SHOTS}/flavors-top.png` });
 
     const stages = page.getByRole("slider");
-    await expect(stages).toHaveCount(12);
+    await expect(stages).toHaveCount(4);
 
-    for (let i = 0; i < 12; i++) {
+    for (let i = 0; i < 4; i++) {
       const stage = stages.nth(i);
       await stage.evaluate((el) => el.scrollIntoView({ block: "center" }));
       await page.waitForTimeout(300);

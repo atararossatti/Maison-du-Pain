@@ -35,7 +35,7 @@ Um livro ilustrado que ganha profundidade. A narrativa é guiada pela **luz**: a
 | 01 · Despertar | Fachada ao amanhecer; a câmera avança e atravessa a janela | Dolly exponencial em 8 camadas SVG |
 | 02 · Interior | Farinha cai, ingredientes se aproximam, a padeira sova (braços ligados ao scroll) e a massa cresce | Função pura progresso → quadro |
 | 03 · Croissant | A massa vira um croissant 3D que gira e abre as camadas em leque | React Three Fiber, geometria procedural |
-| 04 · Sabores | Seis produtos em composição editorial, cada um com interação própria | Variáveis CSS + ScrollTrigger |
+| 04 · Sabores | Quatro produtos ilustrados em composição editorial, cada um com interação própria | Variáveis CSS + ScrollTrigger |
 | 05 · Processo | Trigo → grão → farinha → massa → fermentação → forno → pão | Uma única timeline, partículas SVG |
 | 06 · Retorno | A câmera recua até a rua ao entardecer; três ações reais | Reuso da câmera da Cena 01 |
 
@@ -72,7 +72,7 @@ Não usados, de propósito: Rive e Spline (sem integração verificada; SVG + GS
 - Loader cinematográfico com **progresso real** (fontes, `load` e imagens críticas), tratamento de falha/timeout, versão simplificada para dispositivos fracos, botão "Pular introdução".
 - Seis cenas controladas pelo scroll, **reversíveis**: cada cena é uma função pura do progresso, então rolar rápido, voltar ou redimensionar sempre reproduz o mesmo quadro.
 - Croissant 3D procedural (sem arquivo GLB): cristas em barril, texturas geradas em canvas, partículas de farinha, leque com corte em espiral.
-- Seis produtos interativos que funcionam por ponteiro, toque e **teclado** (cada um é um slider acessível), com painel de detalhes em `<dialog>` nativo.
+- Quatro produtos ilustrados e interativos que funcionam por ponteiro, toque e **teclado** (cada um é um slider acessível), com painel de detalhes em `<dialog>` nativo.
 - Botões magnéticos, paralaxe por ponteiro, indicador de progresso, cabeçalho que se adapta a fundos escuros.
 - Efeitos sonoros opcionais, sintetizados em código, **desligados por padrão** (o áudio só é inicializado quando o usuário liga).
 - A experiência cinematográfica roda **por padrão em qualquer navegador**, sem botão de ativação e mesmo com "reduzir movimento" no sistema (decisão de produto). Quem prefere uma versão estática a escolhe em "Modo estático" no cabeçalho (a página recarrega; nunca há troca de modo no meio da navegação). Limitação de acessibilidade assumida: a preferência do sistema não é aplicada automaticamente.
@@ -125,7 +125,7 @@ npx playwright install chromium   # uma vez
 npm test                          # 11 testes; salva capturas em test-results/shots
 ```
 
-Os testes cobrem: loader, scroll progressivo/reverso/rápido da Cena 01, sova sincronizada da Cena 02, croissant 3D, interações e diálogos dos seis produtos, layout mobile (390 px) sem rolagem horizontal, o percurso completo da Cena 05, as três ações finais, modo estático, experiência completa com movimento reduzido no sistema, som desligado por padrão e landmarks/títulos.
+Os testes cobrem: loader, scroll progressivo/reverso/rápido da Cena 01, sova sincronizada da Cena 02, croissant 3D, interações e diálogos dos produtos, layout mobile (390 px) sem rolagem horizontal, o percurso completo da Cena 05, as três ações finais, modo estático, experiência completa com movimento reduzido no sistema, som desligado por padrão e landmarks/títulos.
 
 Limitações conhecidas dos testes: rodam em Chromium sobre WebGL por software (lento) e emulam o celular só por viewport; não há testes em dispositivos reais, Safari ou Firefox.
 
