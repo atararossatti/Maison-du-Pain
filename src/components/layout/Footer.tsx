@@ -37,8 +37,7 @@ export function Footer() {
       >
         Modo estático {staticMode ? "ligado" : "desligado"}
       </button>
-      <p className="mt-8">Projeto fictício de creative development. Marca, ilustrações e código são originais; as fotografias são da pasta de imagens fornecida pelo autor do projeto.</p>
-      <p className="mt-1">Tipografia: Fraunces, Instrument Sans e Caveat (SIL Open Font License).</p>
+      <p className="mt-8">Feito por Atara Rossatti</p>
     </footer>
   );
 }
