@@ -4,25 +4,8 @@ export type ProductId =
   | "croissant" | "pain-au-chocolat" | "baguette" | "levain" | "cinnamon-roll" | "cafe"
   | "sonho" | "gateau-chocolat" | "gateau-moelleux" | "muffins" | "biscuits" | "burger-maison";
 
+/** Agrupamento das 12 criações da cena de sabores e do cardápio de demonstração (o catálogo completo tem as próprias categorias em `catalog.ts`). */
 export type CategoryId = "viennoiseries" | "pains" | "patisseries" | "cafes";
-
-export interface Category {
-  id: CategoryId;
-  name: string;
-  french: string;
-  blurb: string;
-  /** Fotografia que representa a categoria no menu (quando o produto escolhido não tem foto própria). */
-  cover: PhotoId;
-  /** Aviso mostrado sobre a capa quando ela não retrata a categoria literalmente. */
-  coverNote?: string;
-}
-
-export const CATEGORIES: readonly Category[] = [
-  { id: "viennoiseries", name: "Viennoiseries", french: "le petit-déjeuner des rêves", blurb: "Massas folhadas e fermentadas, douradas na hora.", cover: "croissants" },
-  { id: "pains", name: "Pains", french: "la mie et la croûte", blurb: "Casca estalada, miolo macio e fermentação paciente.", cover: "pains" },
-  { id: "patisseries", name: "Pâtisseries", french: "douceurs de la maison", blurb: "Bolos, muffins e biscoitos feitos aos poucos.", cover: "gateau-chocolat" },
-  { id: "cafes", name: "Cafés", french: "un café, s'il vous plaît", blurb: "Grãos selecionados para acompanhar cada fornada.", cover: "gateau-chocolat", coverNote: "Para acompanhar o café" },
-];
 
 export interface Product {
   id: ProductId;

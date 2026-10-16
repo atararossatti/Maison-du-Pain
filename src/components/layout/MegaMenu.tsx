@@ -1,12 +1,13 @@
 "use client";
 
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type KeyboardEvent } from "react";
-import { Photo } from "@/components/ui/Photo";
-import { CATEGORIES, PRODUCTS, type CategoryId, type Product } from "@/config/products";
-import { PHOTOS, type PhotoId } from "@/config/photos";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { CATEGORIES, PRODUCTS, type CatalogProduct as Product, type CategoryId } from "@/config/catalog";
+import { PHOTOS } from "@/config/photos";
 import { growPhoto } from "@/lib/growPhoto";
 import { gsap } from "@/lib/gsap";
-import { navigateToProduct } from "@/lib/navigate";
 
 interface MegaMenuProps {
   id: string;
@@ -14,48 +15,59 @@ interface MegaMenuProps {
   onClose: () => void;
 }
 
+interface PreviewImage {
+  key: string;
+  src: string;
+  color: string;
+  blur?: string;
+}
+
 /** Fotografia mostrada para uma categoria ou produto (produtos sem foto própria usam a capa da categoria). */
-function previewOf(category: CategoryId, product: Product | null): { photo: PhotoId; title: string; french: string; note?: string } {
+function previewOf(category: CategoryId, product: Product | null): { image: PreviewImage; title: string; french: string; note?: string } {
   const cat = CATEGORIES.find((entry) => entry.id === category) ?? CATEGORIES[0]!;
-  if (product?.photo) return { photo: product.photo, title: product.name, french: product.french };
-  return { photo: cat.cover, title: product?.name ?? cat.name, french: product?.french ?? cat.french, note: product ? cat.coverNote ?? "Veja a ilustração na vitrine" : cat.coverNote };
+  const own = product?.images[0];
+  if (product && own) return { image: { key: own.src, src: own.src, color: own.color ?? "#d8ad65", blur: own.blur }, title: product.name, french: product.french };
+  const cover = PHOTOS[cat.cover];
+  const image = { key: cover.src, src: cover.src, color: cover.color, blur: cover.blur };
+  return { image, title: product?.name ?? cat.name, french: product?.french ?? cat.french, note: product ? undefined : cat.coverNote };
 }
 
 export function MegaMenu({ id, open, onClose }: MegaMenuProps) {
   const [category, setCategory] = useState<CategoryId>("viennoiseries");
   const [hovered, setHovered] = useState<Product | null>(null);
-  const [loaded, setLoaded] = useState<PhotoId[]>(["croissants"]);
+  const [loaded, setLoaded] = useState<PreviewImage[]>(() => [previewOf("viennoiseries", null).image]);
   const panelRef = useRef<HTMLDivElement>(null);
   const frameRef = useRef<HTMLDivElement>(null);
-  const layers = useRef<Partial<Record<PhotoId, HTMLDivElement | null>>>({});
+  const layers = useRef<Record<string, HTMLDivElement | null>>({});
   const zTop = useRef(1);
-  const shown = useRef<PhotoId | null>(null);
+  const shown = useRef<string | null>(null);
+  const router = useRouter();
   const busy = useRef(false);
 
   const preview = useMemo(() => previewOf(category, hovered), [category, hovered]);
   const productsOf = (cat: CategoryId) => PRODUCTS.filter((product) => product.category === cat);
 
   // Carrega a foto sob demanda: a primeira vez que ela é pedida entra no DOM (com miniatura borrada).
-  if (!loaded.includes(preview.photo)) setLoaded([...loaded, preview.photo]);
+  if (!loaded.some((item) => item.key === preview.image.key)) setLoaded([...loaded, preview.image]);
 
   // Troca de foto: a nova entra como uma cortina que sobe, com um zoom que assenta.
   useLayoutEffect(() => {
-    const layer = layers.current[preview.photo];
+    const layer = layers.current[preview.image.key];
     if (!layer) return;
     if (shown.current === null || !open) {
-      shown.current = preview.photo;
+      shown.current = preview.image.key;
       layer.style.zIndex = String(++zTop.current);
       gsap.set(layer, { clipPath: "inset(0% 0% 0% 0%)" });
       return;
     }
-    if (shown.current === preview.photo) return;
-    shown.current = preview.photo;
+    if (shown.current === preview.image.key) return;
+    shown.current = preview.image.key;
     layer.style.zIndex = String(++zTop.current);
     const inner = layer.querySelector("[data-menu-photo]");
     gsap.killTweensOf([layer, inner]);
     gsap.fromTo(layer, { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.85, ease: "expo.out" });
     if (inner) gsap.fromTo(inner, { scale: 1.3 }, { scale: 1, duration: 1.4, ease: "power3.out" });
-  }, [preview.photo, loaded, open]);
+  }, [preview.image.key, loaded, open]);
 
   // Entrada escalonada da lista cada vez que o menu abre.
   useEffect(() => {
@@ -83,21 +95,22 @@ export function MegaMenu({ id, open, onClose }: MegaMenuProps) {
     return () => window.removeEventListener("pointermove", onMove);
   }, [open]);
 
-  const select = async (product: Product) => {
+  /** A fotografia cresce até ocupar a tela, a página do catálogo abre por baixo e a fotografia se dissolve. */
+  const go = async (url: string, image: PreviewImage) => {
     if (busy.current) return;
     busy.current = true;
     const frame = frameRef.current;
-    const target = previewOf(product.category, product);
     onClose();
     if (frame) {
-      const { grown, reveal } = growPhoto(frame.getBoundingClientRect(), target.photo);
+      const { grown, reveal } = growPhoto(frame.getBoundingClientRect(), image);
       await grown;
-      navigateToProduct(product.id, { instant: true });
-      await new Promise((resolve) => window.setTimeout(resolve, 500));
+      router.push(url);
+      await new Promise((resolve) => window.setTimeout(resolve, 700));
       await reveal();
-    } else navigateToProduct(product.id);
+    } else router.push(url);
     busy.current = false;
   };
+  const select = (product: Product) => go(`/catalogo/${product.id}`, previewOf(product.category, product).image);
 
   const onCategoryKey = (event: KeyboardEvent<HTMLButtonElement>, index: number) => {
     const step = event.key === "ArrowDown" ? 1 : event.key === "ArrowUp" ? -1 : 0;
@@ -123,7 +136,6 @@ export function MegaMenu({ id, open, onClose }: MegaMenuProps) {
             <ul className="mt-3">
               {CATEGORIES.map((cat, index) => {
                 const active = cat.id === category;
-                const items = productsOf(cat.id);
                 return (
                   <li key={cat.id} data-menu-in className="border-b border-chocolate/12 last:border-b-0">
                     <button
@@ -140,7 +152,7 @@ export function MegaMenu({ id, open, onClose }: MegaMenuProps) {
                         setHovered(null);
                       }}
                       onKeyDown={(event) => onCategoryKey(event, index)}
-                      onClick={() => items[0] && void select(items[0])}
+                      onClick={() => void go(`/catalogo?categoria=${cat.id}`, previewOf(cat.id, null).image)}
                       className="group/cat flex w-full items-baseline gap-4 py-3 text-left"
                     >
                       <span className="w-6 font-sans text-xs tabular-nums text-chocolate/55">{String(index + 1).padStart(2, "0")}</span>
@@ -160,7 +172,7 @@ export function MegaMenu({ id, open, onClose }: MegaMenuProps) {
               {productsOf(category).map((product) => (
                 <li key={product.id}>
                   <a
-                    href={`#produto-${product.id}`}
+                    href={`/catalogo/${product.id}`}
                     onPointerEnter={() => setHovered(product)}
                     onPointerLeave={() => setHovered(null)}
                     onFocus={() => setHovered(product)}
@@ -177,16 +189,21 @@ export function MegaMenu({ id, open, onClose }: MegaMenuProps) {
               ))}
             </ul>
           </div>
-          <p data-menu-in className="mt-6 max-w-[34ch] text-xs leading-relaxed text-chocolate/60">
-            Escolha uma criação: a fotografia cresce e leva você até a vitrine. Produtos fictícios, sem preços ou pedidos.
-          </p>
+          <div data-menu-in className="mt-6">
+            <Link href="/catalogo" onClick={onClose} className="inline-block text-xs uppercase tracking-[0.18em] text-chocolate underline underline-offset-4 hover:text-brick">
+              Ver o catálogo completo
+            </Link>
+            <p className="mt-2 max-w-[38ch] text-xs leading-relaxed text-chocolate/60">
+              Escolha uma criação ou uma categoria: a fotografia cresce e leva você ao catálogo. Produtos e preços demonstrativos.
+            </p>
+          </div>
         </div>
 
         <div data-menu-in ref={frameRef} className="relative h-[min(34rem,64svh)] overflow-hidden rounded-[2px] bg-ink" aria-hidden style={{ ["--mx" as string]: 0, ["--my" as string]: 0 }}>
-          {loaded.map((photoId) => (
-            <div key={photoId} ref={(el) => { layers.current[photoId] = el; }} className="absolute inset-0" style={{ background: PHOTOS[photoId].color }}>
+          {loaded.map((image) => (
+            <div key={image.key} ref={(el) => { layers.current[image.key] = el; }} className="absolute inset-0" style={{ background: image.color }}>
               <div data-menu-photo className="absolute -inset-5" style={{ transform: "translate(calc(var(--mx, 0) * 1px), calc(var(--my, 0) * 1px))" }}>
-                <Photo id={photoId} alt="" sizes="(min-width: 1280px) 780px, 55vw" />
+                <Image src={image.src} alt="" fill sizes="(min-width: 1280px) 780px, 55vw" placeholder={image.blur ? "blur" : "empty"} blurDataURL={image.blur} draggable={false} className="object-cover" />
               </div>
             </div>
           ))}

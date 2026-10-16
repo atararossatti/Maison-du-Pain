@@ -78,7 +78,22 @@ A Cena 01 é renderizada no servidor. As Cenas 02–06 ficam atrás de `ui/LazyS
 5. Monte `Scene0X*.tsx` (landmarks, `aria-labelledby`, legendas com `opacity: reduced ? 1 : 0`) e inclua em `components/layout/Experience.tsx`.
 6. Adicione um teste em `tests/` que role até a cena (`scrollStage`, pelo palco) e capture quadros.
 
-## Como adicionar um produto
+## Catálogo, carrinho e rotas
+
+- Rotas: `/` (experiência), `/catalogo`, `/catalogo/[id]` (estático, `dynamicParams = false`), `/pedido` (demonstração). As páginas internas usam `SiteShell` (mesmo cabeçalho, menus e rodapé).
+- Dados: `config/catalog.ts` (tipos, categorias, produtos, busca e ordenação) e `config/catalog-images.ts`. Preço em centavos; nenhum dado nutricional ou de alergênicos. `ALL_PRODUCTS` tem todos; `PRODUCTS` (o que o site usa) só os que têm imagem (`REQUIRE_IMAGE`).
+- Carrinho: `lib/cart.ts` é um store externo (`useSyncExternalStore`) que guarda `id → quantidade` em `localStorage`; o servidor sempre vê o carrinho vazio. `CartProvider` guarda só o estado de interface (gaveta, aviso).
+- Voltar de uma página interna não repete a abertura: `SiteShell` marca a visita em `sessionStorage` e `Experience` consome a marca (F5 na home continua mostrando a abertura). `lib/navigate.ts` registra o roteador do Next para a troca de página ser navegação do cliente.
+- `navigateTo` leva a outra página quando o item do menu tem `href` ou quando a seção da home é pedida de outra rota.
+
+- Fotografias do catálogo: `scripts/optimize-products.mjs` associa cada arquivo de `imagens/` ao produto de mesmo nome e gera `public/images/products/<id>.webp` e `config/product-photos.generated.json`; `config/catalog-images.ts` monta `IMAGES` (com `focus` opcional = `object-position` do cartão). Produto sem foto fica fora do catálogo.
+
+## Como adicionar um produto ao catálogo
+
+1. Inclua o item em `DRAFTS` (`src/config/catalog.ts`): `id` (vira o endereço), categoria, textos e `priceCents`.
+2. Salve a fotografia em `imagens/` com o nome do produto, rode `node scripts/optimize-products.mjs` e registre-a em `docs/IMAGE_CREDITS.md`. Sem fotografia, o produto não aparece.
+
+## Como adicionar um produto animado (cena de sabores)
 
 1. Inclua o item em `PRODUCTS` (`src/config/products.ts`): `id`, textos, `rest` e `details` (dados fictícios).
 2. Estenda `ProductId` e crie a ilustração em `scenes/flavors/illustrations/`, reagindo às variáveis CSS `--v` (0–1 no eixo horizontal), `--px` e `--py` (−1 a 1).

@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Caveat, Fraunces, Instrument_Sans } from "next/font/google";
+import { CartProvider } from "@/components/cart/CartProvider";
 import "@/styles/globals.css";
 
 const fraunces = Fraunces({ subsets: ["latin"], variable: "--font-fraunces", axes: ["opsz", "SOFT"], display: "swap" });
@@ -27,7 +28,9 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-BR" className={`${fraunces.variable} ${instrument.variable} ${caveat.variable}`}>
-      <body>{children}</body>
+      <body>
+        <CartProvider>{children}</CartProvider>
+      </body>
     </html>
   );
 }

@@ -67,6 +67,14 @@ Todas as imagens acima são capturas reais geradas pelos testes Playwright. O GI
 
 Não usados, de propósito: Rive e Spline (sem integração verificada; SVG + GSAP resolve), Drei, Framer Motion/Motion e KTX2/Draco (não há modelos nem texturas externas para comprimir).
 
+## Catálogo e carrinho (demonstração)
+
+- `/catalogo`: 50 produtos em 6 categorias (fotografias do autor do projeto; o produto sem foto fica fora do catálogo até recebê-la), com busca (sem acentos), filtros, só destaques e ordenação por preço ou nome; o estado fica no endereço (`?categoria=paes&ordem=preco-asc`).
+- `/catalogo/[id]`: página de cada produto (galeria, quantidade, relacionados); endereço inexistente mostra "página não encontrada".
+- Páginas internas têm botão "Voltar" e, ao voltar delas, a página inicial reaparece onde estava, sem repetir a abertura.
+- Carrinho lateral em `<dialog>`, contador no cabeçalho, quantidades de 1 a 99 e persistência em `localStorage` (compatível com SSR/hidratação). `/pedido` é um resumo de **demonstração**: sem pagamento, sem dados pessoais, sem envio.
+- Dados em `src/config/catalog.ts` (preços demonstrativos em centavos) e fotografias em `src/config/catalog-images.ts`; licenças e origem em [`docs/IMAGE_CREDITS.md`](docs/IMAGE_CREDITS.md).
+
 ## Funcionalidades implementadas
 
 - Loader cinematográfico com **progresso real** (fontes, `load` e imagens críticas), tratamento de falha/timeout, versão simplificada para dispositivos fracos, botão "Pular introdução".

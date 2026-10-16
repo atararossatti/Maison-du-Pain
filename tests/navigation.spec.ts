@@ -20,7 +20,6 @@ async function topOf(page: Page, selector: string) {
 
 const SECTIONS = [
   { name: "Nosso Atelier", id: "atelier", selector: "[data-nav='atelier']" },
-  { name: "Galerie", id: "galerie", selector: "[data-nav='galerie']" },
   { name: "Visite-nos", id: "visite", selector: "[data-nav='visite']" },
 ] as const;
 
@@ -47,23 +46,30 @@ test.describe("navegação desktop", () => {
     await expect.poll(() => page.evaluate(() => window.scrollY), { timeout: 8_000 }).toBeLessThan(40);
 
     await nav.getByRole("button", { name: /Nossos Produtos/ }).click();
-    await page.getByRole("link", { name: "Pain au chocolat" }).click();
-    await expect(page.locator("#item-pain-au-chocolat")).toBeInViewport({ timeout: 10_000 });
+    await page.getByRole("link", { name: "Croissant tradicional" }).click();
+    await expect(page).toHaveURL(/\/catalogo\/croissant-tradicional$/, { timeout: 15_000 });
+    await expect(page.getByRole("heading", { level: 1, name: "Croissant tradicional" })).toBeVisible();
     expect(errors.filter((e) => !/THREE|WebGL/i.test(e))).toEqual([]);
   });
 
-  test("mega menu: categorias trocam a fotografia, Esc fecha e devolve o foco, produto leva à seção", async ({ page }) => {
+  test("mega menu: categorias trocam a fotografia, Esc fecha e devolve o foco, produto leva à página do produto", async ({ page }) => {
     await skipLoader(page);
     const trigger = page.locator("[data-mega-trigger]");
-    await trigger.click();
-    await expect(trigger).toHaveAttribute("aria-expanded", "true");
+    // Antes da hidratação o clique é perdido: repete até o menu abrir.
+    await expect(async () => {
+      await trigger.click();
+      await expect(trigger).toHaveAttribute("aria-expanded", "true", { timeout: 1_000 });
+    }).toPass({ timeout: 10_000 });
     const panel = page.locator("#mega-produtos");
     await expect(panel).toBeVisible();
     await expect(panel.getByText("Viennoiseries").first()).toBeVisible();
 
-    await panel.locator("[data-category]", { hasText: "Pains" }).hover();
-    await expect(panel.locator("[data-category]", { hasText: "Pains" })).toHaveAttribute("aria-expanded", "true");
-    await expect(panel.locator("p.font-display").last()).toHaveText("Pains");
+    // O painel acabou de abrir (itens ainda entrando): repete o hover até a troca de categoria acontecer.
+    await expect(async () => {
+      await panel.locator("[data-category]", { hasText: "Pâtisserie" }).hover();
+      await expect(panel.locator("[data-category]", { hasText: "Pâtisserie" })).toHaveAttribute("aria-expanded", "true", { timeout: 1_500 });
+    }).toPass({ timeout: 10_000 });
+    await expect(panel.locator("p.font-display").last()).toHaveText("Pâtisserie");
 
     await page.keyboard.press("Escape");
     await expect(trigger).toHaveAttribute("aria-expanded", "false");
@@ -71,35 +77,34 @@ test.describe("navegação desktop", () => {
 
     await trigger.press("ArrowDown");
     await expect(panel.locator("[data-category]").first()).toBeFocused();
-    await panel.getByRole("link", { name: "Sonho de creme" }).click();
-    await expect(page.locator("[data-scene='flavors']")).toBeInViewport({ timeout: 10_000 });
-    await expect(page).toHaveURL(/#produto-sonho$/);
-    await expect(trigger).toHaveAttribute("aria-expanded", "false");
+    await panel.getByRole("link", { name: "Sonho", exact: true }).click();
+    await expect(page).toHaveURL(/\/catalogo\/sonho$/, { timeout: 15_000 });
+    await expect(page.getByRole("heading", { level: 1, name: "Sonho" })).toBeVisible();
   });
 
   test("teclado: Tab alcança os itens e Enter navega", async ({ page }) => {
     await skipLoader(page);
-    const link = page.getByRole("navigation", { name: "Principal" }).getByRole("link", { name: "Galerie" });
+    const link = page.getByRole("navigation", { name: "Principal" }).getByRole("link", { name: "Nosso Atelier" });
     await link.focus();
     await expect(link).toBeFocused();
     await page.keyboard.press("Enter");
     await expect(link).toHaveAttribute("aria-current", "location", { timeout: 8_000 });
   });
 
-  test("abrir a página com #galerie leva direto à seção", async ({ page }) => {
-    await page.goto("/#galerie");
+  test("abrir a página com #atelier leva direto à seção", async ({ page }) => {
+    await page.goto("/#atelier");
     await page.getByRole("button", { name: "Pular introdução" }).click();
-    await expect.poll(() => topOf(page, "[data-nav='galerie']"), { timeout: 15_000 }).toBeLessThan(140);
+    await expect.poll(() => topOf(page, "[data-nav='atelier']"), { timeout: 15_000 }).toBeLessThan(140);
   });
 });
 
 test.describe("seções com fotografias", () => {
-  test("atelier e galeria carregam as imagens, sem erros no console", async ({ page }) => {
+  test("atelier carrega as imagens, sem erros no console", async ({ page }) => {
     test.setTimeout(120_000);
     const errors = watchErrors(page);
     await skipLoader(page);
     const nav = page.getByRole("navigation", { name: "Principal" });
-    for (const name of ["Nosso Atelier", "Galerie"]) {
+    for (const name of ["Nosso Atelier"]) {
       await nav.getByRole("link", { name }).click();
       await page.waitForTimeout(2_000);
     }
@@ -134,30 +139,12 @@ test.describe("seções com fotografias", () => {
       await expect(page.getByRole("heading", { name: title, level: 3 })).toBeVisible();
     }
   });
-
-  test("galeria: abre a visualização ampliada, navega por teclado e fecha com Esc", async ({ page }) => {
-    await skipLoader(page);
-    await page.getByRole("navigation", { name: "Principal" }).getByRole("link", { name: "Galerie" }).click();
-    await page.waitForTimeout(2_000);
-    const open = page.getByRole("button", { name: /Ampliar fotografia: La corbeille du matin/ });
-    await open.scrollIntoViewIfNeeded();
-    await open.click();
-    const dialog = page.getByRole("dialog", { name: "Galeria ampliada" });
-    await expect(dialog).toBeVisible();
-    await expect(dialog.getByText("01 / 10")).toBeVisible();
-    await page.keyboard.press("ArrowRight");
-    await expect(dialog.getByText("02 / 10")).toBeVisible();
-    await dialog.getByRole("button", { name: "Foto anterior" }).click();
-    await expect(dialog.getByText("01 / 10")).toBeVisible();
-    await page.keyboard.press("Escape");
-    await expect(dialog).toBeHidden();
-  });
 });
 
 test.describe("navegação no celular", () => {
   test.use({ viewport: { width: 390, height: 844 }, hasTouch: true });
 
-  test("menu de tela cheia abre, navega, fecha com Esc e a galeria não gera rolagem horizontal", async ({ page }) => {
+  test("menu de tela cheia abre, navega, fecha com Esc e a página não gera rolagem horizontal", async ({ page }) => {
     await skipLoader(page);
     await page.getByRole("button", { name: "Abrir menu" }).click();
     const menu = page.getByRole("dialog", { name: "Menu principal" });
@@ -167,12 +154,13 @@ test.describe("navegação no celular", () => {
 
     await page.getByRole("button", { name: "Abrir menu" }).click();
     await menu.getByRole("button", { name: /Nossos Produtos/ }).click();
-    await menu.getByRole("link", { name: /Pains/ }).click();
-    await expect(page.locator("[data-scene='flavors']")).toBeInViewport({ timeout: 10_000 });
+    await menu.getByRole("link", { name: /Pâtisserie/ }).click();
+    await expect(page).toHaveURL(/\/catalogo\?categoria=patisserie$/, { timeout: 15_000 });
+    await expect(page.locator("[data-product-card]")).toHaveCount(11);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)).toBeLessThanOrEqual(0);
 
     await page.getByRole("button", { name: "Abrir menu" }).click();
-    await menu.getByRole("link", { name: /Galerie/ }).click();
-    await expect.poll(() => topOf(page, "[data-nav='galerie']"), { timeout: 10_000 }).toBeLessThan(140);
-    expect(await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)).toBeLessThanOrEqual(0);
+    await menu.getByRole("link", { name: /Catálogo/ }).first().click();
+    await expect(page).toHaveURL(/\/catalogo$/, { timeout: 15_000 });
   });
 });

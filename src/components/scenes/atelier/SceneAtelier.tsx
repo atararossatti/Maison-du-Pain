@@ -79,7 +79,7 @@ export function SceneAtelier() {
               ) : (
                 <div data-win className="absolute inset-0" style={{ clipPath: "circle(0% at 50% 56%)", visibility: "hidden", background: photo.color }}>
                   <div data-img className="absolute inset-0" style={{ transform: "scale(1.3)" }}>
-                    <Photo id={step.photo} sizes="100vw" />
+                    <Photo id={step.photo} sizes="100vw" focus={step.focus} />
                   </div>
                   <div className="absolute inset-0 bg-gradient-to-r from-ink/80 via-ink/25 to-transparent max-sm:bg-gradient-to-t max-sm:from-ink/85 max-sm:via-ink/25" />
                 </div>

@@ -15,7 +15,7 @@ export function Footer() {
           {NAV.map((item) => (
             <li key={item.id}>
               <a
-                href={item.id === "inicio" ? "#" : `#${item.id}`}
+                href={item.href ?? (item.id === "inicio" ? "/" : `/#${item.id}`)}
                 onClick={(event) => {
                   event.preventDefault();
                   navigateTo(item.id);

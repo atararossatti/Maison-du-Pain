@@ -1,0 +1,296 @@
+{
+  "baguette-traditionnelle": {
+    "source": "Baguette traditionnelle.jpg",
+    "width": 1280,
+    "height": 853,
+    "blur": "data:image/webp;base64,UklGRlYAAABXRUJQVlA4IEoAAAAQAgCdASoOAAkAAsBIJagCdAELsbhNsOeAAP7eA4y7bV8w2NmgXDGM3eXYtaRVn3F6xH7HQWUIsyk5vzlnO5NQxH1GlK0QwIAAAA==",
+    "color": "#582808"
+  },
+  "brioche": {
+    "source": "Brioche.png",
+    "width": 1536,
+    "height": 1024,
+    "blur": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAAAQAgCdASoOAAkAAsBIJbACdLoAAZYJ2rgAAP7YCw2A59Dhlaea/SFKo07kSkeK3QQ9+hSJyztG+7UlsspEsAAA",
+    "color": "#a86848"
+  },
+  "brownies": {
+    "source": "Brownies.png",
+    "width": 1536,
+    "height": 1024,
+    "blur": "data:image/webp;base64,UklGRk4AAABXRUJQVlA4IEIAAAAQAgCdASoOAAkAAsBIJZgCdLoAAnba1R4AAP4l9aXmFCg7Qx9JQN3973koTUAwC5DAHIjlrhz8+qI2bnxYaEoAAAA=",
+    "color": "#080808"
+  },
+  "canele": {
+    "source": "Canelé.png",
+    "width": 1536,
+    "height": 1024,
+    "blur": "data:image/webp;base64,UklGRlAAAABXRUJQVlA4IEQAAADwAQCdASoOAAkAAsBIJbACdAEf/hgNjhgA/VLknUwugbYj5gMsAbHU2Xq94ZMeLQZY0cCc+HeDYl/u/KAw+a1aOAAAAA==",
+    "color": "#180808"
+  },
+  "cappuccino": {
+    "source": "Cappuccino.png",
+    "width": 1536,
+    "height": 1536,
+    "blur": "data:image/webp;base64,UklGRmIAAABXRUJQVlA4IFYAAAAwAgCdASoOAA4AAsBIJbACdADhmLTVIaOSNAD+8bk/g1eSuwEDC7c5RYNi6NZFMXti8ET9Kb3oNwQw98jkGZmlBt7gHpzyz0W1Mb+R4L96MLsdtAAAAA==",
+    "color": "#180808"
+  },
+  "cha": {
+    "source": "Cha.png",
+    "width": 1536,
+    "height": 1536,
+    "blur": "data:image/webp;base64,UklGRl4AAABXRUJQVlA4IFIAAADwAQCdASoOAA4AAsBIJbACdLoAAfSWsRAA+4YNYJbg5dwrF8jik5263qcODAWUAUMcuLHKidn2fV1TbmTaGGlj3nX2APpMeN1H5tyo5ty+YAAA",
+    "color": "#481808"
+  },
+  "chausson-aux-pommes": {
+    "source": "Chausson aux pommes.png",
+    "width": 1536,
+    "height": 1024,
+    "blur": "data:image/webp;base64,UklGRlIAAABXRUJQVlA4IEYAAADQAQCdASoOAAkAAsBIJbACdADPhcdUgAD+M6FJgTZ+MsRSmx0qFNPStBOW1SXAwyLn9pfpgftcWv/QjfUaZR+FD3mAwAAA",
+    "color": "#e8b878"
+  },
+  "cheesecake": {
+    "source": "Cheesecake.png",
+    "width": 1536,
+    "height": 1024,
+    "blur": "data:image/webp;base64,UklGRlYAAABXRUJQVlA4IEoAAADQAQCdASoOAAkAAsBIJagCdADbV5uQAADiLGq9RGrYfs0Fb4/Y2HCs0ktCxHXZo+NvNWqpabQXHGN9fgUN1QFgXfxTEXmttCPAAA==",
+    "color": "#080808"
+  },
+  "chocolat-chaud": {
+    "source": "Chocolate Quente.png",
+    "width": 1536,
+    "height": 1536,
+    "blur": "data:image/webp;base64,UklGRlwAAABXRUJQVlA4IFAAAADwAQCdASoOAA4AAsBIJZgCdADyevaGkAAA/u0UTEnySr4te2051MG1jIA1ANwANGXRaz6nMm8ABtarOULUqqJka61OuWZwrr7yOwhusUAAAA==",
+    "color": "#080808"
+  },
+  "cinnamon-roll": {
+    "source": "Cinnamon roll.png",
+    "width": 1536,
+    "height": 1024,
+    "blur": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAAAwAgCdASoOAAkAAsBIJagCdLoAAufJ+z59AADMTED8zTtwAmp4h1dIwtcVvDdXcrVLGi13z90ADG1x7eBNIMAA",
+    "color": "#a87858"
+  },
+  "cookies": {
+    "source": "Cookies.png",
+    "width": 1536,
+    "height": 1024,
+    "blur": "data:image/webp;base64,UklGRkoAAABXRUJQVlA4ID4AAADQAQCdASoOAAkAAsBIJagCdAD7JGzJAAD2vMSubXSaRZ8C1ta4E5cMu3se3n0bn+RQe3B7h5sq+23vwlKIAA==",
+    "color": "#080808"
+  },
+  "croissant-de-amendoas": {
+    "source": "Croissant de amêndoas.jpg",
+    "width": 1600,
+    "height": 1067,
+    "blur": "data:image/webp;base64,UklGRlIAAABXRUJQVlA4IEYAAADQAQCdASoOAAkAAsBIJYgCdAChbzb0AAD5CH+rLIBUQb5TIECsxcPKWowMV1qJZ4RtF/4Ex+e79yVivdtinvV5tiurzgAA",
+    "color": "#080808"
+  },
+  "croissant-recheado": {
+    "source": "Croissant recheado.png",
+    "width": 1536,
+    "height": 1024,
+    "blur": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAAAQAgCdASoOAAkAAsBIJbACdAEDHuORZ2sGAP3vwNmPuLZg7DlexwFUaPfWZornzzL90fWXkW7H308j2D4TAAAA",
+    "color": "#582808"
+  },
+  "croque-monsieur": {
+    "source": "Croque monsieur.png",
+    "width": 1536,
+    "height": 1024,
+    "blur": "data:image/webp;base64,UklGRlIAAABXRUJQVlA4IEYAAAAQAgCdASoOAAkAAsBIJbACdLoAAkuWfh+gAP6sCxFj3q1yg+bzYSFK+3XmUkvPL33vJhpcQ3+WNKk9HAcPzZLbP6JYgAAA",
+    "color": "#080808"
+  },
+  "entremets": {
+    "source": "Entremets.png",
+    "width": 1536,
+    "height": 1024,
+    "blur": "data:image/webp;base64,UklGRlAAAABXRUJQVlA4IEQAAAAwAgCdASoOAAkAAsBIJbACdAEQWzOO+BDSgADOPlGRJ6yzwURPd5pM0g/fnF/KL3tvaovLu+vWls3Lv6Q+PzW2gAAAAA==",
+    "color": "#581808"
+  },
+  "espresso": {
+    "source": "Espresso.png",
+    "width": 1536,
+    "height": 1536,
+    "blur": "data:image/webp;base64,UklGRlwAAABXRUJQVlA4IFAAAADwAQCdASoOAA4AAsBIJZACdAEObymwwAAA/vW+mGbvlMzZFmR97sdpH3Lb8KEI062ZX2OZskuHnroU43L1Q/e61w40ZUuO6mCxwGaLSIAAAA==",
+    "color": "#080808"
+  },
+  "financiers": {
+    "source": "Financiers.png",
+    "width": 1536,
+    "height": 1024,
+    "blur": "data:image/webp;base64,UklGRlAAAABXRUJQVlA4IEQAAADQAQCdASoOAAkAAsBIJbACdADwaBg2EADeK9wIhRjGE5hG0+74F9Irjozns98rWmB9GFMcvxX6ev1rfXAvfDflRgAAAA==",
+    "color": "#782808"
+  },
+  "focaccia": {
+    "source": "Focaccia.png",
+    "width": 1536,
+    "height": 1024,
+    "blur": "data:image/webp;base64,UklGRlAAAABXRUJQVlA4IEQAAADwAQCdASoOAAkAAsBIJbACdAD0NT6PtQAAzEl85sLujrGVy8uhGNwEbJoV64absXaP3TsfyyEO5aN92yRfVlGIpIAAAA==",
+    "color": "#381808"
+  },
+  "fougasse": {
+    "source": "Fougasse.png",
+    "width": 1536,
+    "height": 1024,
+    "blur": "data:image/webp;base64,UklGRk4AAABXRUJQVlA4IEIAAAAQAgCdASoOAAkAAsBIJbACdLoAAf04HX6IAPui7NRc0f8SRTMJfl37Mmha3r1HXB/cg/n8buBB4epGPigJrL2cIAA=",
+    "color": "#381808"
+  },
+  "latte": {
+    "source": "Latte.png",
+    "width": 1536,
+    "height": 1536,
+    "blur": "data:image/webp;base64,UklGRmgAAABXRUJQVlA4IFwAAAAwAgCdASoOAA4AAsBIJbACdAEN69bAabetAAD+S6zhJhb8IzP1zXKGtItDOwi9/gZ0xmqZVU7Zh3M52LDlp9nmR5BJdjA/9DMzwgHmlJZJ+KYjKdxdKqzYNWAAAA==",
+    "color": "#080808"
+  },
+  "macarons": {
+    "source": "Macarons (caixa com 6).png",
+    "width": 1536,
+    "height": 1024,
+    "blur": "data:image/webp;base64,UklGRkoAAABXRUJQVlA4ID4AAADwAQCdASoOAAkAAsBIJZACdLoAAbH4w2gA/rdsgmSaqNcW/6NvVC/vZiS6KJeAOOpmhaH689YQJvIyE7MAAA==",
+    "color": "#e8c8a8"
+  },
+  "madeleines": {
+    "source": "Madeleines.png",
+    "width": 1536,
+    "height": 1024,
+    "blur": "data:image/webp;base64,UklGRlAAAABXRUJQVlA4IEQAAADQAQCdASoOAAkAAsBIJbACdLoAAUR/iAD89iq0gzZW1eAeNse471sNkHSSETU5fje6sLtDv+tl1XlOucPyVbe7dmAAAA==",
+    "color": "#b88868"
+  },
+  "mille-feuille": {
+    "source": "Mille-feuille.png",
+    "width": 1536,
+    "height": 1024,
+    "blur": "data:image/webp;base64,UklGRk4AAABXRUJQVlA4IEIAAADQAQCdASoOAAkAAsBIJbACdADdoyXTwAD+l4CLSTeuGIlr3PVzB9AAdEb/7wdlP+wGFIT9ZthUpmK+34i93767AAA=",
+    "color": "#e8d8d8"
+  },
+  "mocha": {
+    "source": "Mocha.png",
+    "width": 1536,
+    "height": 1536,
+    "blur": "data:image/webp;base64,UklGRl4AAABXRUJQVlA4IFIAAADwAQCdASoOAA4AAsBIJbACdAD0g5pc1kAA/vTAsIILBM0eKxvgPXh0f8Sh7bpn+CFO/vywn8iXsUeRBzgi0Zs0UU8lvkgeVG4X33lXqpmj4AAA",
+    "color": "#180808"
+  },
+  "opera-cake": {
+    "source": "Opera cake.png",
+    "width": 1536,
+    "height": 1024,
+    "blur": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAACwAQCdASoOAAkAAsBIJagCdADZDuHgAP3jnUCsrgzbaWjD3x34b7CiDGENxX6egy7zmg9feUK+5fi7sRkYNQAA",
+    "color": "#280808"
+  },
+  "pain-au-chocolat": {
+    "source": "Pain au chocolat.jpg",
+    "width": 1280,
+    "height": 853,
+    "blur": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAAAQAgCdASoOAAkAAsBIJagCdAEfbm4ZG4OwAM49zeOvgHRzvhjNazT6fdJSX9j3daAgPTgDAyPcqS+J+zVBSkAA",
+    "color": "#c88838"
+  },
+  "pain-au-levain": {
+    "source": "Pain au levain.jpg",
+    "width": 1280,
+    "height": 960,
+    "blur": "data:image/webp;base64,UklGRk4AAABXRUJQVlA4IEIAAAAQAgCdASoOAAsAAsBIJQBOgB6WFGtqgwKAAP7wObUwwfx0PY+iZlKTYKIE0KWvRw4Nmg2bR4uSh8sU8Pkqjr3AAAA=",
+    "color": "#281818"
+  },
+  "pain-aux-raisins": {
+    "source": "Pain aux raisins.png",
+    "width": 1536,
+    "height": 1024,
+    "blur": "data:image/webp;base64,UklGRkoAAABXRUJQVlA4ID4AAADwAQCdASoOAAkAAsBIJbACdLoAAbH4w2gA/mhOg+oA2W5Opr83qnkR1cNvJuzr0D/jcAxwUX+1coCSRmIAAA==",
+    "color": "#b87848"
+  },
+  "pain-de-campagne": {
+    "source": "Pain de campagne.png",
+    "width": 1536,
+    "height": 1024,
+    "blur": "data:image/webp;base64,UklGRkoAAABXRUJQVlA4ID4AAAAQAgCdASoOAAkAAsBIJagCdLoAAhKqJyJAAM3MM/gt8Xo+rmxdLJgb4CRdSL3/YXPbJ0+hNhmyftrhtzAAAA==",
+    "color": "#582808"
+  },
+  "palmiers": {
+    "source": "Palmiers.png",
+    "width": 1536,
+    "height": 1024,
+    "blur": "data:image/webp;base64,UklGRlIAAABXRUJQVlA4IEYAAAAwAgCdASoOAAkAAsBIJbACdLoAAnRFAIPYAAD+g4lXJHuYAxlgtoFTy8/IBpWHjlsepAG/90Ygg/Xmr/dLDzTygTn6N0AA",
+    "color": "#180808"
+  },
+  "paris-brest": {
+    "source": "Paris-Brest.png",
+    "width": 1536,
+    "height": 1024,
+    "blur": "data:image/webp;base64,UklGRkoAAABXRUJQVlA4ID4AAADQAQCdASoOAAkAAsBIJbACdACzTW1tEAD9S0jJl5J+lGEt6mGuy/PdNzfUGJ+P8NvvZ3orcpN+1PysmKAAAA==",
+    "color": "#080808"
+  },
+  "pao-de-centeio": {
+    "source": "Pão de centeio.png",
+    "width": 1536,
+    "height": 1024,
+    "blur": "data:image/webp;base64,UklGRkoAAABXRUJQVlA4ID4AAAAwAgCdASoOAAkAAsBIJagCdLoAAkclFfmAwAD4YtBLxInUjMSRvmxW3VBCmkhQbeaHJ/9CFc7Rvtrh+wYAAA==",
+    "color": "#481808"
+  },
+  "pao-de-nozes": {
+    "source": "Pão de nozes.png",
+    "width": 1536,
+    "height": 1024,
+    "blur": "data:image/webp;base64,UklGRk4AAABXRUJQVlA4IEIAAAAQAgCdASoOAAkAAsBIJagCdLoAAgbwF/ggAPfbTgYwtiA7SMgvwzPQr9ByIL7jN9dLZon/oUdjjfu/FAM57BgAAAA=",
+    "color": "#582808"
+  },
+  "pao-integral": {
+    "source": "Pão integral.png",
+    "width": 1536,
+    "height": 1024,
+    "blur": "data:image/webp;base64,UklGRkoAAABXRUJQVlA4ID4AAADwAQCdASoOAAkAAsBIJagCdLoAAmolDGAA+Qb9zAaYWqfZhV4E4pDLOHnBMkhhGh6S/5G7oTiPvi2RzNQAAA==",
+    "color": "#582808"
+  },
+  "quiche-lorraine": {
+    "source": "Quiche Lorraine.png",
+    "width": 1536,
+    "height": 1024,
+    "blur": "data:image/webp;base64,UklGRlAAAABXRUJQVlA4IEQAAADwAQCdASoOAAkAAsBIJbACdADwLuVlUAAA/j/VLOjNj97YvZ/ouR5lgCk6aLnapUtfyqdfyszLbt3/Vxg9kWYwQgAAAA==",
+    "color": "#381808"
+  },
+  "sanduiche-de-baguete": {
+    "source": "Sanduíche de baguete.png",
+    "width": 1536,
+    "height": 1024,
+    "blur": "data:image/webp;base64,UklGRlIAAABXRUJQVlA4IEYAAADwAQCdASoOAAkAAsBIJbACdLoAAvY660AA/qxa6R+6i7N8NlfBlSrO9qH/uCm1/AwL3QJlmM5f3bodegVwSfrFo6JqRLgA",
+    "color": "#482808"
+  },
+  "sanduiche-de-croissant": {
+    "source": "Sanduíche de croissant.png",
+    "width": 1536,
+    "height": 1024,
+    "blur": "data:image/webp;base64,UklGRlIAAABXRUJQVlA4IEYAAADQAQCdASoOAAkAAsBIJbACdADMnYTsCAD4Vx8G8mpJBtSHb4hbw9x5r87yTwXRkNBgP+VK5tMNRAtn5qbwXFJPfqjEWAAA",
+    "color": "#080808"
+  },
+  "tarte-tatin": {
+    "source": "Tarte Tatin.png",
+    "width": 1536,
+    "height": 1024,
+    "blur": "data:image/webp;base64,UklGRlAAAABXRUJQVlA4IEQAAADwAQCdASoOAAkAAsBIJbACdAD7Fo7yEpQAzJufi0SWY2sBXzJNFHLxUamzyeiC8P/36Ye66OJyc/0eR36JcTsuDoAAAA==",
+    "color": "#080808"
+  },
+  "tarte-au-citron": {
+    "source": "Tarte au citron.png",
+    "width": 1536,
+    "height": 1024,
+    "blur": "data:image/webp;base64,UklGRlQAAABXRUJQVlA4IEgAAACwAQCdASoOAAkAAsBIJbACdACuyUQAAP3vI0dXV7FBAck7lO+LddDb2hsMQoKRJ50rgBrgJq/32V1+h6pqK/cQX/NatTQAAAA=",
+    "color": "#080808"
+  },
+  "tarte-aux-fraises": {
+    "source": "Tarte aux fraises.jpg",
+    "width": 1280,
+    "height": 865,
+    "blur": "data:image/webp;base64,UklGRloAAABXRUJQVlA4IE4AAAAQAgCdASoOAAkAAsBIJbACdAEf1HD2rezAAP7YI65tgQmrVKLcXSoW3s/6EN6EP2eORb3umRgPFdYT+s8pUmPzmb7wwl3/L6FQXaEAAAA=",
+    "color": "#e8e8e8"
+  },
+  "torta-salgada": {
+    "source": "Torta salgada.png",
+    "width": 1536,
+    "height": 1024,
+    "blur": "data:image/webp;base64,UklGRlAAAABXRUJQVlA4IEQAAADQAQCdASoOAAkAAsBIJbACdADcBHf3AAD+o30SbVzYQ6m6WQO46U5xhg9DYnZ1N/yxpXuBCCmN/6vBLs50RTTZygAAAA==",
+    "color": "#583828"
+  },
+  "eclair-de-chocolate": {
+    "source": "Éclair de chocolate.avif",
+    "width": 1065,
+    "height": 1600,
+    "blur": "data:image/webp;base64,UklGRpAAAABXRUJQVlA4IIQAAABQBACdASoOABUAPsFOoUqnpCMhsAgA8BgJbACdMoRwACm92PBHNi/e+QDAAP7nTrfn73QYV6DmJu5CAOt9aVYfuMI1w7lDWSmgftACURPaNRfPrTP3TsJrwgFPjJhLUSpy9BzonswaeYAjkhFPMygmk23XUouZwZR89epy7cMGbAGwAAA=",
+    "color": "#180808"
+  }
+}
