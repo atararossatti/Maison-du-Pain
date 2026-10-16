@@ -1,4 +1,3 @@
-import { PHOTOS, type PhotoId } from "@/config/photos";
 import { gsap } from "@/lib/gsap";
 
 const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -7,10 +6,9 @@ const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: r
  * A fotografia do menu "cresce" do próprio retângulo até ocupar a tela inteira. O chamador navega por baixo dela e
  * chama `reveal()` para dissolvê-la, entregando o visitante à seção do produto.
  */
-export function growPhoto(from: DOMRect, photoId: PhotoId): { grown: Promise<void>; reveal: () => Promise<void> } {
+export function growPhoto(from: DOMRect, photo: { src: string; color: string }): { grown: Promise<void>; reveal: () => Promise<void> } {
   if (prefersReducedMotion()) return { grown: Promise.resolve(), reveal: () => Promise.resolve() };
 
-  const photo = PHOTOS[photoId];
   const layer = document.createElement("div");
   layer.setAttribute("aria-hidden", "true");
   Object.assign(layer.style, {

@@ -7,6 +7,8 @@ export interface AtelierStep {
   photo: PhotoId;
   /** `window`: fotografia vertical numa janela ao lado do texto (fundo é a própria foto, borrada). `bleed`: ocupa a tela toda. */
   mode: "window" | "bleed";
+  /** Enquadramento da fotografia em tela cheia (`object-position`), para fotos verticais mostrarem o assunto principal. */
+  focus?: string;
   numeral: string;
   french: string;
   title: string;
@@ -14,8 +16,8 @@ export interface AtelierStep {
 }
 
 export const ATELIER_STEPS: readonly AtelierStep[] = [
-  { photo: "pains", mode: "window", numeral: "01", french: "la fournée", title: "A fornada", text: "Antes do sol o forno já está aceso. Cada pão sai quando a casca estala e o miolo respira." },
-  { photo: "gateau-chocolat", mode: "window", numeral: "02", french: "le geste", title: "O gesto", text: "Calda, cobertura, acabamento: o último passo de cada doce é sempre feito à mão." },
+  { photo: "pains", mode: "bleed", numeral: "01", french: "la fournée", title: "A fornada", text: "Antes do sol o forno já está aceso. Cada pão sai quando a casca estala e o miolo respira." },
+  { photo: "gateau-chocolat", mode: "bleed", focus: "50% 72%", numeral: "02", french: "le geste", title: "O gesto", text: "Calda, cobertura, acabamento: o último passo de cada doce é sempre feito à mão." },
   { photo: "gateau-moelleux", mode: "bleed", numeral: "03", french: "la mie", title: "O miolo", text: "Alveolado, úmido e macio sob uma crosta caramelizada que cede ao primeiro toque." },
   { photo: "sonho", mode: "bleed", numeral: "04", french: "le sucre", title: "O açúcar", text: "Uma nevasca de açúcar de confeiteiro encerra a fornada e abre a vitrine." },
 ];

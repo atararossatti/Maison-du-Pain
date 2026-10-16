@@ -1,17 +1,17 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { ScrollLock } from "@/components/animations/ScrollLock";
 import { SoundProvider } from "@/components/animations/SoundProvider";
 import { Scene01Awakening } from "@/components/scenes/awakening/Scene01Awakening";
-import { Galerie } from "@/components/sections/Galerie";
 import { SceneAtelier } from "@/components/scenes/atelier/SceneAtelier";
 import { LazyScene, SceneReserve, type SceneReserveProps } from "@/components/ui/LazyScene";
 import { Loader } from "@/components/ui/Loader";
 import { useDeviceTier } from "@/hooks/useDeviceTier";
 import { useStaticMode } from "@/hooks/motionPreference";
-import { navigateToHash } from "@/lib/navigate";
+import { INTRO_SEEN_KEY, navigateToHash, notePageView, registerRouter } from "@/lib/navigate";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
 
@@ -46,8 +46,35 @@ const Scene06Return = dynamic(loadReturn, { ssr: false, loading: reserveFor(RESE
 export function Experience() {
   const tier = useDeviceTier();
   const staticMode = useStaticMode();
-  const [revealed, setRevealed] = useState(false);
-  const [loaderMounted, setLoaderMounted] = useState(true);
+  const [revealedByIntro, setRevealed] = useState(false);
+  const [loaderOpen, setLoaderMounted] = useState(true);
+  const [skipIntro, setSkipIntro] = useState(false);
+  const router = useRouter();
+  useLayoutEffect(() => {
+    notePageView();
+  }, []);
+
+  // Ir ao catálogo (ou voltar dele) é navegação do cliente: sem recarregar a página.
+  useLayoutEffect(() => {
+    registerRouter((href) => router.push(href));
+    return () => registerRouter(null);
+  }, [router]);
+
+  // Voltar de uma página interna (catálogo, produto, pedido) não repete a abertura: a página inicial reaparece como estava.
+  // Recarregar a página inicial (F5) continua mostrando a abertura. Roda antes da pintura para não piscar o loader.
+  useLayoutEffect(() => {
+    try {
+      if (window.sessionStorage.getItem(INTRO_SEEN_KEY) !== "1") return;
+      window.sessionStorage.removeItem(INTRO_SEEN_KEY);
+      // Precisa acontecer antes da primeira pintura (layout effect), senão o loader piscaria na volta do catálogo.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setSkipIntro(true);
+    } catch {
+      // Sem armazenamento: a abertura toca normalmente.
+    }
+  }, []);
+  const revealed = revealedByIntro || skipIntro;
+  const loaderMounted = loaderOpen && !skipIntro;
 
   useEffect(() => {
     document.documentElement.dataset.motion = staticMode ? "static" : "full";
@@ -63,7 +90,7 @@ export function Experience() {
     return () => window.clearTimeout(timer);
   }, [revealed]);
 
-  // Abrir a página com `#galerie` (ou `#produto-croissant`) leva à seção assim que a abertura termina.
+  // Abrir a página com `#atelier` (ou `#produto-croissant`) leva à seção assim que a abertura termina.
   useEffect(() => {
     if (!revealed || !window.location.hash) return;
     const timer = window.setTimeout(() => navigateToHash(window.location.hash, { instant: true, updateHash: false }), 300);
@@ -91,7 +118,6 @@ export function Experience() {
             <LazyScene {...RESERVES.process}>
               <Scene05Process />
             </LazyScene>
-            <Galerie />
             <LazyScene {...RESERVES.return}>
               <Scene06Return />
             </LazyScene>

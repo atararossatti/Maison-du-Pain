@@ -3,14 +3,16 @@
 import { useEffect, useRef, useState } from "react";
 import { Photo } from "@/components/ui/Photo";
 import { NAV, type NavId } from "@/config/nav";
-import { CATEGORIES, PRODUCTS } from "@/config/products";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { CATEGORIES } from "@/config/catalog";
 import { gsap } from "@/lib/gsap";
-import { navigateTo, navigateToProduct } from "@/lib/navigate";
+import { navigateTo } from "@/lib/navigate";
 
 interface MobileMenuProps {
   open: boolean;
   onClose: () => void;
-  active: NavId;
+  active: NavId | null;
   sound: { enabled: boolean; toggle: () => void };
   staticMode: { enabled: boolean; toggle: () => void };
 }
@@ -18,6 +20,7 @@ interface MobileMenuProps {
 /** Menu de tela cheia para o celular: `<dialog>` modal (foco preso, Esc fecha) com entrada em círculo e itens escalonados. */
 export function MobileMenu({ open, onClose, active, sound, staticMode }: MobileMenuProps) {
   const ref = useRef<HTMLDialogElement>(null);
+  const router = useRouter();
   const [productsOpen, setProductsOpen] = useState(false);
 
   useEffect(() => {
@@ -83,7 +86,7 @@ export function MobileMenu({ open, onClose, active, sound, staticMode }: MobileM
                     </button>
                   ) : (
                     <a
-                      href={item.id === "inicio" ? "#" : `#${item.id}`}
+                      href={item.href ?? (item.id === "inicio" ? "/" : `/#${item.id}`)}
                       aria-current={active === item.id ? "location" : undefined}
                       onClick={(event) => {
                         event.preventDefault();
@@ -100,14 +103,13 @@ export function MobileMenu({ open, onClose, active, sound, staticMode }: MobileM
                     <div id="mobile-produtos" hidden={!productsOpen} className="pb-5">
                       <ul className="grid grid-cols-2 gap-3">
                         {CATEGORIES.map((cat) => {
-                          const first = PRODUCTS.find((product) => product.category === cat.id);
                           return (
                             <li key={cat.id}>
                               <a
-                                href={first ? `#produto-${first.id}` : "#produtos"}
+                                href={`/catalogo?categoria=${cat.id}`}
                                 onClick={(event) => {
                                   event.preventDefault();
-                                  leave(() => (first ? navigateToProduct(first.id) : navigateTo("produtos")));
+                                  leave(() => router.push(`/catalogo?categoria=${cat.id}`));
                                 }}
                                 className="group relative block aspect-[4/5] overflow-hidden"
                               >
@@ -119,16 +121,16 @@ export function MobileMenu({ open, onClose, active, sound, staticMode }: MobileM
                           );
                         })}
                       </ul>
-                      <a
-                        href="#produtos"
+                      <Link
+                        href="/catalogo"
                         onClick={(event) => {
                           event.preventDefault();
-                          leave(() => navigateTo("produtos"));
+                          leave(() => router.push("/catalogo"));
                         }}
                         className="mt-4 inline-block text-xs uppercase tracking-[0.2em] text-gold underline underline-offset-4"
                       >
-                        Ver todos os produtos
-                      </a>
+                        Ver o catálogo completo
+                      </Link>
                     </div>
                   )}
                 </li>

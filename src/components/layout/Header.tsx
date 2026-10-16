@@ -1,6 +1,9 @@
 "use client";
 
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from "react";
+import { CartButton } from "@/components/cart/CartButton";
 import { useSound } from "@/components/animations/SoundProvider";
 import { NAV, type NavId } from "@/config/nav";
 import { setStaticMode, useStaticMode } from "@/hooks/motionPreference";
@@ -12,9 +15,10 @@ import { MobileMenu } from "./MobileMenu";
 const MEGA_ID = "mega-produtos";
 
 /** Item do menu em destaque conforme o scroll; recalcula quando a página muda de altura. */
-function useActiveNav() {
+function useActiveNav(enabled: boolean) {
   const [active, setActive] = useState<NavId>("inicio");
   useEffect(() => {
+    if (!enabled) return;
     let frame = 0;
     const update = () => {
       frame = 0;
@@ -33,7 +37,7 @@ function useActiveNav() {
       ScrollTrigger.removeEventListener("refresh", schedule);
       cancelAnimationFrame(frame);
     };
-  }, []);
+  }, [enabled]);
   return active;
 }
 
@@ -43,7 +47,11 @@ export function Header() {
   const closeTimer = useRef<number>(0);
   const { enabled, toggle } = useSound();
   const staticMode = useStaticMode();
-  const active = useActiveNav();
+  const pathname = usePathname();
+  const onHome = pathname === "/";
+  const scrolled = useActiveNav(onHome);
+  // Na página inicial o item ativo segue o scroll; nas páginas internas vem da rota.
+  const active: NavId | null = onHome ? scrolled : pathname.startsWith("/catalogo") ? "catalogo" : null;
   const [megaOpen, setMegaOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const lightScene = useRef(false);
@@ -163,14 +171,14 @@ export function Header() {
         onPointerEnter={() => window.clearTimeout(closeTimer.current)}
       >
         <div className="mx-auto flex h-[4.25rem] max-w-[100rem] items-center justify-between gap-6 px-5 sm:px-9 lg:h-[4.75rem]">
-          <a
-            href="#"
+          <Link
+            href="/"
             onClick={go("inicio")}
             className="shrink-0 font-display text-lg tracking-tight text-chocolate transition-colors group-data-[tone=light]:text-cream sm:text-xl"
             aria-label="Maison du Pain — início"
           >
             Maison <span className="italic text-crust group-data-[tone=light]:text-gold">du</span> Pain
-          </a>
+          </Link>
 
           <nav aria-label="Principal" className="hidden lg:block">
             <ul className="flex items-center gap-0 xl:gap-2">
@@ -200,7 +208,7 @@ export function Header() {
                       </button>
                     ) : (
                       <a
-                        href={item.id === "inicio" ? "#" : `#${item.id}`}
+                        href={item.href ?? (item.id === "inicio" ? "/" : `/#${item.id}`)}
                         data-current={current}
                         aria-current={current ? "location" : undefined}
                         onClick={go(item.id)}
@@ -237,6 +245,7 @@ export function Header() {
             >
               Som {enabled ? "ligado" : "desligado"}
             </button>
+            <CartButton />
             <button
               type="button"
               onClick={() => setMobileOpen(true)}

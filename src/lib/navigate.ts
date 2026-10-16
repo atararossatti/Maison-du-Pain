@@ -1,6 +1,22 @@
 import { NAV, isNavId, type NavId, type NavItem } from "@/config/nav";
 import { gsap } from "@/lib/gsap";
 
+/** Marca (em `sessionStorage`) que o visitante está numa página interna: ao voltar para a página inicial, a abertura não toca de novo. */
+export const INTRO_SEEN_KEY = "mdp-skip-intro";
+
+type Push = (href: string) => void;
+let pushRoute: Push | null = null;
+/** As páginas internas registram o roteador do Next: a troca de página vira navegação do cliente (sem recarregar nem repetir a abertura). */
+export function registerRouter(push: Push | null) {
+  pushRoute = push;
+}
+/** Páginas já vistas nesta visita (sem recarregar): com mais de uma, o botão "Voltar" pode usar o histórico do navegador. */
+let pagesViewed = 0;
+export const notePageView = () => void (pagesViewed += 1);
+export const canGoBack = () => pagesViewed > 1 && window.history.length > 1;
+
+const goToPage = (href: string) => (pushRoute ? pushRoute(href) : window.location.assign(href));
+
 /** Altura do cabeçalho fixo: seções comuns pousam logo abaixo dele. */
 const HEADER_GAP = 96;
 /** Distância (em telas) a partir da qual o salto passa por um véu em vez de rolar de verdade. */
@@ -12,6 +28,7 @@ const documentTop = (el: HTMLElement) => el.getBoundingClientRect().top + window
 
 /** Posição absoluta (px) de um item do menu, ou `null` se nem a cena nem o seu placeholder existem. */
 export function navTop(item: NavItem): { top: number; mounted: boolean } | null {
+  if (item.href) return null;
   if (item.id === "inicio") return { top: 0, mounted: true };
   const el = find(item.selector);
   if (el) {
@@ -79,6 +96,15 @@ export interface NavigateOptions {
 export function navigateTo(id: NavId, options: NavigateOptions = {}) {
   const item = NAV.find((entry) => entry.id === id);
   if (!item) return;
+  // Itens que são páginas próprias, ou seções da página inicial pedidas de outra página: troca de página.
+  if (item.href) {
+    goToPage(item.href);
+    return;
+  }
+  if (window.location.pathname !== "/") {
+    goToPage(id === "inicio" ? "/" : `/#${id}`);
+    return;
+  }
   const y = landingY(item);
   if (y === null) return;
   if (options.updateHash !== false) history.replaceState(null, "", id === "inicio" ? window.location.pathname : `#${id}`);
@@ -147,7 +173,7 @@ export function navigateToProduct(productId: string, options: NavigateOptions = 
   gsap.to(cover, { opacity: 1, duration: 0.28, ease: "power2.in", onComplete: () => { go(); gsap.to(cover, { opacity: 0, duration: 0.7, delay: 0.25, ease: "power2.out" }); } });
 }
 
-/** Resolve um `#hash` de URL para navegação (`#galerie`, `#produto-croissant`). */
+/** Resolve um `#hash` de URL para navegação (`#atelier`, `#produto-croissant`). */
 export function navigateToHash(hash: string, options: NavigateOptions = {}) {
   const value = hash.replace(/^#/, "");
   if (isNavId(value)) navigateTo(value, options);

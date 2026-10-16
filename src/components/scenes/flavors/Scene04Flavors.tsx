@@ -13,7 +13,7 @@ import { ProductStage } from "./ProductStage";
 import { useReducedMotion } from "@/hooks/useMediaQuery";
 import { useFlavorsScroll } from "./useFlavorsScroll";
 
-/** Ilustrações próprias animadas pelo ponteiro (as fotografias ficam na Galerie). */
+/** Ilustrações próprias animadas pelo ponteiro. */
 const ART: Partial<Record<ProductId, ComponentType>> = {
   "pain-au-chocolat": PainAuChocolatArt,
   levain: SourdoughArt,
