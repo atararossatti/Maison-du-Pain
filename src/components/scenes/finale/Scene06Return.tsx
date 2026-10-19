@@ -5,17 +5,19 @@ import { useRef, useState } from "react";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 import { Grain } from "@/components/ui/Grain";
 import { RETURN_SCREENS } from "@/config/awakening";
+import { navigateTo } from "@/lib/navigate";
 import { useDeviceTier } from "@/hooks/useDeviceTier";
 import { useFinePointer, useReducedMotion } from "@/hooks/useMediaQuery";
 import { Illustration } from "../awakening/Illustration";
 import { usePointerParallax } from "../awakening/usePointerParallax";
-import { MenuDialog, OrderDialog, VisitDialog } from "./FinaleDialogs";
+import { OrderDialog, VisitDialog } from "./FinaleDialogs";
 import { useReturnTimeline } from "./useReturnTimeline";
 
-type DialogName = "menu" | "visit" | "order";
+type DialogName = "visit" | "order";
+type ActionId = DialogName | "menu";
 
-const ACTIONS: { id: DialogName; label: string; primary?: boolean }[] = [
-  { id: "menu", label: "Conheça nosso cardápio" },
+const ACTIONS: { id: ActionId; label: string; primary?: boolean }[] = [
+  { id: "menu", label: "Cardápio" },
   { id: "visit", label: "Venha nos visitar" },
   { id: "order", label: "Faça seu pedido", primary: true },
 ];
@@ -58,7 +60,7 @@ export function Scene06Return() {
         {ACTIONS.map((action) => (
           <MagneticButton
             key={action.id}
-            onClick={() => setOpen(action.id)}
+            onClick={() => (action.id === "menu" ? navigateTo("catalogo") : setOpen(action.id))}
             className={`rounded-full px-6 py-3 text-sm tracking-wide shadow-lg transition hover:-translate-y-0.5 ${
               action.primary ? "bg-gold text-chocolate hover:bg-caramel" : "bg-cream/90 text-chocolate hover:bg-cream"
             }`}
@@ -75,7 +77,6 @@ export function Scene06Return() {
         aria-hidden
       />
 
-      <MenuDialog open={open === "menu"} onClose={close} />
       <VisitDialog open={open === "visit"} onClose={close} />
       <OrderDialog open={open === "order"} onClose={close} />
     </section>
