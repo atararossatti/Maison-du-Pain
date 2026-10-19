@@ -42,7 +42,8 @@ Cada cena é um **palco**: um contêiner alto (`ui/ScrubStage.tsx`) cujo filho (
 | 02 Interior | 6 | sim | sim |
 | 03 Croissant | 6 | sim | sim (a 04 é uma seção normal com margem negativa) |
 | 04 Sabores | altura natural | sim | não |
-| 05 Processo | 8 | não (entra deslizando, a partir da cor de fundo da 04) | sim |
+| Nosso Atelier | 6 | não | sim |
+| 05 Processo | 8 | não (entra deslizando, a partir da cor de fundo do Atelier) | sim |
 | 06 Retorno | 5 | sim | não (o rodapé vem depois) |
 
 Os testes localizam o percurso de uma cena por `[data-scene]` → `parentElement` (o palco) em vez de assumir offsets.

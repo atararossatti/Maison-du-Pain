@@ -18,6 +18,7 @@ interface LoaderProps {
 /** Tempo máximo que o loader pode ocupar a tela antes de ser dispensado à força. */
 const WATCHDOG_MS = 20_000;
 
+const warmBackground = (warm: number) => `color-mix(in srgb, var(--color-gold) ${(warm * 38).toFixed(2)}%, var(--color-butter))`;
 const select = (root: HTMLElement, name: string) => root.querySelectorAll<HTMLElement>(`[data-el="${name}"]`);
 
 export function Loader({ onReveal, onDone }: LoaderProps) {
@@ -47,7 +48,8 @@ export function Loader({ onReveal, onDone }: LoaderProps) {
   const applyBake = (value: number) => {
     const root = rootRef.current;
     if (!root) return;
-    root.style.setProperty("--warm", value.toFixed(3));
+    // Escreve a cor direto no fundo: uma variável CSS no elemento raiz seria herdada e reavaliaria o estilo da ilustração inteira a cada quadro.
+    root.style.background = warmBackground(value);
     select(root, "glow").forEach((el) => (el.style.opacity = value.toFixed(3)));
     select(root, "golden").forEach((el) => (el.style.opacity = Math.max(0, (value - 0.15) / 0.85).toFixed(3)));
     select(root, "spark").forEach((el, index) => {
@@ -134,8 +136,7 @@ export function Loader({ onReveal, onDone }: LoaderProps) {
       ref={rootRef}
       className="fixed inset-0 z-50 flex flex-col items-center justify-center overflow-hidden"
       style={{
-        ["--warm" as string]: 0,
-        background: "color-mix(in srgb, var(--color-gold) calc(var(--warm) * 38%), var(--color-butter))",
+        background: warmBackground(0),
       }}
       role="status"
       aria-live="polite"
