@@ -4,7 +4,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { CartButton } from "@/components/cart/CartButton";
-import { useSound } from "@/components/animations/SoundProvider";
 import { NAV, type NavId } from "@/config/nav";
 import { setStaticMode, useStaticMode } from "@/hooks/motionPreference";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
@@ -45,7 +44,6 @@ export function Header() {
   const barRef = useRef<HTMLSpanElement>(null);
   const headerRef = useRef<HTMLElement>(null);
   const closeTimer = useRef<number>(0);
-  const { enabled, toggle } = useSound();
   const staticMode = useStaticMode();
   const pathname = usePathname();
   const onHome = pathname === "/";
@@ -237,14 +235,6 @@ export function Header() {
             >
               Modo estático {staticMode ? "ligado" : "desligado"}
             </button>
-            <button
-              type="button"
-              onClick={toggle}
-              aria-pressed={enabled}
-              className="whitespace-nowrap rounded-full border border-current px-3 py-1 text-[0.68rem] uppercase tracking-[0.2em] text-chocolate transition-colors group-data-[tone=light]:text-cream max-lg:hidden"
-            >
-              Som {enabled ? "ligado" : "desligado"}
-            </button>
             <CartButton />
             <button
               type="button"
@@ -271,7 +261,6 @@ export function Header() {
         open={mobileOpen}
         onClose={() => setMobileOpen(false)}
         active={active}
-        sound={{ enabled, toggle }}
         staticMode={{ enabled: staticMode, toggle: () => setStaticMode(!staticMode) }}
       />
       <div id="nav-veil" aria-hidden className="pointer-events-none fixed inset-0 z-[60] bg-butter opacity-0" />
