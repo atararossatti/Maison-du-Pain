@@ -141,11 +141,11 @@ export function Loader({ onReveal, onDone }: LoaderProps) {
       role="status"
       aria-live="polite"
     >
-      <div data-el="stage" className="w-[min(78vw,420px)]" style={{ transformOrigin: "50% 60%" }}>
+      <div data-el="stage" className="w-[min(78vw,420px,50svh)]" style={{ transformOrigin: "50% 60%" }}>
         <OvenIllustration />
       </div>
 
-      <div className="relative mt-2 h-20 text-center">
+      <div className="relative mt-2 h-20 w-[min(92vw,32rem)] text-center">
         <p data-el="label" className="font-sans text-xs uppercase tracking-[0.32em] text-chocolate/70">
           {hasFailures ? "Alguns recursos não carregaram — seguimos com a versão simplificada" : "Aquecendo o forno"}
           <span role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={0} className="sr-only">
