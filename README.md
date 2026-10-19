@@ -36,6 +36,7 @@ Um livro ilustrado que ganha profundidade. A narrativa é guiada pela **luz**: a
 | 02 · Interior | Farinha cai, ingredientes se aproximam, a padeira sova (braços ligados ao scroll) e a massa cresce | Função pura progresso → quadro |
 | 03 · Croissant | A massa vira um croissant 3D que gira e abre as camadas em leque | React Three Fiber, geometria procedural |
 | 04 · Sabores | Quatro produtos ilustrados em composição editorial, cada um com interação própria | Variáveis CSS + ScrollTrigger |
+| Nosso Atelier | Quatro fotografias em tela cheia, uma por etapa, com legenda ao longo do scroll | Palco `sticky` + ScrollTrigger |
 | 05 · Processo | Trigo → grão → farinha → massa → fermentação → forno → pão | Uma única timeline, partículas SVG |
 | 06 · Retorno | A câmera recua até a rua ao entardecer; três ações reais | Reuso da câmera da Cena 01 |
 
@@ -69,7 +70,7 @@ Não usados, de propósito: Rive e Spline (sem integração verificada; SVG + GS
 
 ## Catálogo e carrinho (demonstração)
 
-- `/catalogo`: 50 produtos em 6 categorias (fotografias do autor do projeto; o produto sem foto fica fora do catálogo até recebê-la), com busca (sem acentos), filtros, só destaques e ordenação por preço ou nome; o estado fica no endereço (`?categoria=paes&ordem=preco-asc`).
+- `/catalogo`: 49 produtos visíveis (50 cadastrados; o Croque madame aguarda foto) em 6 categorias (fotografias do autor do projeto; o produto sem foto fica fora do catálogo até recebê-la), com busca (sem acentos), filtros, só destaques e ordenação por preço ou nome; o estado fica no endereço (`?categoria=paes&ordem=preco-asc`).
 - `/catalogo/[id]`: página de cada produto (galeria, quantidade, relacionados); endereço inexistente mostra "página não encontrada".
 - Páginas internas têm botão "Voltar" e, ao voltar delas, a página inicial reaparece onde estava, sem repetir a abertura.
 - Carrinho lateral em `<dialog>`, contador no cabeçalho, quantidades de 1 a 99 e persistência em `localStorage` (compatível com SSR/hidratação). `/pedido` é um resumo de **demonstração**: sem pagamento, sem dados pessoais, sem envio.
@@ -168,12 +169,14 @@ Otimizações aplicadas: o grão de papel deixou de ser um filtro SVG recalculad
 
 O que foi feito: as cenas 2 a 6 passaram a ser montadas sob demanda (`LazyScene` + `next/dynamic`), o que cortou o HTML inicial de 214 KB para 62 KB e a hidratação, com placeholders de mesma altura para o scroll não mudar (há teste); o contraste dos rótulos pequenos foi corrigido; e as animações ambientais da abertura ficam pausadas sob o loader.
 
-O que ainda pesa: o TBT mobile continua alto (≈ 2,7 s sob CPU 4× mais lenta) e o Speed Index mobile ainda é 7,6 s. O perfil de CPU mostra que o custo restante é majoritariamente **pintura nativa** da ilustração SVG da abertura (poucos ms de JavaScript próprio), e o LCP (3,2 s) é, em grande parte, a duração do próprio loader cinematográfico. Esconder a abertura sob o loader reduziu o TBT, mas piorou o LCP e a nota, então foi descartado. FPS em celular e memória em dispositivos reais continuam **sem medição**.
+**Atualização (build local, Lighthouse 13.5.0, mesmas condições):** o loader escrevia a variável CSS `--warm` na raiz, o que é herdado por toda a ilustração do forno e refazia o cálculo de estilo de centenas de elementos a cada quadro. Passou a escrever só a cor de fundo. Tempo de cálculo de estilo na carga com CPU 4× mais lenta: 1.077 ms → 409 ms. Mobile: **59 → 80 e 83** (duas execuções depois da mudança; uma antes), TBT 790 → 210 e 80 ms, Speed Index 7,6 → 4,6 e 4,4 s, LCP 4,4 → 4,2 s; desktop **97**. São execuções únicas em máquina de desenvolvimento (a nota varia entre execuções), não da demo publicada.
+
+Sobre o texto antigo abaixo (medido na demo publicada, antes desta mudança): o TBT mobile continua alto (≈ 2,7 s sob CPU 4× mais lenta) e o Speed Index mobile ainda é 7,6 s. O perfil de CPU mostrava custo majoritariamente de estilo e **pintura nativa** da ilustração SVG da abertura (poucos ms de JavaScript próprio), e o LCP é, em grande parte, a duração do próprio loader cinematográfico (o texto da abertura só aparece depois dele). Esconder a abertura sob o loader reduziu o TBT, mas piorou o LCP e a nota, então foi descartado. FPS em celular e memória em dispositivos reais continuam **sem medição**.
 
 ## Roadmap / pendências
 
 - Testes em celulares reais (a Cena 01 e a 06 já têm enquadramento próprio em retrato; as cenas 02 e 05 ainda cortam as laterais em telas verticais).
-- Transições ainda por cor (não por movimento contínuo): Cena 04 → 05 (entra pela cor do fundo) e Cena 01 → 02 (íris âmbar com recuo da câmera, mas sem o interior real da vitrine).
+- Transições ainda por cor (não por movimento contínuo): Atelier → Cena 05 (entra pela cor do fundo) e Cena 01 → 02 (íris âmbar com recuo da câmera, mas sem o interior real da vitrine).
 - Mais refinamento de arte: o croissant 2D da Cena 04 ainda é estilizado e simples.
 - Reduzir o custo de pintura da ilustração de abertura (menos nós SVG/camadas), encurtar o loader no mobile para melhorar o LCP e medir em GPU/celular reais.
 - Domínio próprio para a demonstração (hoje em `*.vercel.app`).

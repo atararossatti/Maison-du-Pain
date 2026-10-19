@@ -42,7 +42,7 @@
 
 ## Storyboard (resumo)
 1. Loader: forno + croissant, progresso real (fontes, load, imagens críticas), porta abre, vapor, câmera atravessa.
-2. Cena 01: fachada → dolly → janela → atravessa o vidro (timeline única pinned). ✅
+2. Cena 01: fachada → dolly → janela → atravessa o vidro (palco `sticky`; ver abaixo). ✅
 3. Cena 02: interior; farinha→massa→cresce→zoom.
 4. Cena 03: massa vira croissant 3D; camadas se separam.
 5. Cena 04: composição editorial de 4 produtos ilustrados com interações próprias (as seções "Nossa História" e a Galerie foram removidas).
@@ -50,7 +50,7 @@
 7. Cena 06: exterior ao entardecer; CTAs (demo honesta, sem endereço/telefone).
 
 ## Arquitetura implementada
-Next.js 16 (App Router) + TS estrito + Tailwind 4. GSAP + ScrollTrigger + Lenis num único `ScrollProvider` (Lenis dirigido pelo ticker do GSAP; desligado em movimento reduzido).
+Next.js 16 (App Router) + TS estrito + Tailwind 4. GSAP + ScrollTrigger. O Lenis foi removido depois (ver "cinema sempre ligado, palcos sticky"): o scroll é o nativo do navegador.
 
 - `src/config/` valores de cena (`awakening.ts`: escala por camada, origem da câmera, comprimento do scroll) e loading.
 - `scenes/awakening/camera.ts`: **função pura** progresso→quadro (`computeFrame`). Scroll rápido/reverso/resize sempre dá o mesmo quadro; o scrub só suaviza o progresso.
