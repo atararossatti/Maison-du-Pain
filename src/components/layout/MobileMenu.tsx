@@ -13,12 +13,11 @@ interface MobileMenuProps {
   open: boolean;
   onClose: () => void;
   active: NavId | null;
-  sound: { enabled: boolean; toggle: () => void };
   staticMode: { enabled: boolean; toggle: () => void };
 }
 
 /** Menu de tela cheia para o celular: `<dialog>` modal (foco preso, Esc fecha) com entrada em círculo e itens escalonados. */
-export function MobileMenu({ open, onClose, active, sound, staticMode }: MobileMenuProps) {
+export function MobileMenu({ open, onClose, active, staticMode }: MobileMenuProps) {
   const ref = useRef<HTMLDialogElement>(null);
   const router = useRouter();
   const [productsOpen, setProductsOpen] = useState(false);
@@ -141,9 +140,6 @@ export function MobileMenu({ open, onClose, active, sound, staticMode }: MobileM
 
         <div data-mobile-in className="mt-8 flex flex-wrap items-center gap-3">
           <p className="mr-auto font-hand text-2xl text-gold" lang="fr">Le bonheur se savoure.</p>
-          <button type="button" onClick={sound.toggle} aria-pressed={sound.enabled} className="rounded-full border border-cream/50 px-4 py-2 text-[0.7rem] uppercase tracking-[0.2em]">
-            Som {sound.enabled ? "ligado" : "desligado"}
-          </button>
           <button type="button" onClick={staticMode.toggle} aria-pressed={staticMode.enabled} className="rounded-full border border-cream/50 px-4 py-2 text-[0.7rem] uppercase tracking-[0.2em]">
             Modo estático {staticMode.enabled ? "ligado" : "desligado"}
           </button>

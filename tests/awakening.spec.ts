@@ -324,13 +324,9 @@ test.describe("acessibilidade e preferências", () => {
     await context.close();
   });
 
-  test("som começa desligado e o cursor nativo permanece sem anel extra", async ({ page }) => {
+  test("não há botão de som e o cursor nativo permanece sem anel extra", async ({ page }) => {
     await skipLoader(page);
-    const toggle = page.getByRole("button", { name: /Som/ });
-    await expect(toggle).toHaveAttribute("aria-pressed", "false");
-    await expect(toggle).toContainText("desligado");
-    await toggle.click();
-    await expect(toggle).toHaveAttribute("aria-pressed", "true");
+    await expect(page.getByRole("button", { name: /Som/ })).toHaveCount(0);
     const cursor = await page.evaluate(() => getComputedStyle(document.body).cursor);
     expect(cursor).not.toBe("none");
     // O anel decorativo que seguia o mouse foi removido a pedido.
