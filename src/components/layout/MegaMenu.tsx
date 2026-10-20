@@ -4,8 +4,7 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState, type KeyboardEve
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { CATEGORIES, PRODUCTS, type CatalogProduct as Product, type CategoryId } from "@/config/catalog";
-import { PHOTOS } from "@/config/photos";
+import { CATEGORIES, PRODUCTS, coverOf, type CatalogProduct as Product, type CategoryId } from "@/config/catalog";
 import { growPhoto } from "@/lib/growPhoto";
 import { gsap } from "@/lib/gsap";
 
@@ -27,8 +26,8 @@ function previewOf(category: CategoryId, product: Product | null): { image: Prev
   const cat = CATEGORIES.find((entry) => entry.id === category) ?? CATEGORIES[0]!;
   const own = product?.images[0];
   if (product && own) return { image: { key: own.src, src: own.src, color: own.color ?? "#d8ad65", blur: own.blur }, title: product.name, french: product.french };
-  const cover = PHOTOS[cat.cover];
-  const image = { key: cover.src, src: cover.src, color: cover.color, blur: cover.blur };
+  const cover = coverOf(cat);
+  const image = { key: cover.src, ...cover };
   return { image, title: product?.name ?? cat.name, french: product?.french ?? cat.french, note: product ? undefined : cat.coverNote };
 }
 
