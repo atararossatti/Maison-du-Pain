@@ -1,4 +1,4 @@
-import type { PhotoId } from "./photos";
+import { PHOTOS, type PhotoId } from "./photos";
 import { IMAGES, type ProductImage } from "./catalog-images";
 
 /**
@@ -16,6 +16,8 @@ export interface CatalogCategory {
   blurb: string;
   /** Fotografia que representa a categoria no menu (`photos.ts`). */
   cover: PhotoId;
+  /** Produto cuja fotografia serve de capa no lugar de `cover` (quando existe uma foto que mostra a categoria de fato). */
+  coverProduct?: string;
   /** Aviso mostrado sobre a capa quando ela não retrata a categoria literalmente. */
   coverNote?: string;
 }
@@ -26,7 +28,7 @@ const ALL_CATEGORIES: readonly CatalogCategory[] = [
   { id: "patisserie", name: "Pâtisserie", french: "douceurs de la maison", blurb: "Tortas, bolos e entremets montados à mão.", cover: "gateau-chocolat" },
   { id: "doces", name: "Doces e biscoitos", french: "les petits plaisirs", blurb: "Macarons, madeleines e biscoitos para levar para casa.", cover: "biscuits" },
   { id: "salgados", name: "Sanduíches e salgados", french: "à table", blurb: "Croques, quiches e sanduíches para a hora do almoço.", cover: "burger-maison" },
-  { id: "cafeteria", name: "Cafeteria", french: "un café, s'il vous plaît", blurb: "Cafés, chocolate quente e chás para acompanhar.", cover: "muffins", coverNote: "Para acompanhar o café" },
+  { id: "cafeteria", name: "Cafeteria", french: "un café, s'il vous plaît", blurb: "Cafés, chocolate quente e chás para acompanhar.", cover: "muffins", coverProduct: "cappuccino" },
 ];
 
 export type ProductTag = "Clássico" | "Assinatura da casa" | "Novidade" | "Servido quente";
@@ -142,6 +144,14 @@ export const PRODUCTS: readonly CatalogProduct[] = ALL_PRODUCTS.filter((product)
 export const CATEGORIES: readonly CatalogCategory[] = ALL_CATEGORIES.filter((category) => PRODUCTS.some((product) => product.category === category.id));
 
 const BY_ID = new Map(PRODUCTS.map((product) => [product.id, product]));
+
+/** Capa da categoria nos menus: a foto do produto escolhido em `coverProduct` ou, sem ela, a fotografia `cover`. */
+export function coverOf(category: CatalogCategory): { src: string; color: string; blur?: string } {
+  const own = category.coverProduct ? getProduct(category.coverProduct)?.images[0] : undefined;
+  if (own) return { src: own.src, color: own.color ?? "#d8ad65", blur: own.blur };
+  const photo = PHOTOS[category.cover];
+  return { src: photo.src, color: photo.color, blur: photo.blur };
+}
 
 export const getProduct = (id: string): CatalogProduct | undefined => BY_ID.get(id);
 export const getCategory = (id: string): CatalogCategory | undefined => CATEGORIES.find((category) => category.id === id);

@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Photo } from "@/components/ui/Photo";
+import Image from "next/image";
 import { NAV, type NavId } from "@/config/nav";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { CATEGORIES } from "@/config/catalog";
+import { CATEGORIES, coverOf, type CatalogCategory } from "@/config/catalog";
 import { gsap } from "@/lib/gsap";
 import { navigateTo } from "@/lib/navigate";
 
@@ -17,6 +17,23 @@ interface MobileMenuProps {
 }
 
 /** Menu de tela cheia para o celular: `<dialog>` modal (foco preso, Esc fecha) com entrada em círculo e itens escalonados. */
+function CategoryCover({ category }: { category: CatalogCategory }) {
+  const cover = coverOf(category);
+  return (
+    <Image
+      src={cover.src}
+      alt=""
+      fill
+      sizes="45vw"
+      placeholder={cover.blur ? "blur" : "empty"}
+      blurDataURL={cover.blur}
+      draggable={false}
+      style={{ backgroundColor: cover.color }}
+      className="object-cover transition-transform duration-700 group-active:scale-105"
+    />
+  );
+}
+
 export function MobileMenu({ open, onClose, active, staticMode }: MobileMenuProps) {
   const ref = useRef<HTMLDialogElement>(null);
   const router = useRouter();
@@ -112,7 +129,7 @@ export function MobileMenu({ open, onClose, active, staticMode }: MobileMenuProp
                                 }}
                                 className="group relative block aspect-[4/5] overflow-hidden"
                               >
-                                <Photo id={cat.cover} alt="" sizes="45vw" className="transition-transform duration-700 group-active:scale-105" />
+                                <CategoryCover category={cat} />
                                 <span className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/10 to-transparent" />
                                 <span className="absolute inset-x-3 bottom-3 font-display text-xl leading-tight">{cat.name}</span>
                               </a>
