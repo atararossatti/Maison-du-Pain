@@ -90,7 +90,7 @@ export function CatalogView() {
 
             <div className="flex flex-wrap items-center gap-3">
               <label className="relative block w-full sm:w-72 lg:w-64">
-                <span className="sr-only">Buscar no catálogo</span>
+                <span className="sr-only">Buscar no cardápio</span>
                 <svg viewBox="0 0 20 20" className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-chocolate/55" aria-hidden>
                   <circle cx="8.5" cy="8.5" r="5" fill="none" stroke="currentColor" strokeWidth="1.5" />
                   <path d="M12.5 12.5L17 17" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
@@ -138,7 +138,7 @@ export function CatalogView() {
           <div data-empty className="grid place-items-center gap-4 py-24 text-center">
             <p className="font-hand text-3xl text-crust-text" lang="fr">rien ici…</p>
             <p className="font-display text-3xl font-light">Nenhum produto encontrado</p>
-            <p className="max-w-[40ch] text-sm text-chocolate/70">Tente outra palavra, escolha outra categoria ou volte a ver o catálogo completo.</p>
+            <p className="max-w-[40ch] text-sm text-chocolate/70">Tente outra palavra, escolha outra categoria ou volte a ver o cardápio completo.</p>
             <button type="button" onClick={clear} className="rounded-full bg-chocolate px-6 py-3 text-xs uppercase tracking-[0.18em] text-cream transition-colors hover:bg-brick">
               Ver todos os produtos
             </button>

@@ -56,7 +56,11 @@ export function Scene01Awakening({ ready }: { ready: boolean }) {
         >
           <SplitWords text="Toda manhã começa com uma história." />
         </h1>
-        <p data-ui="sub" className="mx-auto mt-5 max-w-[34ch] font-sans text-base text-chocolate/80 sm:text-lg">
+        <p
+          data-ui="sub"
+          className="mx-auto mt-5 max-w-[34ch] font-sans text-base font-medium text-chocolate sm:text-lg"
+          style={{ textShadow: "0 0 12px rgba(255,248,236,.95), 0 0 3px rgba(255,248,236,.9), 0 1px 1px rgba(255,248,236,.9)" }}
+        >
           E a nossa começa com farinha, manteiga e um pouco de magia.
         </p>
       </div>

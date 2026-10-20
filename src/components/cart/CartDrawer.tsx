@@ -55,9 +55,9 @@ function DrawerBody() {
           {lines.length === 0 ? (
             <div className="grid flex-1 place-content-center gap-4 px-8 text-center">
               <p className="font-display text-2xl font-light">Seu carrinho está vazio</p>
-              <p className="text-sm text-chocolate/70">Escolha croissants, pães, doces e cafés no catálogo. Os itens ficam guardados neste navegador.</p>
+              <p className="text-sm text-chocolate/70">Escolha croissants, pães, doces e cafés no cardápio. Os itens ficam guardados neste navegador.</p>
               <Link href="/catalogo" onClick={closeCart} className="mx-auto rounded-full bg-chocolate px-6 py-3 text-xs uppercase tracking-[0.18em] text-cream transition-colors hover:bg-brick">
-                Explorar o catálogo
+                Explorar o cardápio
               </Link>
             </div>
           ) : (

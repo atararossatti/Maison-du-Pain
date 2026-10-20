@@ -191,10 +191,10 @@ export function MegaMenu({ id, open, onClose }: MegaMenuProps) {
           </div>
           <div data-menu-in className="mt-6">
             <Link href="/catalogo" onClick={onClose} className="inline-block text-xs uppercase tracking-[0.18em] text-chocolate underline underline-offset-4 hover:text-brick">
-              Ver o catálogo completo
+              Ver o cardápio completo
             </Link>
             <p className="mt-2 max-w-[38ch] text-xs leading-relaxed text-chocolate/60">
-              Escolha uma criação ou uma categoria: a fotografia cresce e leva você ao catálogo. Produtos e preços demonstrativos.
+              Escolha uma criação ou uma categoria: a fotografia cresce e leva você ao cardápio. Produtos e preços demonstrativos.
             </p>
           </div>
         </div>

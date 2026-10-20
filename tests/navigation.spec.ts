@@ -160,7 +160,7 @@ test.describe("navegação no celular", () => {
     expect(await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)).toBeLessThanOrEqual(0);
 
     await page.getByRole("button", { name: "Abrir menu" }).click();
-    await menu.getByRole("link", { name: /Catálogo/ }).first().click();
+    await menu.getByRole("link", { name: /Cardápio/ }).first().click();
     await expect(page).toHaveURL(/\/catalogo$/, { timeout: 15_000 });
   });
 });
