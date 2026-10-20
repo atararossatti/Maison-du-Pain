@@ -82,6 +82,26 @@ test.describe("navegação desktop", () => {
     await expect(page.getByRole("heading", { level: 1, name: "Sonho" })).toBeVisible();
   });
 
+  test("mega menu em tela baixa: todos os itens ficam à vista e alcançáveis sem fechar", async ({ page }) => {
+    await page.setViewportSize({ width: 1332, height: 640 });
+    await skipLoader(page);
+    const trigger = page.locator("[data-mega-trigger]");
+    await expect(async () => {
+      await trigger.click();
+      await expect(trigger).toHaveAttribute("aria-expanded", "true", { timeout: 1_000 });
+    }).toPass({ timeout: 10_000 });
+    await page.locator("[data-category]").last().hover();
+    const links = page.locator("#mega-produtos ul[id$=items] a");
+    await expect(links).toHaveCount(6);
+    const last = links.last();
+    await expect(last).toHaveText("Chá");
+    const box = await last.boundingBox();
+    expect(box!.y + box!.height).toBeLessThanOrEqual(640);
+    await last.hover();
+    await page.waitForTimeout(600);
+    await expect(trigger).toHaveAttribute("aria-expanded", "true");
+  });
+
   test("teclado: Tab alcança os itens e Enter navega", async ({ page }) => {
     await skipLoader(page);
     const link = page.getByRole("navigation", { name: "Principal" }).getByRole("link", { name: "Nosso Atelier" });

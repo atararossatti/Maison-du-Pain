@@ -127,9 +127,9 @@ export function MegaMenu({ id, open, onClose }: MegaMenuProps) {
       role="region"
       aria-label="Nossos produtos"
       hidden={!open}
-      className="absolute inset-x-0 top-full border-t border-chocolate/10 bg-butter text-chocolate shadow-[0_30px_60px_-30px_rgba(46,29,22,0.45)]"
+      className="absolute inset-x-0 top-full max-h-[calc(100svh-5rem)] overflow-y-auto overscroll-contain border-t border-chocolate/10 bg-butter text-chocolate shadow-[0_30px_60px_-30px_rgba(46,29,22,0.45)]"
     >
-      <div className="mx-auto grid max-w-[88rem] grid-cols-[minmax(0,5fr)_minmax(0,7fr)] gap-12 px-9 py-9 xl:gap-20 xl:px-14">
+      <div className="mx-auto grid max-w-[88rem] grid-cols-[minmax(0,5fr)_minmax(0,7fr)] gap-12 px-9 py-[clamp(1rem,4svh,2.25rem)] xl:gap-20 xl:px-14">
         <div className="flex flex-col justify-between">
           <div>
             <p data-menu-in className="font-hand text-2xl text-crust-text" lang="fr">nos créations</p>
@@ -153,11 +153,11 @@ export function MegaMenu({ id, open, onClose }: MegaMenuProps) {
                       }}
                       onKeyDown={(event) => onCategoryKey(event, index)}
                       onClick={() => void go(`/catalogo?categoria=${cat.id}`, previewOf(cat.id, null).image)}
-                      className="group/cat flex w-full items-baseline gap-4 py-3 text-left"
+                      className="group/cat flex w-full items-baseline gap-4 py-[clamp(0.25rem,1.5svh,0.75rem)] text-left"
                     >
                       <span className="w-6 font-sans text-xs tabular-nums text-chocolate/55">{String(index + 1).padStart(2, "0")}</span>
                       <span
-                        className={`font-display text-[clamp(1.8rem,3vw,2.7rem)] font-light leading-none tracking-tight transition-all duration-500 ${active ? "translate-x-2 text-chocolate" : "text-chocolate/55 group-hover/cat:text-chocolate"}`}
+                        className={`font-display text-[clamp(1.35rem,min(3vw,5.4svh),2.7rem)] font-light leading-none tracking-tight transition-all duration-500 ${active ? "translate-x-2 text-chocolate" : "text-chocolate/55 group-hover/cat:text-chocolate"}`}
                         style={{ fontVariationSettings: '"SOFT" 100, "opsz" 144' }}
                       >
                         {cat.name}
@@ -168,7 +168,7 @@ export function MegaMenu({ id, open, onClose }: MegaMenuProps) {
                 );
               })}
             </ul>
-            <ul id={`${id}-items`} aria-label={`Criações em ${CATEGORIES.find((cat) => cat.id === category)?.name ?? ""}`} data-menu-in className="mt-5 flex min-h-[4.6rem] flex-wrap content-start gap-x-6 gap-y-2">
+            <ul id={`${id}-items`} aria-label={`Criações em ${CATEGORIES.find((cat) => cat.id === category)?.name ?? ""}`} data-menu-in className="mt-[clamp(0.5rem,2svh,1.25rem)] flex min-h-[4.6rem] flex-wrap content-start gap-x-6 gap-y-2">
               {productsOf(category).map((product) => (
                 <li key={product.id}>
                   <a
@@ -189,17 +189,17 @@ export function MegaMenu({ id, open, onClose }: MegaMenuProps) {
               ))}
             </ul>
           </div>
-          <div data-menu-in className="mt-6">
+          <div data-menu-in className="mt-[clamp(0.75rem,2.5svh,1.5rem)]">
             <Link href="/catalogo" onClick={onClose} className="inline-block text-xs uppercase tracking-[0.18em] text-chocolate underline underline-offset-4 hover:text-brick">
               Ver o cardápio completo
             </Link>
-            <p className="mt-2 max-w-[38ch] text-xs leading-relaxed text-chocolate/60">
+            <p className="mt-2 max-w-[38ch] text-xs leading-relaxed text-chocolate/60 [@media(max-height:820px)]:hidden">
               Escolha uma criação ou uma categoria: a fotografia cresce e leva você ao cardápio. Produtos e preços demonstrativos.
             </p>
           </div>
         </div>
 
-        <div data-menu-in ref={frameRef} className="relative h-[min(34rem,64svh)] overflow-hidden rounded-[2px] bg-ink" aria-hidden style={{ ["--mx" as string]: 0, ["--my" as string]: 0 }}>
+        <div data-menu-in ref={frameRef} className="relative h-[min(34rem,56svh)] overflow-hidden rounded-[2px] bg-ink" aria-hidden style={{ ["--mx" as string]: 0, ["--my" as string]: 0 }}>
           {loaded.map((image) => (
             <div key={image.key} ref={(el) => { layers.current[image.key] = el; }} className="absolute inset-0" style={{ background: image.color }}>
               <div data-menu-photo className="absolute -inset-5" style={{ transform: "translate(calc(var(--mx, 0) * 1px), calc(var(--my, 0) * 1px))" }}>
