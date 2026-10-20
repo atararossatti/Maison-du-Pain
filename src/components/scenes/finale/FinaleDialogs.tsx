@@ -12,34 +12,6 @@ interface DialogProps {
 
 const NOTICE = "text-xs text-chocolate/60";
 
-export function MenuDialog({ open, onClose }: DialogProps) {
-  const exploreFlavors = () => {
-    onClose();
-    document.getElementById("sabores")?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  return (
-    <Dialog open={open} onClose={onClose} labelledBy="cardapio-titulo">
-      <h3 id="cardapio-titulo" className="font-display text-3xl">Nosso cardápio</h3>
-      <ul className="mt-5 grid gap-3">
-        {PRODUCTS.map((product) => (
-          <li key={product.id} className="border-t border-chocolate/15 pt-3">
-            <p className="font-display text-lg">{product.name}</p>
-            <p className="text-sm text-chocolate/70">{product.description}</p>
-          </li>
-        ))}
-      </ul>
-      <p className={`mt-5 ${NOTICE}`}>Cardápio ilustrativo de uma marca fictícia; sem preços nem disponibilidade.</p>
-      <div className="flex flex-wrap gap-3">
-        <DialogCloseButton onClose={onClose} />
-        <button type="button" onClick={exploreFlavors} className="mt-6 rounded-full border border-chocolate/40 px-6 py-2.5 text-sm transition hover:bg-chocolate hover:text-cream">
-          Explorar os sabores
-        </button>
-      </div>
-    </Dialog>
-  );
-}
-
 export function VisitDialog({ open, onClose }: DialogProps) {
   const [status, setStatus] = useState("");
 

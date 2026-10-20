@@ -266,10 +266,9 @@ test("cena 06: recuo ao entardecer e botões com ações reais", async ({ page }
   await expect(actions).toBeVisible();
   await page.screenshot({ path: `${SHOTS}/return-99.png` });
 
-  await page.getByRole("button", { name: "Conheça nosso cardápio" }).click();
-  await expect(page.getByRole("dialog")).toContainText("Croissant artesanal");
-  await page.keyboard.press("Escape");
-  await expect(page.getByRole("dialog")).toBeHidden();
+  // "Cardápio" leva ao catálogo (página própria), sem diálogo.
+  await expect(page.getByRole("button", { name: "Cardápio", exact: true })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Conheça nosso cardápio" })).toHaveCount(0);
 
   await page.getByRole("button", { name: "Venha nos visitar" }).click();
   await expect(page.getByRole("dialog")).toContainText("A definir");
@@ -287,6 +286,10 @@ test("cena 06: recuo ao entardecer e botões com ações reais", async ({ page }
   await page.screenshot({ path: `${SHOTS}/return-order.png` });
   await page.keyboard.press("Escape");
   expect(errors).toEqual([]);
+
+  // Por último, "Cardápio" leva ao catálogo.
+  await page.getByRole("button", { name: "Cardápio", exact: true }).click();
+  await expect(page).toHaveURL(/\/catalogo$/, { timeout: 10_000 });
 });
 
 test("cena 06: o desenho não vira camada composta ao mover o mouse (raster pela metade no Chrome)", async ({ page }) => {
