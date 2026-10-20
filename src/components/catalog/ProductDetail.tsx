@@ -22,7 +22,7 @@ export function ProductDetail({ product }: { product: CatalogProduct }) {
       <BackLink fallbackHref="/catalogo">Voltar</BackLink>
       <nav aria-label="Você está em" className="mt-5 text-xs uppercase tracking-[0.16em] text-chocolate/65">
         <ol className="flex flex-wrap items-center gap-x-2 gap-y-1">
-          <li><Link href="/catalogo" className="underline-offset-4 hover:underline">Catálogo</Link></li>
+          <li><Link href="/catalogo" className="underline-offset-4 hover:underline">Cardápio</Link></li>
           <li aria-hidden>/</li>
           <li><Link href={`/catalogo?categoria=${product.category}`} className="underline-offset-4 hover:underline">{category?.name}</Link></li>
           <li aria-hidden>/</li>

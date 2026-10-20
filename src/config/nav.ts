@@ -22,7 +22,7 @@ export const NAV: readonly NavItem[] = [
   { id: "produtos", label: "Nossos Produtos", french: "nos créations", selector: "[data-nav='produtos']", lazy: "flavors", lead: 0.85 },
   { id: "atelier", label: "Nosso Atelier", french: "notre atelier", selector: "[data-nav='atelier']", lead: 0.1 },
   { id: "visite", label: "Visite-nos", french: "venez nous voir", selector: "[data-nav='visite']", lazy: "return", land: 4.9, lead: 0 },
-  { id: "catalogo", label: "Catálogo", french: "le catalogue", selector: "", href: "/catalogo", lead: 0 },
+  { id: "catalogo", label: "Cardápio", french: "la carte", selector: "", href: "/catalogo", lead: 0 },
 ];
 
 export const isNavId = (value: string): value is NavId => NAV.some((item) => item.id === value);

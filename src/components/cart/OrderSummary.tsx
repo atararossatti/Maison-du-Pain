@@ -34,9 +34,9 @@ export function OrderSummary() {
     return (
       <div data-order-empty className="mx-auto grid max-w-xl gap-5 px-6 py-24 text-center">
         <h2 className="font-display text-4xl font-light">Seu carrinho está vazio</h2>
-        <p className="text-chocolate/75">Adicione produtos no catálogo para ver o resumo do pedido de demonstração.</p>
+        <p className="text-chocolate/75">Adicione produtos no cardápio para ver o resumo do pedido de demonstração.</p>
         <Link href="/catalogo" className="mx-auto rounded-full bg-chocolate px-7 py-3.5 text-xs uppercase tracking-[0.2em] text-cream transition-colors hover:bg-brick">
-          Explorar o catálogo
+          Explorar o cardápio
         </Link>
       </div>
     );

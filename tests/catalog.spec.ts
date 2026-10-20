@@ -23,7 +23,7 @@ const prices = async (page: Page) =>
 async function openCatalog(page: Page, query = "") {
   await page.goto(`/catalogo${query}`);
   await ready(page);
-  await expect(page.getByRole("heading", { level: 1, name: "Catálogo" })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1, name: "Cardápio" })).toBeVisible();
   await expect(cards(page).first()).toBeVisible();
 }
 
@@ -78,13 +78,13 @@ test.describe("catálogo", () => {
 
   test("busca ignora acentos e maiúsculas; sem resultado mostra estado vazio", async ({ page }) => {
     await openCatalog(page);
-    await page.getByRole("searchbox", { name: "Buscar no catálogo" }).fill("ECLAIR");
+    await page.getByRole("searchbox", { name: "Buscar no cardápio" }).fill("ECLAIR");
     await expect(cards(page)).toHaveCount(1);
     await expect(cards(page).first()).toContainText("Éclair de chocolate");
     await expect(page).toHaveURL(/busca=ECLAIR/);
-    await page.getByRole("searchbox", { name: "Buscar no catálogo" }).fill("gateau");
+    await page.getByRole("searchbox", { name: "Buscar no cardápio" }).fill("gateau");
     await expect(cards(page)).toHaveCount(2);
-    await page.getByRole("searchbox", { name: "Buscar no catálogo" }).fill("xyzxyz");
+    await page.getByRole("searchbox", { name: "Buscar no cardápio" }).fill("xyzxyz");
     await expect(page.locator("[data-empty]")).toBeVisible();
     await page.getByRole("button", { name: "Ver todos os produtos" }).click();
     await expect(cards(page)).toHaveCount(49);
@@ -143,7 +143,7 @@ test.describe("catálogo", () => {
     const response = await page.goto("/catalogo/produto-que-nao-existe");
     expect(response?.status()).toBe(404);
     await expect(page.getByRole("heading", { name: "Página não encontrada" })).toBeVisible();
-    await expect(page.getByRole("link", { name: "Ver o catálogo" })).toBeVisible();
+    await expect(page.getByRole("link", { name: "Ver o cardápio" })).toBeVisible();
   });
 });
 
@@ -299,7 +299,7 @@ test.describe("interface", () => {
 
   test("menu: Catálogo está no cabeçalho, marcado como ativo, e a home leva ao catálogo", async ({ page }) => {
     await page.goto("/catalogo");
-    const link = page.getByRole("navigation", { name: "Principal" }).getByRole("link", { name: "Catálogo" });
+    const link = page.getByRole("navigation", { name: "Principal" }).getByRole("link", { name: "Cardápio" });
     await expect(link).toHaveAttribute("aria-current", "location");
     await expect(page.getByRole("link", { name: "Maison du Pain — início" })).toHaveAttribute("href", "/");
 
@@ -308,7 +308,7 @@ test.describe("interface", () => {
     await page.goto("/");
     await page.getByRole("button", { name: "Pular introdução" }).click();
     await expect(page.getByRole("status")).toHaveCount(0, { timeout: 20_000 });
-    await page.getByRole("navigation", { name: "Principal" }).getByRole("link", { name: "Catálogo" }).click();
+    await page.getByRole("navigation", { name: "Principal" }).getByRole("link", { name: "Cardápio" }).click();
     await expect(page).toHaveURL(/\/catalogo$/);
   });
 
@@ -317,7 +317,7 @@ test.describe("interface", () => {
     await page.getByRole("button", { name: "Pular introdução" }).click();
     await expect(page.getByRole("status")).toHaveCount(0, { timeout: 20_000 });
     const items = await page.getByRole("navigation", { name: "Principal" }).getByRole("link").allTextContents();
-    expect(items.at(-1)).toBe("Catálogo");
+    expect(items.at(-1)).toBe("Cardápio");
     await expect(page.locator("#vitrine")).toHaveCount(0);
     await expect(page.getByText("Uma vitrine que nunca esvazia")).toHaveCount(0);
     await expect(page.locator("[data-cart-button]")).toBeVisible();
@@ -334,7 +334,7 @@ test.describe("interface", () => {
     const before = await page.evaluate(() => window.scrollY);
     expect(before).toBeGreaterThan(1_000);
 
-    await page.getByRole("navigation", { name: "Principal" }).getByRole("link", { name: "Catálogo" }).click();
+    await page.getByRole("navigation", { name: "Principal" }).getByRole("link", { name: "Cardápio" }).click();
     await expect(page).toHaveURL(/\/catalogo$/);
     await ready(page);
     await cards(page).first().getByRole("link").first().click();

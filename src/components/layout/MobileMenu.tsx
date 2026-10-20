@@ -128,7 +128,7 @@ export function MobileMenu({ open, onClose, active, staticMode }: MobileMenuProp
                         }}
                         className="mt-4 inline-block text-xs uppercase tracking-[0.2em] text-gold underline underline-offset-4"
                       >
-                        Ver o catálogo completo
+                        Ver o cardápio completo
                       </Link>
                     </div>
                   )}

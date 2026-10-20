@@ -28,7 +28,7 @@ export function computeFrame(progress: number): CameraFrame {
   const layerScale = {} as Record<LayerId, number>;
   for (const id of LAYER_IDS) layerScale[id] = Math.pow(LAYER_SCALE[id], dolly);
 
-  const headlineOut = smoothstep(0.03, 0.16, p);
+  const headlineOut = smoothstep(0.02, 0.08, p);
 
   return {
     layerScale,
