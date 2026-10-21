@@ -23,7 +23,7 @@
 
 Maison du Pain é uma padaria artesanal francesa **fictícia** e, ao mesmo tempo, um projeto de portfólio de *creative development*: um site de scrollytelling em que o visitante controla a história rolando a página. A câmera atravessa uma janela, uma massa vira um croissant em 3D, seis produtos respondem ao ponteiro e a noite cai sobre a rua.
 
-Não existe endereço, telefone, preço ou pedido reais. Onde um recurso comercial apareceria, há uma demonstração claramente identificada.
+Preços e pedido são de demonstração: não há pagamento nem envio real. O endereço, o telefone e o horário de atendimento ficam em `src/config/contact.ts`.
 
 ## Conceito criativo
 
@@ -85,7 +85,7 @@ Não usados, de propósito: Rive e Spline (sem integração verificada; SVG + GS
 - Botões magnéticos, paralaxe por ponteiro, indicador de progresso, cabeçalho que se adapta a fundos escuros.
 - Efeitos sonoros opcionais, sintetizados em código, **desligados por padrão** (o áudio só é inicializado quando o usuário liga).
 - A experiência cinematográfica roda **por padrão em qualquer navegador**, sem botão de ativação e mesmo com "reduzir movimento" no sistema (decisão de produto). Quem prefere uma versão estática a escolhe em "Modo estático" no cabeçalho (a página recarrega; nunca há troca de modo no meio da navegação). Limitação de acessibilidade assumida: a preferência do sistema não é aplicada automaticamente.
-- Ações finais reais e honestas: cardápio, dados de visita ("A definir") com compartilhamento, e um pedido de **demonstração** que gera um resumo copiável sem enviar nada.
+- Ações finais reais e honestas: cardápio, dados de visita (Itapevi - SP, telefone e horário, em `src/config/contact.ts`) com compartilhamento, e um pedido de **demonstração** que gera um resumo copiável sem enviar nada.
 
 ## Arquitetura
 

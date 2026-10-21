@@ -271,7 +271,10 @@ test("cena 06: recuo ao entardecer e botões com ações reais", async ({ page }
   await expect(page.getByRole("button", { name: "Conheça nosso cardápio" })).toHaveCount(0);
 
   await page.getByRole("button", { name: "Venha nos visitar" }).click();
-  await expect(page.getByRole("dialog")).toContainText("A definir");
+  await expect(page.getByRole("dialog")).toContainText("Itapevi - SP");
+  await expect(page.getByRole("dialog")).toContainText("(11) 99446-2895");
+  await expect(page.getByRole("dialog")).toContainText("24 horas");
+  await expect(page.getByRole("dialog").getByRole("link", { name: "(11) 99446-2895" })).toHaveAttribute("href", "tel:+5511994462895");
   await page.keyboard.press("Escape");
 
   await page.getByRole("button", { name: "Faça seu pedido" }).click();

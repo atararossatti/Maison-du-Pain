@@ -40,12 +40,18 @@ export function VisitDialog({ open, onClose }: DialogProps) {
   return (
     <Dialog open={open} onClose={onClose} labelledBy="visita-titulo">
       <h3 id="visita-titulo" className="font-display text-3xl">Venha nos visitar</h3>
-      <p className="mt-3 text-chocolate/80">A Maison du Pain é uma padaria imaginária, então não há porta de verdade para bater. Quando houver, estes dados aparecem aqui.</p>
+      <p className="mt-3 text-chocolate/80">Será um prazer receber você. Veja onde estamos e como falar com a gente.</p>
       <dl className="mt-5 grid gap-3 text-sm">
         {rows.map(([label, value]) => (
           <div key={label} className="grid grid-cols-[6.5rem_1fr] gap-3 border-t border-chocolate/15 pt-3">
             <dt className="uppercase tracking-[0.18em] text-chocolate/60">{label}</dt>
-            <dd>{value ?? "A definir"}</dd>
+            <dd>
+              {label === "Telefone" && value ? (
+                <a href={`tel:+55${value.replace(/\D/g, "")}`} className="underline-offset-4 hover:underline">{value}</a>
+              ) : (
+                (value ?? "A definir")
+              )}
+            </dd>
           </div>
         ))}
       </dl>
