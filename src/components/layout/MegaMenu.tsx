@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { CATEGORIES, PRODUCTS, coverOf, type CatalogProduct as Product, type CategoryId } from "@/config/catalog";
-import { growPhoto } from "@/lib/growPhoto";
 import { gsap } from "@/lib/gsap";
 
 interface MegaMenuProps {
@@ -41,7 +40,6 @@ export function MegaMenu({ id, open, onClose }: MegaMenuProps) {
   const zTop = useRef(1);
   const shown = useRef<string | null>(null);
   const router = useRouter();
-  const busy = useRef(false);
 
   const preview = useMemo(() => previewOf(category, hovered), [category, hovered]);
   const productsOf = (cat: CategoryId) => PRODUCTS.filter((product) => product.category === cat);
@@ -94,22 +92,12 @@ export function MegaMenu({ id, open, onClose }: MegaMenuProps) {
     return () => window.removeEventListener("pointermove", onMove);
   }, [open]);
 
-  /** A fotografia cresce até ocupar a tela, a página do catálogo abre por baixo e a fotografia se dissolve. */
-  const go = async (url: string, image: PreviewImage) => {
-    if (busy.current) return;
-    busy.current = true;
-    const frame = frameRef.current;
+  /** Fecha o menu e vai para a página (categoria ou produto). */
+  const go = (url: string) => {
     onClose();
-    if (frame) {
-      const { grown, reveal } = growPhoto(frame.getBoundingClientRect(), image);
-      await grown;
-      router.push(url);
-      await new Promise((resolve) => window.setTimeout(resolve, 700));
-      await reveal();
-    } else router.push(url);
-    busy.current = false;
+    router.push(url);
   };
-  const select = (product: Product) => go(`/catalogo/${product.id}`, previewOf(product.category, product).image);
+  const select = (product: Product) => go(`/catalogo/${product.id}`);
 
   const onCategoryKey = (event: KeyboardEvent<HTMLButtonElement>, index: number) => {
     const step = event.key === "ArrowDown" ? 1 : event.key === "ArrowUp" ? -1 : 0;
@@ -151,7 +139,7 @@ export function MegaMenu({ id, open, onClose }: MegaMenuProps) {
                         setHovered(null);
                       }}
                       onKeyDown={(event) => onCategoryKey(event, index)}
-                      onClick={() => void go(`/catalogo?categoria=${cat.id}`, previewOf(cat.id, null).image)}
+                      onClick={() => go(`/catalogo?categoria=${cat.id}`)}
                       className="group/cat flex w-full items-baseline gap-4 py-[clamp(0.25rem,1.5svh,0.75rem)] text-left"
                     >
                       <span className="w-6 font-sans text-xs tabular-nums text-chocolate/55">{String(index + 1).padStart(2, "0")}</span>
