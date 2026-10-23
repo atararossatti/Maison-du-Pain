@@ -11,7 +11,7 @@ interface ProductCardProps {
 
 export function ProductCard({ product, priority = false }: ProductCardProps) {
   return (
-    <article data-product-card data-product-id={product.id} className="group relative flex flex-col">
+    <article data-product-card data-product-id={product.id} className="group relative flex h-full flex-col">
       <Link href={`/catalogo/${product.id}`} className="block rounded-[2px] outline-offset-4">
         <div className="relative aspect-[4/5] overflow-hidden rounded-[2px] bg-blush/40 [container-type:inline-size]">
           <ProductPicture
@@ -33,9 +33,9 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
         </h3>
         <p className="mt-1 line-clamp-2 text-sm leading-snug text-chocolate/70">{product.short}</p>
       </Link>
-      <div className="mt-3 flex items-center justify-between gap-2">
+      <div className="mt-auto flex flex-col gap-2 pt-3 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-base font-medium tabular-nums" data-price>{formatBRL(product.priceCents)}</p>
-        <AddToCartButton productId={product.id} productName={product.name} />
+        <AddToCartButton productId={product.id} productName={product.name} className="w-full py-2.5 text-center sm:w-auto sm:py-2" />
       </div>
     </article>
   );
