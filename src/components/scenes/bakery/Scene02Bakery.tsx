@@ -19,11 +19,15 @@ export function Scene02Bakery() {
       <Interior />
       <Grain />
 
-      <div data-ui="captionA" className="absolute left-[6vw] top-[16svh] z-10 max-w-[30ch] will-change-transform" style={{ opacity: reduced ? 1 : 0 }}>
-        <p lang="fr" className="font-hand text-[clamp(1.8rem,3.6vw,3.2rem)] leading-tight text-chocolate">
+      <div
+        data-ui="captionA"
+        className="absolute left-[6vw] top-[10svh] z-10 max-w-[20ch] will-change-transform sm:top-[16svh] sm:max-w-[30ch]"
+        style={{ opacity: reduced ? 1 : 0, textShadow: "0 0 14px rgba(255,248,236,.9), 0 0 3px rgba(255,248,236,.85)" }}
+      >
+        <p lang="fr" className="font-hand text-[clamp(1.55rem,3.6vw,3.2rem)] leading-tight text-chocolate">
           Un peu de douceur, beaucoup d&apos;amour.
         </p>
-        <p className="mt-2 text-sm uppercase tracking-[0.25em] text-chocolate/70">Um pouco de doçura, muito amor.</p>
+        <p className="mt-1 w-[88vw] text-[0.68rem] uppercase tracking-[0.16em] text-chocolate/80 sm:mt-2 sm:w-auto sm:text-sm sm:tracking-[0.25em] sm:text-chocolate/70 [@media(max-height:700px)]:hidden">Um pouco de doçura, muito amor.</p>
       </div>
 
       <div data-ui="captionB" className="absolute bottom-[14svh] left-[6vw] z-10 max-w-[18ch] will-change-transform sm:left-[8vw]" style={{ opacity: reduced ? 1 : 0 }}>

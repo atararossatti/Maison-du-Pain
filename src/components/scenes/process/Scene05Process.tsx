@@ -33,8 +33,8 @@ export function Scene05Process() {
 
       <p
         data-ui="captionB"
-        className="pointer-events-none absolute bottom-[17svh] left-[6vw] z-10 max-w-[20ch] font-hand text-[clamp(1.8rem,3.4vw,3rem)] leading-tight text-chocolate will-change-transform"
-        style={{ opacity: reduced ? 1 : 0 }}
+        className="pointer-events-none absolute left-[6vw] top-[26svh] z-10 max-w-[20ch] font-hand text-[clamp(1.8rem,3.4vw,3rem)] leading-tight text-chocolate will-change-transform sm:bottom-[17svh] sm:top-auto"
+        style={{ opacity: reduced ? 1 : 0, textShadow: "0 0 14px rgba(255,248,236,.9), 0 0 3px rgba(255,248,236,.85)" }}
       >
         Está no tempo, no cuidado e no amor por cada detalhe.
       </p>
