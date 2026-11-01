@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { CATEGORIES, coverOf, type CatalogCategory } from "@/config/catalog";
 import { gsap } from "@/lib/gsap";
 import { navigateTo } from "@/lib/navigate";
+import { SLOGAN } from "@/config/brand";
 
 interface MobileMenuProps {
   open: boolean;
@@ -156,7 +157,7 @@ export function MobileMenu({ open, onClose, active, staticMode }: MobileMenuProp
         </nav>
 
         <div data-mobile-in className="mt-8 flex flex-wrap items-center gap-3">
-          <p className="mr-auto font-hand text-2xl text-gold" lang="fr">Le bonheur se savoure.</p>
+          <p className="mr-auto font-hand text-2xl text-gold" lang="fr">{SLOGAN}.</p>
           <button type="button" onClick={staticMode.toggle} aria-pressed={staticMode.enabled} className="rounded-full border border-cream/50 px-4 py-2 text-[0.7rem] uppercase tracking-[0.2em]">
             Modo estático {staticMode.enabled ? "ligado" : "desligado"}
           </button>

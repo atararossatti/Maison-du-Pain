@@ -12,6 +12,7 @@ import { Illustration } from "../awakening/Illustration";
 import { usePointerParallax } from "../awakening/usePointerParallax";
 import { OrderDialog, VisitDialog } from "./FinaleDialogs";
 import { useReturnTimeline } from "./useReturnTimeline";
+import { SLOGAN } from "@/config/brand";
 
 type DialogName = "visit" | "order";
 type ActionId = DialogName | "menu";
@@ -48,7 +49,7 @@ export function Scene06Return() {
           Algumas histórias merecem ser saboreadas.
         </h2>
         <p data-ui="signature" lang="fr" className="mt-3 font-hand text-[clamp(1.8rem,3.4vw,2.8rem)] text-gold" style={{ opacity: reduced ? 1 : 0, textShadow: "0 2px 18px rgba(46,29,22,.7)" }}>
-          Le bonheur se savoure.
+          {SLOGAN}.
         </p>
       </div>
 
