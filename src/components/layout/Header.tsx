@@ -10,6 +10,7 @@ import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { activeNav, navigateTo } from "@/lib/navigate";
 import { MegaMenu } from "./MegaMenu";
 import { MobileMenu } from "./MobileMenu";
+import { SLOGAN, STATIC_MODE_HINT } from "@/config/brand";
 
 const MEGA_ID = "mega-produtos";
 
@@ -224,13 +225,13 @@ export function Header() {
 
           <div className="flex items-center gap-3">
             <p className="whitespace-nowrap font-hand text-xl text-chocolate/80 transition-colors group-data-[tone=light]:text-cream/80 max-2xl:hidden" lang="fr">
-              Le bonheur se savoure
+              {SLOGAN}
             </p>
             <button
               type="button"
               onClick={() => setStaticMode(!staticMode)}
               aria-pressed={staticMode}
-              title="Alterna entre a experiência animada e uma versão estática (recarrega a página)"
+              title={STATIC_MODE_HINT}
               className="whitespace-nowrap rounded-full border border-current px-3 py-1 text-[0.68rem] uppercase tracking-[0.2em] text-chocolate transition-colors group-data-[tone=light]:text-cream max-2xl:hidden"
             >
               Modo estático {staticMode ? "ligado" : "desligado"}

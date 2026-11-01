@@ -2,18 +2,18 @@ import type { Metadata, Viewport } from "next";
 import { Caveat, Fraunces, Instrument_Sans } from "next/font/google";
 import { CartProvider } from "@/components/cart/CartProvider";
 import "@/styles/globals.css";
+import { SITE_DESCRIPTION, SITE_TITLE } from "@/config/brand";
 
 const fraunces = Fraunces({ subsets: ["latin"], variable: "--font-fraunces", axes: ["opsz", "SOFT"], display: "swap" });
 const instrument = Instrument_Sans({ subsets: ["latin"], variable: "--font-instrument", display: "swap" });
 const caveat = Caveat({ subsets: ["latin"], variable: "--font-caveat", display: "swap" });
 
 export const metadata: Metadata = {
-  title: "Maison du Pain — Le bonheur se savoure",
-  description:
-    "Uma jornada imersiva pela arte da padaria francesa. Projeto fictício de creative development.",
+  title: SITE_TITLE,
+  description: SITE_DESCRIPTION,
   openGraph: {
-    title: "Maison du Pain — Le bonheur se savoure",
-    description: "Uma jornada imersiva pela arte da padaria francesa. Projeto fictício de creative development.",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
     locale: "pt_BR",
     type: "website",
   },
